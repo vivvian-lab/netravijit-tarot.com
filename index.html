@@ -94,7 +94,8 @@
       transition: all 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      user-select: none;
     }
     .mode-btn:hover, .mode-btn.active {
       background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
@@ -601,7 +602,7 @@
   </footer>
 
   <!-- POPUP ปลดล็อกค่ายกครู 19 บาท -->
-  <div class="modal-overlay" id="unlock-modal">
+  <div class="modal-overlay" id="unlock-modal" onclick="if(event.target === this) closeUnlockModal()">
     <div class="modal-card">
       <button class="close-modal-btn" onclick="closeUnlockModal()">×</button>
       <div class="modal-title">✦ ปลดล็อกญาณพยากรณ์ ๓ ใบ ✦</div>
@@ -619,7 +620,7 @@
       </a>
 
       <div class="passcode-box">
-        <input type="text" id="passcode-input" class="passcode-input" placeholder="รหัสปลดล็อก">
+        <input type="text" id="passcode-input" class="passcode-input" placeholder="รหัสปลดล็อก" onkeydown="if(event.key === 'Enter') checkPasscode()">
         <button class="action-btn" style="padding: 6px 18px; font-size: 1.05rem;" onclick="checkPasscode()">ปลดล็อก</button>
       </div>
       <p id="passcode-error" style="color: #ff6b6b; font-size: 0.85rem; min-height: 20px;"></p>
@@ -627,9 +628,9 @@
   </div>
 
   <script>
-    // SCRIPT_URL ของคุณจาก Google Apps Script[cite: 7]
+    // SCRIPT_URL เชื่อมโยง Google Apps Script ตัวใหม่ล่าสุด
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-7FArXCmF8C5_vgRNegUKNdG6BdwJb0S1Bnr5EWAQfHqase_S6a2hvMBpwiiyIF7oFg/exec";
-    const LINE_LINK = "https://line.me"; // ลิงก์ LINE ของคุณ
+    const LINE_LINK = "https://line.me";
 
     const tarotDeck = [
       {
@@ -830,14 +831,14 @@
         "finance": "ความมั่งคั่งมั่นคง อิสรภาพทางการเงิน มีความสุขกับสิ่งที่สร้างขึ้นมาด้วยหยาดเหงื่อแรงกาย",
         "love": "ความรักบริบูรณ์พร้อม เข้าสู่จุดที่สมบูรณ์แบบ มีความสุขสงบและสร้างความมั่นคงร่วมกันตลอดไป"
       }
+    ];
 
     let currentMode = 1;
     let shuffleCount = 0;
     let deckPool = [];
     let chosenCards = [];
     let audioCtx = null;
-    let isUnlockedMode3 = false;
-    localStorage.removeItem('tarot_netra_unlocked');
+    let isUnlockedMode3 = false; // เริ่มต้นล็อกเสมอ ไม่จำค่าข้ามครั้ง
 
     function getAudioContext() {
       if (!audioCtx) {
@@ -906,18 +907,25 @@
     }
 
     function openUnlockModal() {
-      document.getElementById('unlock-modal').style.display = 'flex';
-      document.getElementById('passcode-input').value = '';
-      document.getElementById('passcode-error').innerText = '';
+      const modal = document.getElementById('unlock-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('passcode-input').value = '';
+        document.getElementById('passcode-error').innerText = '';
+      }
     }
 
     function closeUnlockModal() {
-      document.getElementById('unlock-modal').style.display = 'none';
+      const modal = document.getElementById('unlock-modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
     }
 
     async function checkPasscode() {
-      const input = document.getElementById('passcode-input').value.trim();
+      const inputEl = document.getElementById('passcode-input');
       const errorText = document.getElementById('passcode-error');
+      const input = inputEl ? inputEl.value.trim() : '';
 
       if (!input) {
         errorText.style.color = '#ff6b6b';
@@ -935,12 +943,13 @@
         if (result.success) {
           playChimeSound();
           isUnlockedMode3 = true;
-          document.getElementById('mode-3-lock').style.display = 'none';
+          const lockIcon = document.getElementById('mode-3-lock');
+          if (lockIcon) lockIcon.style.display = 'none';
           closeUnlockModal();
           switchMode(3);
         } else {
           errorText.style.color = '#ff6b6b';
-          errorText.innerText = result.message;
+          errorText.innerText = result.message || 'รหัสไม่ถูกต้อง';
         }
       } catch (err) {
         errorText.style.color = '#ff6b6b';
@@ -1123,13 +1132,14 @@
     }
 
     function resetToDeck() {
-      // หากดูไพ่เสร็จแล้ว แล้วกดเริ่มใหม่ ให้ล็อกโหมด 3 คืนทันที และเด้งกลับไปโหมด 1 ใบ
+      // ๑ รหัส ต่อการดูดวง ๓ ใบ ๑ ครั้ง: ถ้าดูจบแล้วกดเริ่มใหม่ ให้ล็อกคืนทันที
       if (isUnlockedMode3 && chosenCards.length > 0) {
         isUnlockedMode3 = false;
         currentMode = 1;
+        const lockIcon = document.getElementById('mode-3-lock');
+        if (lockIcon) lockIcon.style.display = 'inline';
         document.getElementById('btn-mode-1').classList.add('active');
         document.getElementById('btn-mode-3').classList.remove('active');
-        document.getElementById('mode-3-lock').style.display = 'inline';
       }
 
       shuffleCount = 0;
