@@ -103,6 +103,55 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
+    /* กล่องบันทึกดวงชะตา */
+    .seeker-card-box {
+      max-width: 680px;
+      margin: 0 auto 20px;
+      padding: 16px 20px;
+      background: rgba(22, 14, 20, 0.9);
+      border: 1px solid var(--gold-primary);
+      border-radius: 8px;
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.75);
+      text-align: center;
+    }
+    .seeker-title {
+      font-family: 'Charm', cursive;
+      font-size: 1.35rem;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+    }
+    .seeker-sub {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .seeker-inputs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .seeker-input, .seeker-select {
+      background: #0d060a;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--gold-bright);
+      padding: 8px 12px;
+      border-radius: 5px;
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .seeker-input:focus, .seeker-select:focus {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    }
+    .seeker-select option {
+      background: #150f14;
+      color: var(--text-gold);
+    }
+
     .hint-bar {
       text-align: center;
       font-family: 'Charm', cursive;
@@ -113,12 +162,12 @@
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
     }
 
-    /* STAGE 1: DECK VIEW */
+    /* STAGE 1: กองไพ่ */
     .deck-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 20px 0 30px;
+      margin: 15px 0 30px;
     }
 
     .deck-stack {
@@ -191,7 +240,7 @@
       box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
     }
 
-    /* STAGE 2: FAN ARC */
+    /* STAGE 2: คลี่ไพ่แบบพัด ๗๘ ใบ */
     .fan-section {
       display: none;
       width: 100%;
@@ -232,7 +281,7 @@
       transition: all 0.4s ease;
     }
 
-    /* STAGE 3: BOARD */
+    /* STAGE 3: โต๊ะวางไพ่ */
     .board-container {
       max-width: 950px;
       margin: 0 auto 35px;
@@ -330,13 +379,49 @@
     .reading-header {
       text-align: center;
       border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-      padding-bottom: 15px;
+      padding-bottom: 20px;
       margin-bottom: 25px;
     }
     .reading-header h2 {
       font-family: 'Charm', cursive;
       font-size: 2.2rem;
       color: var(--gold-bright);
+    }
+
+    /* กล่องสรุปวิเคราะห์ดวงเจ้าชะตา */
+    .seeker-analysis-box {
+      margin-top: 15px;
+      background: rgba(10, 6, 8, 0.7);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 8px;
+      padding: 16px 20px;
+      text-align: left;
+    }
+    .seeker-analysis-title {
+      font-family: 'Charm', cursive;
+      font-size: 1.45rem;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    .seeker-analysis-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .seeker-trait-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+      font-size: 0.92rem;
+    }
+    .trait-item {
+      background: rgba(35, 20, 28, 0.5);
+      padding: 8px 12px;
+      border-radius: 4px;
+      border-left: 2px solid var(--crimson-light);
     }
 
     .interpretation-card {
@@ -528,6 +613,8 @@
       .slot-label { font-size: 0.95rem; }
       .click-prompt { font-size: 0.75rem; padding: 2px 8px; }
       .aspects-grid { grid-template-columns: 1fr; }
+      .seeker-inputs { flex-direction: column; align-items: center; }
+      .seeker-input, .seeker-select { width: 90% !important; max-width: 260px; }
     }
   </style>
 </head>
@@ -538,7 +625,7 @@
   <header>
     <div class="kranok-badge">✦ สถิตจิตวิญญาณแห่งตำนานสยาม ✦</div>
     <h1>เนตรวิจิตรบรรจง</h1>
-    <p class="subtitle">สื่อกระแสญาณผ่านสำรับวิญญาณไทยโบราณ ๗๘ ใบครบสำรับ (มหามายา ๒๒ สำรับหลัก • ปัญจธาตุ ๕๖ สำรับย่อย) ปลดเปลื้องปริศนาแห่งอดีต ปัจจุบัน และอนาคต</p>
+    <p class="subtitle">สื่อกระแสญาณผ่านสำรับวิญญาณไทยโบราณ ๗๘ ใบครบสำรับ ปลดเปลื้องปริศนาแห่งอดีต ปัจจุบัน และอนาคต</p>
   </header>
 
   <div class="mode-bar">
@@ -547,6 +634,42 @@
       <span>พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)</span>
       <span class="lock-icon" id="mode-3-lock">🔒</span>
     </button>
+  </div>
+
+  <!-- กล่องระบุข้อมูลเจ้าชะตาเพื่อวิเคราะห์ดวง -->
+  <div class="seeker-card-box">
+    <div class="seeker-title">✦ ตั้งจิตอธิษฐาน ผูกดวงชะตา ✦</div>
+    <div class="seeker-sub">ระบุชื่อเล่นและวันเกิดเพื่อเหนี่ยวนำกระแสญาณธาตุเข้าสู่สำรับไพ่</div>
+    <div class="seeker-inputs">
+      <input type="text" id="seeker-name" class="seeker-input" placeholder="ชื่อเล่น (ไม่ใช้ชื่อจริง)" style="width: 170px;">
+      <select id="seeker-day" class="seeker-select" style="width: 80px;">
+        <option value="">วันที่</option>
+        <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option>
+        <option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option>
+        <option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+        <option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option>
+        <option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option>
+        <option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>
+        <option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option>
+        <option value="29">29</option><option value="30">30</option><option value="31">31</option>
+      </select>
+      <select id="seeker-month" class="seeker-select" style="width: 130px;">
+        <option value="">เดือนเกิด</option>
+        <option value="มกราคม">มกราคม</option>
+        <option value="กุมภาพันธ์">กุมภาพันธ์</option>
+        <option value="มีนาคม">มีนาคม</option>
+        <option value="เมษายน">เมษายน</option>
+        <option value="พฤษภาคม">พฤษภาคม</option>
+        <option value="มิถุนายน">มิถุนายน</option>
+        <option value="กรกฎาคม">กรกฎาคม</option>
+        <option value="สิงหาคม">สิงหาคม</option>
+        <option value="กันยายน">กันยายน</option>
+        <option value="ตุลาคม">ตุลาคม</option>
+        <option value="พฤศจิกายน">พฤศจิกายน</option>
+        <option value="ธันวาคม">ธันวาคม</option>
+      </select>
+      <input type="number" id="seeker-year" class="seeker-input" placeholder="ปี พ.ศ. (เช่น 2542)" style="width: 150px;" min="2480" max="2580">
+    </div>
   </div>
 
   <div class="hint-bar" id="hint-bar">✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦</div>
@@ -581,7 +704,7 @@
   <div class="reading-sheet" id="reading-sheet">
     <div class="reading-header">
       <h2>บทวิเคราะห์ญาณพยากรณ์: เนตรวิจิตรบรรจง</h2>
-      <p style="color: var(--text-muted); font-size: 0.95rem;">รหัสคำทำนายตามศาสตร์สำรับโบราณ โดยแม่หมอ</p>
+      <div id="seeker-analysis-container"></div>
     </div>
     <div id="reading-content"></div>
   </div>
@@ -632,7 +755,7 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-7FArXCmF8C5_vgRNegUKNdG6BdwJb0S1Bnr5EWAQfHqase_S6a2hvMBpwiiyIF7oFg/exec";
     const LINE_LINK = "https://line.me";
 
-    // สำรับไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบสากล
+    // ฐานข้อมูลไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบ
     const tarotDeck = [
       // ==================== มหามายา ๒๒ ใบ (MAJOR ARCANA) ====================
       {
@@ -1230,369 +1353,4 @@
       {
         id: 73, num: "๑๐ เหรียญ", name: "เรือนรัก เรือนทรัพย์", arcana: "Ten of Pentacles", img: "10เรือนรักเรือนทรัพย์_ ครอบครัวใต้ต้นขนุน.png",
         keywords: "ทรัพย์สินมรดก • ครอบครัวมั่นคง • ร่ำรวยยั่งยืน • บรรพชนหนุนนำ",
-        meaning: "สามชั่วอายุคนพร้อมหน้าใต้ร่มเงาเรือนไทยและต้นขนุนมงคล ความมั่งคั่งที่ส่งต่อจากรุ่นสู่รุ่น ความมั่นคงของวงศ์ตระกูล อสังหาริมทรัพย์ และมรดกตกทอด",
-        work: "ธุรกิจครอบครัวเจริญรุ่งเรือง กิจการมั่นคงแข็งแกร่งเป็นปึกแผ่นถาวร",
-        finance: "มั่งคั่งสูงสุด ได้รับมรดก ที่ดิน บ้าน หรือผลกำไรก้อนใหญ่จากธุรกิจครอบครัว",
-        love: "ความรักมั่นคงยืนยาว ได้รับการยอมรับจากครอบครัวทั้งสองฝ่าย มีความสุขสมบูรณ์พร้อม"
-      },
-      {
-        id: 74, num: "มหาดเล็กเหรียญ", name: "มหาดเล็กพินิจทรัพย์", arcana: "Page of Pentacles", img: "มหาดเล็กพินิจทรัพย์ใต้แสงทอง.png",
-        keywords: "เริ่มต้นเรียนรู้ • โอกาสทางการเงิน • ใฝ่รู้ • ข่าวดีเรื่องทรัพย์",
-        meaning: "มหาดเล็กหนุ่มน้อยผู้ประคองเหรียญพดด้วงพิจารณาอย่างตั้งใจ จิตใจที่ใคร่รู้เรื่องการสร้างเนื้อสร้างตัว และข่าวดีเกี่ยวกับการเงิน",
-        work: "เริ่มต้นงานใหม่หรือการฝึกอบรม ได้รับโอกาสศึกษาต่อหรือรับผิดชอบงานที่ท้าทาย",
-        finance: "มีช่องทางสร้างรายได้เล็กๆ น้อยๆ เข้ามา มีโอกาสลงทุนเริ่มต้นที่ดีและปลอดภัย",
-        love: "ความสัมพันธ์มั่นคงและค่อยเป็นค่อยไป คนโสดมีคนซื่อสัตย์และจริงจังเข้ามาจีบ"
-      },
-      {
-        id: 75, num: "อัศวินเหรียญ", name: "ขุนศึกหนุนดวง", arcana: "Knight of Pentacles", img: "อัศวินเหรียญแห่งทุ่งทอง.png",
-        keywords: "ขยันขันแข็ง • รอบคอบหนักแน่น • มุ่งมั่นสร้างรากฐาน • ไว้วางใจได้",
-        meaning: "ขุนศึกผู้กุมเหรียญทองควบอาชาอย่างสุขุมท่ามกลางทุ่งรวงทอง ความมุ่งมั่น อดทน ซื่อสัตย์ ไม่รีบร้อนแต่ก้าวไปข้างหน้าอย่างหนักแน่น",
-        work: "ทำงานอย่างรอบคอบ มีวินัยสูง ส่งมอบงานตรงเวลาและเชื่อถือได้เต็มร้อย",
-        finance: "การเงินมั่นคง ช้าแต่ชัวร์ ไม่นิยมความเสี่ยง เก็บเงินได้เป็นกอบเป็นกำ",
-        love: "รักจริงหวังแต่ง เป็นที่พึ่งพาได้ แม้ไม่หวานแหววแต่เสมอต้นเสมอปลายและมั่นคง"
-      },
-      {
-        id: 76, num: "ราชินีเหรียญ", name: "คุณท้าวเฝ้าทรัพย์", arcana: "Queen of Pentacles", img: "ราชินีแห่งทรัพย์ใต้ศาลาไทย.png",
-        keywords: "แม่เรือนผู้มั่งคั่ง • อุดมสมบูรณ์ • บริหารเงินเก่ง • ดูแลเอาใจใส่",
-        meaning: "คุณท้าวผู้ประทับบนตั่งทองในศาลาไทยแวดล้อมด้วยธัญญาหาร ความอุดมสมบูรณ์ การบริหารจัดการบ้านเรือนและทรัพย์สินอย่างชาญฉลาดและอบอุ่น",
-        work: "บริหารงานได้ยอดเยี่ยม มีความสามารถในการจัดสรรทรัพยากรและดูแลคนรอบข้าง",
-        finance: "การเงินมั่งคั่งและคล่องตัว มีปัญญาในการต่อเงิน รักษาสมดุลทรัพย์สินได้ดีเยี่ยม",
-        love: "เป็นคู่ชีวิตที่ดี แม่ศรีเรือนที่ช่วยหนุนดวงคู่ครองให้ร่ำรวยและอบอุ่นใจ"
-      },
-      {
-        id: 77, num: "ราชาเหรียญ", name: "พระยาธนบดี", arcana: "King of Pentacles", img: "ราชาพระยาธนบดีบนช้างเผือก.png",
-        keywords: "มหาเศรษฐี • เจ้าสัวผู้ทรงอิทธิพล • ความสำเร็จสูงสุด • เสถียรภาพมั่นคง",
-        meaning: "เจ้าพญาธนบดีผู้ประทับเหนือคอช้างเผือกมงคล เจ้าแห่งโภคทรัพย์ ความสำเร็จสูงสุดในโลกียทรัพย์ อำนาจ บารมี และเสถียรภาพทางการเงินดั่งขุนเขา",
-        work: "เป็นเจ้าของกิจการ ผู้บริหารระดับสูง หรือนักธุรกิจที่ประสบความสำเร็จสูงสุด",
-        finance: "ร่ำรวยมหาศาล มั่นคงทางการเงินระดับยอดพีระมิด การลงทุนได้กำไรงดงาม",
-        love: "ความรักที่มั่นคงและเพียบพร้อม สามารถดูแลคุ้มครองและสร้างความสุขสบายให้คนรักได้ทุกด้าน"
-      }
-    ];
-
-    let currentMode = 1;
-    let shuffleCount = 0;
-    let deckPool = [];
-    let chosenCards = [];
-    let audioCtx = null;
-    let isUnlockedMode3 = false; // เริ่มต้นล็อกเสมอ ไม่จำค่าข้ามครั้ง
-
-    function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
-    }
-
-    function playShuffleSound() {
-      const ctx = getAudioContext();
-      const sampleRate = ctx.sampleRate;
-      const bufferSize = sampleRate * 0.08;
-      for (let i = 0; i < 6; i++) {
-        const startTime = ctx.currentTime + i * 0.06;
-        const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let j = 0; j < bufferSize; j++) { data[j] = Math.random() * 2 - 1; }
-        const noise = ctx.createBufferSource();
-        noise.buffer = buffer;
-        const filter = ctx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(700 + Math.random() * 500, startTime);
-        filter.Q.value = 1.2;
-        const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.01, startTime);
-        gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.07);
-        noise.connect(filter);
-        filter.connect(gain);
-        gain.connect(ctx.destination);
-        noise.start(startTime);
-        noise.stop(startTime + 0.07);
-      }
-    }
-
-    function playChimeSound() {
-      const ctx = getAudioContext();
-      const now = ctx.currentTime;
-      const freqs = [1046.50, 1318.51, 1567.98, 2093.00];
-      freqs.forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + idx * 0.04);
-        gain.gain.setValueAtTime(0.12, now + idx * 0.04);
-        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 1.2);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now + idx * 0.04);
-        osc.stop(now + idx * 0.04 + 1.2);
-      });
-    }
-
-    function switchMode(mode) {
-      if (mode === 3 && !isUnlockedMode3) {
-        openUnlockModal();
-        return;
-      }
-      currentMode = mode;
-      document.getElementById('btn-mode-1').classList.toggle('active', mode === 1);
-      document.getElementById('btn-mode-3').classList.toggle('active', mode === 3);
-      resetToDeck();
-    }
-
-    function openUnlockModal() {
-      const modal = document.getElementById('unlock-modal');
-      if (modal) {
-        modal.style.display = 'flex';
-        document.getElementById('passcode-input').value = '';
-        document.getElementById('passcode-error').innerText = '';
-      }
-    }
-
-    function closeUnlockModal() {
-      const modal = document.getElementById('unlock-modal');
-      if (modal) {
-        modal.style.display = 'none';
-      }
-    }
-
-    async function checkPasscode() {
-      const inputEl = document.getElementById('passcode-input');
-      const errorText = document.getElementById('passcode-error');
-      const input = inputEl ? inputEl.value.trim() : '';
-
-      if (!input) {
-        errorText.style.color = '#ff6b6b';
-        errorText.innerText = 'กรุณากรอกรหัสปลดล็อก';
-        return;
-      }
-
-      errorText.style.color = 'var(--gold-bright)';
-      errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
-
-      try {
-        const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
-        const result = await response.json();
-
-        if (result.success) {
-          playChimeSound();
-          isUnlockedMode3 = true;
-          const lockIcon = document.getElementById('mode-3-lock');
-          if (lockIcon) lockIcon.style.display = 'none';
-          closeUnlockModal();
-          switchMode(3);
-        } else {
-          errorText.style.color = '#ff6b6b';
-          errorText.innerText = result.message || 'รหัสไม่ถูกต้อง';
-        }
-      } catch (err) {
-        errorText.style.color = '#ff6b6b';
-        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
-      }
-    }
-
-    function shuffleDeck() {
-      playShuffleSound();
-      shuffleCount++;
-      const stack = document.getElementById('deck-stack');
-      stack.classList.remove('shuffling');
-      void stack.offsetWidth;
-      stack.classList.add('shuffling');
-
-      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
-
-      const thaiNums = ["๐","๑","๒","๓","๔","๕","๖","๗","๘","๙"];
-      const countThai = shuffleCount.toString().split('').map(d => thaiNums[parseInt(d)]).join('');
-      document.getElementById('shuffle-count').innerText = `สับไพ่แล้ว ${countThai} ครั้ง (สับได้ตามจิตศรัทธา)`;
-      document.getElementById('hint-bar').innerHTML = `✦ อัญเชิญญาณสับไพ่ ๗๘ ใบแล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
-    }
-
-    function spreadDeck() {
-      if (deckPool.length === 0) {
-        deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
-      }
-      playShuffleSound();
-      chosenCards = [];
-
-      document.getElementById('deck-section').style.display = 'none';
-      const fan = document.getElementById('fan-section');
-      fan.innerHTML = '';
-      fan.style.display = 'block';
-
-      const total = deckPool.length;
-      deckPool.forEach((card, i) => {
-        const cardEl = document.createElement('div');
-        cardEl.className = 'fan-card';
-        cardEl.id = `fan-card-${i}`;
-
-        // ปรับสมดุลพัดโค้งอัตโนมัติให้รองรับ ๗๘ ใบเต็มพิกัด ไม่ล้นจอ
-        const delta = i - (total - 1) / 2;
-        const angle = delta * (85 / total);
-        const transX = delta * (760 / total);
-        const transY = Math.abs(delta) * (40 / (total / 2));
-
-        cardEl.style.transform = `translateX(${transX}px) translateY(${transY}px) rotate(${angle}deg)`;
-        cardEl.style.zIndex = i + 1;
-        cardEl.innerHTML = `<img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'">`;
-
-        cardEl.onclick = () => pickCardFromFan(i, card, cardEl);
-        fan.appendChild(cardEl);
-      });
-
-      updateHintForPicking();
-    }
-
-    function updateHintForPicking() {
-      const remaining = currentMode - chosenCards.length;
-      const thaiDigits = ["๐","๑","๒","๓"];
-      if (remaining > 0) {
-        document.getElementById('hint-bar').innerHTML = `✦ ตั้งจิตอธิษฐาน แตะเลือกไพ่ที่ดลใจ (ต้องการอีก <strong>${thaiDigits[remaining]}</strong> ใบ) ✦`;
-      }
-    }
-
-    function pickCardFromFan(index, card, cardEl) {
-      if (chosenCards.length >= currentMode) return;
-      if (cardEl.classList.contains('picked')) return;
-
-      playChimeSound();
-      cardEl.classList.add('picked');
-      chosenCards.push(card);
-
-      if (chosenCards.length < currentMode) {
-        updateHintForPicking();
-      } else {
-        document.getElementById('hint-bar').innerHTML = '✦ สถิตญาณพร้อมแล้ว... <strong>แตะที่ไพ่</strong> เพื่อเปิดชะตา ✦';
-        setTimeout(revealBoardWithChosenCards, 500);
-      }
-    }
-
-    function revealBoardWithChosenCards() {
-      document.getElementById('fan-section').style.display = 'none';
-      const board = document.getElementById('board');
-      board.innerHTML = '';
-      board.style.display = 'flex';
-      document.getElementById('reset-area').style.display = 'block';
-
-      const labels = currentMode === 1 
-        ? ["ดวงชะตาวันนี้"] 
-        : ["ตำแหน่ง ๑ : อดีต", "ตำแหน่ง ๒ : ปัจจุบัน", "ตำแหน่ง ๓ : อนาคต"];
-
-      for (let i = 0; i < currentMode; i++) {
-        const slot = document.createElement('div');
-        slot.className = 'card-slot';
-        slot.innerHTML = `
-          <div class="slot-label">${labels[i]}</div>
-          <div class="card-wrapper" id="card-${i}" onclick="revealCard(${i})">
-            <div class="card-inner">
-              <div class="card-face card-back">
-                <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
-                <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
-              </div>
-              <div class="card-face card-front" id="front-${i}">
-                <img src="${chosenCards[i].img}" alt="${chosenCards[i].name}" onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='21พระแม่ธรณีแห่งสายน้ำจักรวาล (1).png';}">
-              </div>
-            </div>
-          </div>
-        `;
-        board.appendChild(slot);
-      }
-    }
-
-    function revealCard(idx) {
-      const cardWrapper = document.getElementById(`card-${idx}`);
-      if (!cardWrapper.classList.contains('flipped')) {
-        playChimeSound();
-        cardWrapper.classList.add('flipped');
-        renderInterpretationItem(idx);
-      }
-    }
-
-    function renderInterpretationItem(idx) {
-      const sheet = document.getElementById('reading-sheet');
-      const content = document.getElementById('reading-content');
-      const card = chosenCards[idx];
-
-      const labels = currentMode === 1 
-        ? ["ญาณหยั่งรู้ประจำวัน"] 
-        : ["ตำแหน่งที่ ๑ : อดีต / วิบากกรรมที่ส่งผล", "ตำแหน่งที่ ๒ : ปัจจุบัน / สภาวะจิตและบททดสอบ", "ตำแหน่งที่ ๓ : อนาคต / วิถีทางคลี่คลาย"];
-
-      if (document.getElementById(`interpretation-${idx}`)) return;
-
-      const item = document.createElement('div');
-      item.id = `interpretation-${idx}`;
-      item.className = 'interpretation-card';
-      item.innerHTML = `
-        <div style="color: var(--crimson-light); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px;">
-          ${labels[idx]}
-        </div>
-        <div class="card-meta-title">
-          <span>✦ ${card.name} (${card.num})</span>
-          <span style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">• ${card.arcana}</span>
-        </div>
-        <div class="card-keywords">${card.keywords}</div>
-        <div class="card-essence">
-          <strong>ความหมายแห่งญาณ:</strong> ${card.meaning}
-        </div>
-        <div class="aspects-grid">
-          <div class="aspect-box">
-            <div class="aspect-title">💼 ด้านการงานและอำนาจ</div>
-            <div class="aspect-desc">${card.work}</div>
-          </div>
-          <div class="aspect-box">
-            <div class="aspect-title">💰 ด้านโชคลาภและการเงิน</div>
-            <div class="aspect-desc">${card.finance}</div>
-          </div>
-          <div class="aspect-box">
-            <div class="aspect-title">❤️ ด้านความรักและสายสัมพันธ์</div>
-            <div class="aspect-desc">${card.love}</div>
-          </div>
-        </div>
-      `;
-
-      let inserted = false;
-      const children = content.children;
-      for (let i = 0; i < children.length; i++) {
-        const childId = parseInt(children[i].id.replace('interpretation-', ''));
-        if (idx < childId) {
-          content.insertBefore(item, children[i]);
-          inserted = true;
-          break;
-        }
-      }
-      if (!inserted) {
-        content.appendChild(item);
-      }
-
-      sheet.classList.add('active');
-    }
-
-    function resetToDeck() {
-      // ๑ รหัส ต่อการดูดวง ๓ ใบ ๑ ครั้ง: ถ้าดูจบแล้วกดเริ่มใหม่ ให้ล็อกคืนทันที
-      if (isUnlockedMode3 && chosenCards.length > 0) {
-        isUnlockedMode3 = false;
-        currentMode = 1;
-        const lockIcon = document.getElementById('mode-3-lock');
-        if (lockIcon) lockIcon.style.display = 'inline';
-        document.getElementById('btn-mode-1').classList.add('active');
-        document.getElementById('btn-mode-3').classList.remove('active');
-      }
-
-      shuffleCount = 0;
-      chosenCards = [];
-      document.getElementById('deck-section').style.display = 'flex';
-      document.getElementById('fan-section').style.display = 'none';
-      document.getElementById('board').style.display = 'none';
-      document.getElementById('reset-area').style.display = 'none';
-      document.getElementById('reading-sheet').classList.remove('active');
-      document.getElementById('reading-content').innerHTML = '';
-      document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
-      document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
-      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
-    }
-
-    window.onload = resetToDeck;
-  </script>
-</body>
-</html>
+        meaning: "สามชั่วอายุคนพร้อมหน้าใต้ร่มเงาเรือนไทยและต้นขนุนมงคล ความม
