@@ -672,9 +672,64 @@
     }
 ];
 
-    let currentMode = 1;
+  let currentMode = 1;
     let selectedCards = [];
     let hasShuffled = false;
+
+    // --- ระบบจำลองเสียงเอฟเฟกต์เวทมนตร์ (Web Audio API ไม่ต้องใช้ไฟล์เสียง) ---
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    // 1. เสียงรูดสับไพ่ (ฟึ่บๆๆ)
+    function playShuffleSound() {
+      const ctx = getAudioContext();
+      const now = ctx.currentTime;
+      for (let i = 0; i < 7; i++) {
+        const time = now + i * 0.05;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(120 + Math.random() * 180, time);
+        osc.frequency.exponentialRampToValueAtTime(30, time + 0.04);
+
+        gain.gain.setValueAtTime(0.12, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + 0.04);
+      }
+    }
+
+    // 2. เสียงปิ๊งประกายแก้วตอนแตะเปิดไพ่ (กริ๊ง~)
+    function playChimeSound() {
+      const ctx = getAudioContext();
+      const now = ctx.currentTime;
+      const freqs = [1046.50, 1318.51, 1567.98, 2093.00];
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+
+        gain.gain.setValueAtTime(0.12, now + idx * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 1.2);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + idx * 0.04);
+        osc.stop(now + idx * 0.04 + 1.2);
+      });
+    }
 
     function switchMode(mode) {
       currentMode = mode;
@@ -718,6 +773,8 @@
     }
 
     function startReading() {
+      playShuffleSound(); // เล่นเสียงสับไพ่
+
       const shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
       selectedCards = shuffled.slice(0, currentMode);
       hasShuffled = true;
@@ -746,6 +803,7 @@
 
       const cardWrapper = document.getElementById(`card-${idx}`);
       if (!cardWrapper.classList.contains('flipped')) {
+        playChimeSound(); // เล่นเสียงปิ๊งเมื่อแตะเปิดไพ่
         cardWrapper.classList.add('flipped');
         renderInterpretationItem(idx);
       }
