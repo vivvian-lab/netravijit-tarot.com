@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>เนตรวิจิตร - ไพ่ทาโรต์ภูตผีไทยโบราณ</title>
+  <title>เนตรวิจิตรบรรจง - ไพ่ทาโรต์ภูตผีไทยโบราณ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel+Decorative:wght@700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
@@ -19,11 +19,7 @@
       --text-muted: #bfa993;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-deep);
@@ -40,19 +36,13 @@
 
     .thai-border-frame {
       position: fixed;
-      top: 8px;
-      left: 8px;
-      right: 8px;
-      bottom: 8px;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
       border: 1px solid rgba(212, 175, 55, 0.3);
       pointer-events: none;
       z-index: 99;
     }
 
-    header {
-      text-align: center;
-      padding: 30px 20px 10px;
-    }
+    header { text-align: center; padding: 30px 20px 10px; }
 
     .kranok-badge {
       display: inline-block;
@@ -84,7 +74,6 @@
       line-height: 1.6;
     }
 
-    /* Mode Selector */
     .mode-bar {
       display: flex;
       justify-content: center;
@@ -103,6 +92,9 @@
       font-size: 1.15rem;
       cursor: pointer;
       transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .mode-btn:hover, .mode-btn.active {
       background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
@@ -120,7 +112,7 @@
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
     }
 
-    /* STAGE 1: DECK VIEW (กองไพ่) */
+    /* STAGE 1: DECK VIEW */
     .deck-section {
       display: flex;
       flex-direction: column;
@@ -139,39 +131,23 @@
 
     .deck-card-layer {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       border-radius: 10px;
       border: 2px solid var(--gold-primary);
       overflow: hidden;
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
       transition: transform 0.3s ease;
     }
-    .deck-card-layer img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
+    .deck-card-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .deck-card-layer:nth-child(1) { transform: translate(0, 0); z-index: 5; }
     .deck-card-layer:nth-child(2) { transform: translate(-3px, -3px); z-index: 4; filter: brightness(0.9); }
     .deck-card-layer:nth-child(3) { transform: translate(3px, -6px); z-index: 3; filter: brightness(0.8); }
     .deck-card-layer:nth-child(4) { transform: translate(-5px, -9px); z-index: 2; filter: brightness(0.7); }
     .deck-card-layer:nth-child(5) { transform: translate(4px, -12px); z-index: 1; filter: brightness(0.6); }
 
-    /* Shuffling Animation */
-    .deck-stack.shuffling .deck-card-layer:nth-child(1) {
-      animation: shuffleLeft 0.5s ease-in-out;
-    }
-    .deck-stack.shuffling .deck-card-layer:nth-child(2) {
-      animation: shuffleRight 0.5s ease-in-out 0.05s;
-    }
-    .deck-stack.shuffling .deck-card-layer:nth-child(3) {
-      animation: shuffleLeft 0.5s ease-in-out 0.1s;
-    }
+    .deck-stack.shuffling .deck-card-layer:nth-child(1) { animation: shuffleLeft 0.5s ease-in-out; }
+    .deck-stack.shuffling .deck-card-layer:nth-child(2) { animation: shuffleRight 0.5s ease-in-out 0.05s; }
+    .deck-stack.shuffling .deck-card-layer:nth-child(3) { animation: shuffleLeft 0.5s ease-in-out 0.1s; }
 
     @keyframes shuffleLeft {
       0% { transform: translate(0, 0); }
@@ -184,12 +160,7 @@
       100% { transform: translate(-3px, -3px); }
     }
 
-    .deck-controls {
-      display: flex;
-      gap: 15px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    .deck-controls { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
 
     .action-btn {
       background: linear-gradient(135deg, var(--gold-primary), #8a6c17);
@@ -209,7 +180,6 @@
       background: linear-gradient(135deg, var(--gold-bright), #d4af37);
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
     }
-
     .action-btn.secondary {
       background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
       color: var(--gold-bright);
@@ -220,7 +190,7 @@
       box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
     }
 
-    /* STAGE 2: FAN ARC (คลี่ไพ่ครึ่งวงกลม) */
+    /* STAGE 2: FAN ARC */
     .fan-section {
       display: none;
       width: 100%;
@@ -246,13 +216,7 @@
       transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s, filter 0.25s;
       overflow: hidden;
     }
-    .fan-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-    }
+    .fan-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .fan-card:hover {
       z-index: 60 !important;
       border-color: var(--gold-bright);
@@ -266,7 +230,7 @@
       transition: all 0.4s ease;
     }
 
-    /* STAGE 3: READING BOARD (โต๊ะพยากรณ์) */
+    /* STAGE 3: BOARD */
     .board-container {
       max-width: 950px;
       margin: 0 auto 35px;
@@ -302,8 +266,7 @@
     }
 
     .card-inner {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       position: relative;
       transform-style: preserve-3d;
       transition: transform 0.7s cubic-bezier(0.2, 0.85, 0.32, 1.2);
@@ -311,16 +274,11 @@
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.25);
     }
 
-    .card-wrapper.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
+    .card-wrapper.flipped .card-inner { transform: rotateY(180deg); }
 
     .card-face {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0; width: 100%; height: 100%;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
       border-radius: 12px;
@@ -329,18 +287,8 @@
       background: #0d090d;
     }
 
-    .card-back {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    .card-back img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .card-back { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .card-back img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .click-prompt {
       position: absolute;
@@ -359,20 +307,9 @@
       text-shadow: 0 0 5px var(--gold-bright);
     }
 
-    .card-wrapper.flipped .click-prompt {
-      display: none;
-    }
-
-    .card-front {
-      transform: rotateY(180deg);
-      background-color: #0b0709;
-    }
-    .card-front img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-    }
+    .card-wrapper.flipped .click-prompt { display: none; }
+    .card-front { transform: rotateY(180deg); background-color: #0b0709; }
+    .card-front img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
     /* Reading Sheet */
     .reading-sheet {
@@ -386,10 +323,7 @@
       display: none;
       clear: both;
     }
-    .reading-sheet.active {
-      display: block;
-      animation: fadeIn 0.5s ease;
-    }
+    .reading-sheet.active { display: block; animation: fadeIn 0.5s ease; }
 
     .reading-header {
       text-align: center;
@@ -409,11 +343,7 @@
       border-bottom: 1px solid rgba(212, 175, 55, 0.15);
       animation: fadeIn 0.5s ease;
     }
-    .interpretation-card:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
+    .interpretation-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
     .card-meta-title {
       font-family: 'Charm', cursive;
@@ -473,6 +403,115 @@
       line-height: 1.5;
     }
 
+    /* POPUP MODAL (ปลดล็อก 19 บาท) */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-card {
+      background: #170d14;
+      border: 2px solid var(--gold-primary);
+      border-radius: 12px;
+      max-width: 420px;
+      width: 100%;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
+      position: relative;
+    }
+
+    .modal-title {
+      font-family: 'Charm', cursive;
+      font-size: 1.8rem;
+      color: var(--gold-bright);
+      margin-bottom: 6px;
+    }
+
+    .modal-price-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+      padding: 4px 18px;
+      border-radius: 20px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .qr-container {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 8px;
+      width: 190px;
+      height: 190px;
+      margin: 0 auto 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .qr-container img { width: 100%; height: 100%; object-fit: contain; }
+
+    .passcode-box {
+      margin: 18px 0 12px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .passcode-input {
+      background: #0d060a;
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-bright);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      text-align: center;
+      width: 160px;
+      outline: none;
+      letter-spacing: 2px;
+    }
+    .passcode-input:focus {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .line-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #06c755;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 8px;
+      transition: all 0.3s;
+    }
+    .line-btn:hover { background: #05a847; transform: scale(1.03); }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 10px; right: 14px;
+      background: none; border: none;
+      color: var(--text-muted);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
@@ -496,18 +535,21 @@
 
   <header>
     <div class="kranok-badge">✦ สถิตจิตวิญญาณแห่งตำนานสยาม ✦</div>
-    <h1>เนตรวิจิตร ไพ่ทาโรต์ภูตผีไทย</h1>
+    <h1>เนตรวิจิตรบรรจง</h1>
     <p class="subtitle">สื่อกระแสญาณผ่านสำรับวิญญาณไทยโบราณ ๒๒ สำรับหลัก ปลดเปลื้องปริศนาแห่งอดีต ปัจจุบัน และอนาคต</p>
   </header>
 
   <div class="mode-bar">
     <button class="mode-btn active" id="btn-mode-1" onclick="switchMode(1)">พยากรณ์ ๑ ใบ (พลังจิตประจำวัน)</button>
-    <button class="mode-btn" id="btn-mode-3" onclick="switchMode(3)">พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)</button>
+    <button class="mode-btn" id="btn-mode-3" onclick="switchMode(3)">
+      <span>พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)</span>
+      <span class="lock-icon" id="mode-3-lock">🔒</span>
+    </button>
   </div>
 
   <div class="hint-bar" id="hint-bar">✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦</div>
 
-  <!-- STAGE 1: กองไพ่สำหรับสับ -->
+  <!-- STAGE 1: กองไพ่ -->
   <div class="deck-section" id="deck-section">
     <div class="deck-stack" id="deck-stack" onclick="shuffleDeck()" title="แตะเพื่อสับไพ่">
       <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
@@ -523,10 +565,10 @@
     <p id="shuffle-count" style="margin-top: 12px; font-size: 0.95rem; color: var(--text-muted);">สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)</p>
   </div>
 
-  <!-- STAGE 2: คลี่ไพ่ครึ่งวงกลมให้ลูกดวงเลือก -->
+  <!-- STAGE 2: คลี่ไพ่ครึ่งวงกลม -->
   <div class="fan-section" id="fan-section"></div>
 
-  <!-- STAGE 3: โต๊ะวางไพ่ที่เลือกลงตำแหน่ง -->
+  <!-- STAGE 3: โต๊ะวางไพ่ -->
   <div class="board-container" id="board"></div>
 
   <div style="text-align: center; margin-bottom: 25px; display: none;" id="reset-area">
@@ -536,13 +578,59 @@
   <!-- คำทำนาย -->
   <div class="reading-sheet" id="reading-sheet">
     <div class="reading-header">
-      <h2>บทวิเคราะห์ญาณพยากรณ์: เนตรวิจิตร</h2>
+      <h2>บทวิเคราะห์ญาณพยากรณ์: เนตรวิจิตรบรรจง</h2>
       <p style="color: var(--text-muted); font-size: 0.95rem;">รหัสคำทำนายตามศาสตร์สำรับโบราณ โดยแม่หมอ</p>
     </div>
     <div id="reading-content"></div>
   </div>
 
+  <!-- คำเตือน -->
+  <footer style="max-width: 820px; margin: 50px auto 20px; padding: 25px 20px; text-align: center; border-top: 1px dashed rgba(212, 175, 55, 0.3); color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
+    <div style="font-family: 'Charm', cursive; font-size: 1.25rem; color: var(--gold-bright); margin-bottom: 8px; text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);">
+      ✦ พึงใช้วิจารณญาณในการเปิดรับคำทำนาย ✦
+    </div>
+    <p style="margin-bottom: 8px; color: #f5e6be;">
+      ศาสตร์แห่งไพ่เป็นเพียงกระจกสะท้อนพลังงานและแนวทางเตือนสติเท่านั้น ไม่ใช่ชะตาลิขิตที่เปลี่ยนแปลงไม่ได้
+    </p>
+    <p style="color: #e0a3a7; font-size: 0.9rem; margin-bottom: 8px;">
+      *ไม่ควรนำคำทำนายไปใช้ตัดสินใจเรื่องใหญ่ในชีวิตเพียงลำพัง และไม่สามารถใช้ทดแทนคำวินิจฉัยทางการแพทย์ ข้อกฎหมาย หรือคำแนะนำทางการเงินจากผู้เชี่ยวชาญได้*
+    </p>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">
+      สุดท้ายแล้ว... อนาคตที่ดีที่สุดล้วนถูกสร้างขึ้นจากสติ ปัญญา และการลงมือทำของคุณเอง
+    </p>
+  </footer>
+
+  <!-- POPUP ปลดล็อกค่ายกครู 19 บาท -->
+  <div class="modal-overlay" id="unlock-modal">
+    <div class="modal-card">
+      <button class="close-modal-btn" onclick="closeUnlockModal()">×</button>
+      <div class="modal-title">✦ ปลดล็อกญาณพยากรณ์ ๓ ใบ ✦</div>
+      <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 10px;">เปิดชะตา อดีต • ปัจจุบัน • อนาคต</div>
+      
+      <div class="modal-price-badge">ค่ายกครู ๑๙ บาท</div>
+      
+      <div class="qr-container">
+        <img src="wallet-qr.png" alt="TrueMoney Wallet QR Code" onerror="this.src='https://placehold.co/180x180/ffffff/000000?text=TrueMoney+QR';">
+      </div>
+      <p style="font-size: 0.85rem; color: var(--gold-bright);">สแกนชำระผ่าน TrueMoney Wallet</p>
+
+      <a href="https://line.me" target="_blank" id="line-contact-link" class="line-btn">
+        <span>💬 ส่งสลิปรับรหัสทาง LINE</span>
+      </a>
+
+      <div class="passcode-box">
+        <input type="text" id="passcode-input" class="passcode-input" placeholder="รหัสปลดล็อก">
+        <button class="action-btn" style="padding: 6px 18px; font-size: 1.05rem;" onclick="checkPasscode()">ปลดล็อก</button>
+      </div>
+      <p id="passcode-error" style="color: #ff6b6b; font-size: 0.85rem; min-height: 20px;"></p>
+    </div>
+  </div>
+
   <script>
+    // SCRIPT_URL ของคุณจาก Google Apps Script[cite: 7]
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZgRSU4VtbjT2JB219IrSVn255xLsbEBCFDo3-guHToiT3AhSw2hA6x4KrqjwKP6p-Yw/exec";
+    const LINE_LINK = "https://line.me"; // ลิงก์ LINE ของคุณ
+
     const tarotDeck = [
       {
         "id": 0, "num": "0", "name": "ผีตาโขน", "arcana": "The Fool",
@@ -749,6 +837,11 @@
     let deckPool = [];
     let chosenCards = [];
     let audioCtx = null;
+    let isUnlockedMode3 = localStorage.getItem('tarot_netra_unlocked') === 'true';
+
+    if (isUnlockedMode3) {
+      document.getElementById('mode-3-lock').style.display = 'none';
+    }
 
     function getAudioContext() {
       if (!audioCtx) {
@@ -760,43 +853,33 @@
       return audioCtx;
     }
 
-    // เสียงสับไพ่สมจริง (White Noise + Bandpass Filter)
     function playShuffleSound() {
       const ctx = getAudioContext();
       const sampleRate = ctx.sampleRate;
       const bufferSize = sampleRate * 0.08;
-      
       for (let i = 0; i < 6; i++) {
         const startTime = ctx.currentTime + i * 0.06;
         const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
         const data = buffer.getChannelData(0);
-        for (let j = 0; j < bufferSize; j++) {
-          data[j] = Math.random() * 2 - 1;
-        }
-
+        for (let j = 0; j < bufferSize; j++) { data[j] = Math.random() * 2 - 1; }
         const noise = ctx.createBufferSource();
         noise.buffer = buffer;
-
         const filter = ctx.createBiquadFilter();
         filter.type = 'bandpass';
         filter.frequency.setValueAtTime(700 + Math.random() * 500, startTime);
         filter.Q.value = 1.2;
-
         const gain = ctx.createGain();
         gain.gain.setValueAtTime(0.01, startTime);
         gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
         gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.07);
-
         noise.connect(filter);
         filter.connect(gain);
         gain.connect(ctx.destination);
-
         noise.start(startTime);
         noise.stop(startTime + 0.07);
       }
     }
 
-    // เสียงปิ๊งประกายแก้ว (Chime Ping)
     function playChimeSound() {
       const ctx = getAudioContext();
       const now = ctx.currentTime;
@@ -808,7 +891,6 @@
         osc.frequency.setValueAtTime(freq, now + idx * 0.04);
         gain.gain.setValueAtTime(0.12, now + idx * 0.04);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 1.2);
-
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(now + idx * 0.04);
@@ -817,13 +899,60 @@
     }
 
     function switchMode(mode) {
+      if (mode === 3 && !isUnlockedMode3) {
+        openUnlockModal();
+        return;
+      }
       currentMode = mode;
       document.getElementById('btn-mode-1').classList.toggle('active', mode === 1);
       document.getElementById('btn-mode-3').classList.toggle('active', mode === 3);
       resetToDeck();
     }
 
-    // สับไพ่
+    function openUnlockModal() {
+      document.getElementById('unlock-modal').style.display = 'flex';
+      document.getElementById('passcode-input').value = '';
+      document.getElementById('passcode-error').innerText = '';
+    }
+
+    function closeUnlockModal() {
+      document.getElementById('unlock-modal').style.display = 'none';
+    }
+
+    async function checkPasscode() {
+      const input = document.getElementById('passcode-input').value.trim();
+      const errorText = document.getElementById('passcode-error');
+
+      if (!input) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'กรุณากรอกรหัสปลดล็อก';
+        return;
+      }
+
+      errorText.style.color = 'var(--gold-bright)';
+      errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
+        const result = await response.json();
+
+        if (result.success) {
+          playChimeSound();
+          isUnlockedMode3 = true;
+          localStorage.setItem('tarot_netra_unlocked', 'true');
+          document.getElementById('mode-3-lock').style.display = 'none';
+          closeUnlockModal();
+          switchMode(3);
+        } else {
+          errorText.style.color = '#ff6b6b';
+          errorText.innerText = result.message;
+        }
+      } catch (err) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+      }
+    }
+
     function shuffleDeck() {
       playShuffleSound();
       shuffleCount++;
@@ -832,7 +961,6 @@
       void stack.offsetWidth;
       stack.classList.add('shuffling');
 
-      // สุ่มลำดับสำรับไพ่ใหม่ทุกครั้งที่กด
       deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
 
       const thaiNums = ["๐","๑","๒","๓","๔","๕","๖","๗","๘","๙"];
@@ -841,7 +969,6 @@
       document.getElementById('hint-bar').innerHTML = `✦ อัญเชิญญาณสับไพ่แล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
     }
 
-    // คลี่ไพ่เป็นครึ่งวงกลม
     function spreadDeck() {
       if (deckPool.length === 0) {
         deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
@@ -860,7 +987,6 @@
         cardEl.className = 'fan-card';
         cardEl.id = `fan-card-${i}`;
 
-        // จัดองศาพัดครึ่งวงกลม
         const delta = i - (total - 1) / 2;
         const angle = delta * 3.8;
         const transX = delta * 18;
@@ -885,7 +1011,6 @@
       }
     }
 
-    // ลูกดวงแตะหยิบไพ่จากพัด
     function pickCardFromFan(index, card, cardEl) {
       if (chosenCards.length >= currentMode) return;
       if (cardEl.classList.contains('picked')) return;
@@ -897,13 +1022,11 @@
       if (chosenCards.length < currentMode) {
         updateHintForPicking();
       } else {
-        // เลือกครบแล้ว พาไปที่โต๊ะวางไพ่
         document.getElementById('hint-bar').innerHTML = '✦ สถิตญาณพร้อมแล้ว... <strong>แตะที่ไพ่</strong> เพื่อเปิดชะตา ✦';
         setTimeout(revealBoardWithChosenCards, 500);
       }
     }
 
-    // จัดวางไพ่ที่เลือกลงตำแหน่งบนโต๊ะ
     function revealBoardWithChosenCards() {
       document.getElementById('fan-section').style.display = 'none';
       const board = document.getElementById('board');
@@ -936,7 +1059,6 @@
       }
     }
 
-    // พลิกไพ่และแสดงคำทำนาย
     function revealCard(idx) {
       const cardWrapper = document.getElementById(`card-${idx}`);
       if (!cardWrapper.classList.contains('flipped')) {
@@ -1005,7 +1127,6 @@
       sheet.classList.add('active');
     }
 
-    // เริ่มใหม่
     function resetToDeck() {
       shuffleCount = 0;
       chosenCards = [];
@@ -1021,57 +1142,6 @@
     }
 
     window.onload = resetToDeck;
-  // ลิงก์ API เชื่อมต่อ Google Sheets
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZgRSU4VtbjT2JB219IrSVn255xLsbEBCFDo3-guHtOiT3AhSw2hA6x4KrqjwKP6p-Yw/exec;
-
-    async function checkPasscode() {
-      const input = document.getElementById('passcode-input').value.trim();
-      const errorText = document.getElementById('passcode-error');
-
-      if (!input) {
-        errorText.style.color = '#ff6b6b';
-        errorText.innerText = 'กรุณากรอกรหัสปลดล็อก';
-        return;
-      }
-
-      errorText.style.color = 'var(--gold-bright)';
-      errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
-
-      try {
-        const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
-        const result = await response.json();
-
-        if (result.success) {
-          playChimeSound();
-          isUnlockedMode3 = true;
-          localStorage.setItem('tarot_netra_unlocked', 'true');
-          document.getElementById('mode-3-lock').style.display = 'none';
-          closeUnlockModal();
-          switchMode(3);
-        } else {
-          errorText.style.color = '#ff6b6b';
-          errorText.innerText = result.message;
-        }
-      } catch (err) {
-        errorText.style.color = '#ff6b6b';
-        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
-      }
-    }
   </script>
-  <!-- กล่องคำเตือนและข้อคิดเตือนสติ -->
-  <footer style="max-width: 820px; margin: 50px auto 20px; padding: 25px 20px; text-align: center; border-top: 1px dashed rgba(212, 175, 55, 0.3); color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
-    <div style="font-family: 'Charm', cursive; font-size: 1.25rem; color: var(--gold-bright); margin-bottom: 8px; text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);">
-      ✦ พึงใช้วิจารณญาณในการเปิดรับคำทำนาย ✦
-    </div>
-    <p style="margin-bottom: 8px; color: #f5e6be;">
-      ศาสตร์แห่งไพ่เป็นเพียงกระจกสะท้อนพลังงานและแนวทางเตือนสติเท่านั้น ไม่ใช่ชะตาลิขิตที่เปลี่ยนแปลงไม่ได้
-    </p>
-    <p style="color: #e0a3a7; font-size: 0.9rem; margin-bottom: 8px;">
-      *ไม่ควรนำคำทำนายไปใช้ตัดสินใจเรื่องใหญ่ในชีวิตเพียงลำพัง และไม่สามารถใช้ทดแทนคำวินิจฉัยทางการแพทย์ ข้อกฎหมาย หรือคำแนะนำทางการเงินจากผู้เชี่ยวชาญได้*
-    </p>
-    <p style="color: var(--text-muted); font-size: 0.9rem;">
-      สุดท้ายแล้ว... อนาคตที่ดีที่สุดล้วนถูกสร้างขึ้นจากสติ ปัญญา และการลงมือทำของคุณเอง
-    </p>
-  </footer>
 </body>
 </html>
