@@ -837,7 +837,8 @@
     let deckPool = [];
     let chosenCards = [];
     let audioCtx = null;
-    let isUnlockedMode3 = localStorage.getItem('tarot_netra_unlocked') === 'true';
+    let isUnlockedMode3 = false;
+    localStorage.removeItem('tarot_netra_unlocked'); // ล้างความจำเดิมที่เคยบันทึกไว้ในเครื่อง
 
     if (isUnlockedMode3) {
       document.getElementById('mode-3-lock').style.display = 'none';
