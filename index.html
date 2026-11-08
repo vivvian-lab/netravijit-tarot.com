@@ -1021,6 +1021,42 @@
     }
 
     window.onload = resetToDeck;
+  // ลิงก์ API เชื่อมต่อ Google Sheets
+    const SCRIPT_URL = "วาง_URL_ที่เพิ่งคัดลอกมาตรงนี้";
+
+    async function checkPasscode() {
+      const input = document.getElementById('passcode-input').value.trim();
+      const errorText = document.getElementById('passcode-error');
+
+      if (!input) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'กรุณากรอกรหัสปลดล็อก';
+        return;
+      }
+
+      errorText.style.color = 'var(--gold-bright)';
+      errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
+
+      try {
+        const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
+        const result = await response.json();
+
+        if (result.success) {
+          playChimeSound();
+          isUnlockedMode3 = true;
+          localStorage.setItem('tarot_netra_unlocked', 'true');
+          document.getElementById('mode-3-lock').style.display = 'none';
+          closeUnlockModal();
+          switchMode(3);
+        } else {
+          errorText.style.color = '#ff6b6b';
+          errorText.innerText = result.message;
+        }
+      } catch (err) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+      }
+    }
   </script>
   <!-- กล่องคำเตือนและข้อคิดเตือนสติ -->
   <footer style="max-width: 820px; margin: 50px auto 20px; padding: 25px 20px; text-align: center; border-top: 1px dashed rgba(212, 175, 55, 0.3); color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
