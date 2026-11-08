@@ -830,7 +830,6 @@
         "finance": "ความมั่งคั่งมั่นคง อิสรภาพทางการเงิน มีความสุขกับสิ่งที่สร้างขึ้นมาด้วยหยาดเหงื่อแรงกาย",
         "love": "ความรักบริบูรณ์พร้อม เข้าสู่จุดที่สมบูรณ์แบบ มีความสุขสงบและสร้างความมั่นคงร่วมกันตลอดไป"
       }
-    ];
 
     let currentMode = 1;
     let shuffleCount = 0;
@@ -838,11 +837,7 @@
     let chosenCards = [];
     let audioCtx = null;
     let isUnlockedMode3 = false;
-    localStorage.removeItem('tarot_netra_unlocked'); // ล้างความจำเดิมที่เคยบันทึกไว้ในเครื่อง
-
-    if (isUnlockedMode3) {
-      document.getElementById('mode-3-lock').style.display = 'none';
-    }
+    localStorage.removeItem('tarot_netra_unlocked');
 
     function getAudioContext() {
       if (!audioCtx) {
@@ -940,7 +935,6 @@
         if (result.success) {
           playChimeSound();
           isUnlockedMode3 = true;
-          localStorage.setItem('tarot_netra_unlocked', 'true');
           document.getElementById('mode-3-lock').style.display = 'none';
           closeUnlockModal();
           switchMode(3);
@@ -1129,6 +1123,15 @@
     }
 
     function resetToDeck() {
+      // หากดูไพ่เสร็จแล้ว แล้วกดเริ่มใหม่ ให้ล็อกโหมด 3 คืนทันที และเด้งกลับไปโหมด 1 ใบ
+      if (isUnlockedMode3 && chosenCards.length > 0) {
+        isUnlockedMode3 = false;
+        currentMode = 1;
+        document.getElementById('btn-mode-1').classList.add('active');
+        document.getElementById('btn-mode-3').classList.remove('active');
+        document.getElementById('mode-3-lock').style.display = 'inline';
+      }
+
       shuffleCount = 0;
       chosenCards = [];
       document.getElementById('deck-section').style.display = 'flex';
