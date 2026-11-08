@@ -105,7 +105,7 @@
 
     /* กล่องผูกดวงชะตา */
     .destiny-card {
-      max-width: 620px;
+      max-width: 650px;
       margin: 10px auto 20px;
       padding: 18px 22px;
       background: rgba(23, 14, 20, 0.85);
@@ -233,7 +233,7 @@
       box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
     }
 
-    /* STAGE 2: โต๊ะคลี่ไพ่แบบสไลด์ (Smooth Scroll Ribbon) */
+    /* STAGE 2: โต๊ะคลี่ไพ่แบบสไลด์ */
     .fan-section {
       display: none;
       width: 100%;
@@ -292,7 +292,7 @@
       transition: all 0.35s ease;
     }
 
-    /* STAGE 3: โต๊ะวางไพ่ (กึ่งกลาง 100% ไม่เบี้ยวซ้าย ไม่บีบลีบ) */
+    /* STAGE 3: โต๊ะวางไพ่ */
     #board, .board-container {
       width: 100% !important;
       max-width: 950px;
@@ -650,13 +650,13 @@
     </button>
   </div>
 
-  <!-- กล่องผูกดวงชะตา -->
+  <!-- กล่องผูกดวงชะตา: พิมพ์ตัวเลขได้โดยตรงทันที -->
   <div class="destiny-card">
     <h3>✦ ผูกกระแสญาณดวงชะตา (ไม่บังคับ) ✦</h3>
     <p style="font-size: 0.88rem; color: var(--text-muted);">ระบุชื่อเล่นและวันเดือนปีเกิด พ.ศ. เพื่อให้แม่หมอคำนวณธาตุกำเนิดร่วมกับหน้าไพ่</p>
     <div class="destiny-inputs">
       <input type="text" id="seeker-nickname" class="destiny-input" placeholder="ชื่อเล่นของคุณ" maxlength="20">
-      <select id="seeker-day" class="destiny-select"><option value="">วันที่เกิด</option></select>
+      <input type="number" id="seeker-day" class="destiny-input" placeholder="วันที่ (1-31)" min="1" max="31">
       <select id="seeker-month" class="destiny-select">
         <option value="">เดือนเกิด</option>
         <option value="1">มกราคม</option>
@@ -672,7 +672,7 @@
         <option value="11">พฤศจิกายน</option>
         <option value="12">ธันวาคม</option>
       </select>
-      <select id="seeker-year" class="destiny-select"><option value="">ปี พ.ศ. เกิด</option></select>
+      <input type="number" id="seeker-year" class="destiny-input" placeholder="ปี พ.ศ. เกิด (เช่น 2542)" min="2450" max="2570">
     </div>
   </div>
 
@@ -740,7 +740,7 @@
       <div class="modal-price-badge">ค่ายกครู ๑๙ บาท</div>
       
       <div class="qr-container">
-        <img src="wallet-qr.png" alt="TrueMoney / PromptPay QR" onerror="this.src='QR วอลเล็ค.jpg';">
+        <img src="QR วอลเล็ค.jpg" alt="TrueMoney / PromptPay QR" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='wallet-qr.png';}else if(this.dataset.t==1){this.dataset.t=2;this.src='wallet-qr.jpg';}">
       </div>
       <p style="font-size: 1.05rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 2px;">
         ชื่อบัญชี: ศุภรัตน์ แซ่จัน
@@ -765,7 +765,7 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-7FArXCmF8C5_vgRNegUKNdG6BdwJb0S1Bnr5EWAQfHqase_S6a2hvMBpwiiyIF7oFg/exec";
     const LINE_LINK = "https://line.me/ti/p/HCgUGegW9A";
 
-    // สำรับไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบสากล
+    // สำรับไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบ (ชื่อไฟล์ภาพตรงกับโฟลเดอร์ Google Drive ทุกใบ 100%)
     const tarotDeck = [
       // ==================== มหามายา ๒๒ ใบ (MAJOR ARCANA) ====================
       {
@@ -937,7 +937,7 @@
         love: "คนรักเก่าติดต่อกลับมา หรือถึงเวลาให้อภัยและก้าวข้ามความขัดแย้งเดิมสู่ความเข้าใจลึกซึ้ง"
       },
       {
-        id: 21, num: "XXI", name: "พระแม่ธรณี", arcana: "The World", img: "21พระแม่ธรณีแห่งสายน้ำจักรวาล (1).png",
+        id: 21, num: "XXI", name: "พระแม่ธรณี", arcana: "The World", img: "21พระแม่ธรณีแห่งสายน้ำจักรวาล (1.png",
         keywords: "ความสมบูรณ์ • ความสำเร็จสูงสุด • บรรลุเป้าหมาย • สิ้นสุดวงจร",
         meaning: "พระแม่ธรณีบีบมวยผมหลั่งสายน้ำชำระล้างมาร ความสมบูรณ์พูนสุขสูงสุด และการบรรลุเป้าหมายแห่งชีวิตอย่างมั่นคงถาวร",
         work: "โปรเจกต์ใหญ่สำเร็จสมบูรณ์แบบ ได้รับรางวัลหรือความสำเร็จระดับสากล ก้าวสู่อีกขั้นของชีวิต",
@@ -955,7 +955,7 @@
         love: "คนโสดมีเกณฑ์สปาร์กรักกะทันหัน คนมีคู่ความสัมพันธ์กลับมามีชีวิตชีวาอีกครั้ง"
       },
       {
-        id: 23, num: "๒ คทา", name: "สองคฑาแห่งเส้นทาง", arcana: "Two of Wands", img: "2สองคฑาแห่งเส้นทาง.png",
+        id: 23, num: "๒ คทา", name: "สองคฑาแห่งเส้นทาง", arcana: "Two of Wands", img: "2ไพ่ทาโรต์สองคทาแห่งเส้นทาง.png",
         keywords: "วางแผนอนาคต • ทางเลือก • ขยายวิสัยทัศน์ • ก้าวสู่สิ่งใหม่",
         meaning: "การยืนมองขอบฟ้ากว้างไกลเพื่อกำหนดทิศทางอนาคต การชั่งใจเลือกเส้นทางเดินชีวิตและขยายมุมมองให้กว้างกว่าเดิม",
         work: "วางแผนงานระยะยาว ตัดสินใจเลือกรับงานหรือทิศทางธุรกิจ มองหาพันธมิตรใหม่",
@@ -963,7 +963,7 @@
         love: "วางแผนอนาคตร่วมกัน คนโสดกำลังชั่งใจเลือกมองหาคนที่เข้ากับเป้าหมายชีวิตระยะยาว"
       },
       {
-        id: 24, num: "๓ คทา", name: "สามเส้นทางสู่แดนไกล", arcana: "Three of Wands", img: "3สามเส้นทางสู่แดนไกล.png",
+        id: 24, num: "๓ คทา", name: "สามเส้นทางสู่แดนไกล", arcana: "Three of Wands", img: "3สามคทาสู่แดนไกลเหนือทะเลรุ่งอรุณ.png",
         keywords: "ขยายโอกาส • เดินทางไกล • เห็นผลสำเร็จ • การเติบโต",
         meaning: "เรือแห่งโอกาสกำลังแล่นเข้ามาสู่สายตา ผลลัพธ์จากสิ่งที่ลงแรงไว้เริ่มผลิดอกออกผล การติดต่อต่างถิ่นต่างแดนราบรื่น",
         work: "งานติดต่อทางไกล การร่วมงานกับต่างถิ่นประสบความสำเร็จ ข้อเสนอที่เคยยื่นไปได้รับการตอบรับที่ดี",
@@ -971,7 +971,7 @@
         love: "ความสัมพันธ์พัฒนาไปอีกขั้น รักทางไกลราบรื่น คนโสดพบรักจากการเดินทางหรือคนต่างถิ่น"
       },
       {
-        id: 25, num: "๔ คทา", name: "สี่คทาแห่งงานมงคล", arcana: "Four of Wands", img: "4สี่คทาแห่งงานมงคล.png",
+        id: 25, num: "๔ คทา", name: "สี่คทาแห่งงานมงคล", arcana: "Four of Wands", img: "4สี่คทาแห่งงานมงคลริมสายน้ำ.png",
         keywords: "งานมงคล • ความสำเร็จ • ความมั่นคง • ครอบครัวอบอุ่น",
         meaning: "ปะรำพิธีแห่งความสุขและชัยชนะ การเฉลิมฉลองความสำเร็จ ความสงบสุขในเคหสถาน และการลงหลักปักฐานมั่นคง",
         work: "บรรลุเป้าหมายสำคัญของทีม ได้รับการฉลองความสำเร็จ สภาพแวดล้อมที่ทำงานอบอุ่นมั่นคง",
@@ -979,7 +979,7 @@
         love: "ความสัมพันธ์สุกงอม มีเกณฑ์หมั้นหมาย แต่งงาน ย้ายมาอยู่ร่วมกัน คนโสดพบคนจริงใจพร้อมสร้างครอบครัว"
       },
       {
-        id: 26, num: "๕ คทา", name: "ห้าคฑาแห่งการประลอง", arcana: "Five of Wands", img: "5ห้าคฑาแห่งการประลอง.png",
+        id: 26, num: "๕ คทา", name: "ห้าคฑาแห่งการประลอง", arcana: "Five of Wands", img: "5ไพ่ห้าคทาแห่งการประลอง.png",
         keywords: "การแข่งขัน • การประลอง • ความคิดเห็นขัดแย้ง • พิสูจน์ตน",
         meaning: "เวทีประลองอาคมและพละกำลัง การแข่งขันดุเดือด ความเห็นต่างรอบตัว ต้องใช้สติปัญญาพิสูจน์ตนเองให้เป็นที่ประจักษ์",
         work: "การแข่งขันสูงในสายงาน บรรยากาศมีความเห็นแย้ง ต้องใจเย็นและใช้เหตุผลเอาชนะอุปสรรค",
@@ -987,7 +987,7 @@
         love: "มีความไม่เข้าใจกัน กระทบกระทั่งจากทิฐิ คนโสดอาจมีคู่แข่งเข้ามาหมายปองคนเดียวกัน"
       },
       {
-        id: 27, num: "๖ คทา", name: "หกคฑาแห่งชัยชนะ", arcana: "Six of Wands", img: "6หกคฑาแห่งชัยชนะ.png",
+        id: 27, num: "๖ คทา", name: "หกคฑาแห่งชัยชนะ", arcana: "Six of Wands", img: "6หกคทาแห่งชัยชนะในนครโบราณ.png",
         keywords: "ชัยชนะ • การได้รับการยอมรับ • ชื่อเสียง • ขบวนเกียรติยศ",
         meaning: "ขบวนแห่เกียรติยศและชัยชนะ ฟันฝ่าด่านทดสอบจนก้าวสู่ความสำเร็จ ได้รับการยอมรับในฝีมือและชื่อเสียงแผ่ไพศาล",
         work: "งานสำเร็จลุล่วงด้วยดี ได้รับการยกย่อง ปูนบำเหน็จ เลื่อนขั้น หรือสอบผ่านการคัดเลือก",
@@ -995,7 +995,7 @@
         love: "ความรักราบรื่นและน่าอิจฉา คนที่ชอบเริ่มเปิดใจยอมรับ คนมีคู่ภาคภูมิใจในตัวของกันและกัน"
       },
       {
-        id: 28, num: "๗ คทา", name: "เจ็ดไม้เท้า", arcana: "Seven of Wands", img: "7เจ็ดไม้เท้า.png",
+        id: 28, num: "๗ คทา", name: "เจ็ดไม้เท้า", arcana: "Seven of Wands", img: "7ไพ่เจ็ดไม้เท้า_ ศึกป้อมปราการยามราตรี.png",
         keywords: "การยืนหยัด • ปกป้องศักดิ์ศรี • สู้ไม่ถอย • เอาชนะแรงกดดัน",
         meaning: "การยืนหยัดบนเนินสูงเพื่อปกป้องสิ่งที่ตนสร้างขึ้น แม้ถูกรุมล้อมด้วยแรงกดดัน แต่ความมุ่งมั่นจะทำให้ผ่านพ้นได้",
         work: "รับมือกับงานหนักหรือการถูกจับตามอง แต่หากยืนหยัดด้วยหลักการจะไม่มีใครโค่นคุณได้",
@@ -1003,7 +1003,7 @@
         love: "ร่วมมือกันฟันฝ่าอุปสรรคหรือเสียงคัดค้านจากคนรอบข้าง คนโสดยังตั้งกำแพงปกป้องหัวใจตนเอง"
       },
       {
-        id: 29, num: "๘ คทา", name: "แปดไม้เท้า", arcana: "Eight of Wands", img: "8แปดไม้เท้า.png",
+        id: 29, num: "๘ คทา", name: "แปดไม้เท้า", arcana: "Eight of Wands", img: "8แปดไม้เท้าเหนือหุบเขายามอาทิตย์อัสดง.png",
         keywords: "คืบหน้ารวดเร็ว • ข่าวสารฉับไว • การเดินทาง • โอกาสพุ่งทะยาน",
         meaning: "ลูกศรอาคมพุ่งทะยานผ่านฟากฟ้า การเคลื่อนที่ฉับไว ข่าวสารสำคัญส่งมาถึงอย่างกะทันหัน อุปสรรคต่างๆ สลายตัวเปิดทาง",
         work: "งานเดินหน้าอย่างก้าวกระโดด มีการสื่อสารหรือข้อเสนอเข้ามาเร็ว มีเกณฑ์เดินทางติดต่องานด่วน",
@@ -1011,7 +1011,7 @@
         love: "ความสัมพันธ์พัฒนาอย่างรวดเร็ว คุยกันถูกคอติดต่อกันทั้งวัน คนโสดมีคนเข้ามาจีบแบบไม่ทันตั้งตัว"
       },
       {
-        id: 30, num: "๙ คทา", name: "ผู้เฝ้าด่านอาคม", arcana: "Nine of Wands", img: "9ผู้เฝ้าด่านอาคม.png",
+        id: 30, num: "๙ คทา", name: "ผู้เฝ้าด่านอาคม", arcana: "Nine of Wands", img: "9ผู้เฝ้าด่านอาคมใต้แสงจันทร์.png",
         keywords: "การระแวดระวัง • ความอดทน • ด่านสุดท้าย • หลังพิงฝา",
         meaning: "นักรบผู้กุมคทายืนเฝ้าด่านสุดท้ายอย่างไม่ยอมแพ้ ความระแวดระวังจากบทเรียนในอดีต และความอดทนก่อนก้าวข้ามด่านทดสอบ",
         work: "อยู่ในช่วงโค้งสุดท้ายของงานที่เหนื่อยล้า ต้องตรวจตราความเรียบร้อยรอบคอบ อดทนอีกนิดจะผ่านพ้น",
@@ -1019,7 +1019,7 @@
         love: "มีบาดแผลในอดีตทำให้ระแวง ไม่กล้าเปิดใจเต็มร้อย คนมีคู่ต้องประคับประคองความรู้สึกอย่ารื้อฟื้นเรื่องเก่า"
       },
       {
-        id: 31, num: "๑๐ คทา", name: "ภาระสิบคฑา", arcana: "Ten of Wands", img: "10ภาระสิบคฑา.png",
+        id: 31, num: "๑๐ คทา", name: "ภาระสิบคฑา", arcana: "Ten of Wands", img: "10ไพ่สิบคทาแห่งทุ่งนาทองคำ.png",
         keywords: "ภาระหนักอึ้ง • ความรับผิดชอบ • เหน็ดเหนื่อย • ใกล้ถึงจุดหมาย",
         meaning: "การแบกรับท่อนฟืนอาคมกองโตมุ่งสู่ปลายทาง ภาระหน้าที่ถาโถมเข้ามา แต่ปลายทางแห่งความสำเร็จรออยู่ข้างหน้า ควรรู้จักปล่อยวางบ้าง",
         work: "งานล้นมือ แบกรับความรับผิดชอบไว้คนเดียวจนแทบหมดแรง ควรแบ่งหน้าที่ให้เพื่อนร่วมงานช่วย",
@@ -1027,7 +1027,7 @@
         love: "รู้สึกเหนื่อยในความสัมพันธ์ เป็นฝ่ายยอมอยู่ฝ่ายเดียว ควรเปิดใจพูดคุยเพื่อแบ่งเบาความรู้สึก"
       },
       {
-        id: 32, num: "มหาดเล็กคทา", name: "ศิษย์น้อยแห่งเพลิง", arcana: "Page of Wands", img: "11ศิษย์น้อยแห่งเพลิง.png",
+        id: 32, num: "มหาดเล็กคทา", name: "ศิษย์น้อยแห่งเพลิง", arcana: "Page of Wands", img: "ศิษย์น้อยแห่งเพลิงในหมู่บ้านยามสนธยา.png",
         keywords: "การเรียนรู้ • กระตือรือร้น • ข่าวดี • แรงบันดาลใจใหม่",
         meaning: "ศิษย์สำนักเวทผู้เปี่ยมด้วยความกระหายใคร่รู้ ความกระตือรือร้น การได้รับข่าวสารใหม่ๆ และก้าวแรกของการศึกษาศาสตร์ใหม่",
         work: "ฝึกฝนทักษะใหม่ ได้รับมอบหมายงานทดลอง หรือได้ข่าวดีเรื่องการสมัครงานและการศึกษาต่อ",
@@ -1035,7 +1035,7 @@
         love: "ความรักสดใส น่ารัก สนุกสนาน คนโสดมีคนอายุน้อยกว่าหรือคนกระตือรือร้นเข้ามาทักทาย"
       },
       {
-        id: 33, num: "อัศวินคทา", name: "นักรบคฑาเพลิง", arcana: "Knight of Wands", img: "12นักรบคฑาเพลิง.png",
+        id: 33, num: "อัศวินคทา", name: "นักรบคฑาเพลิง", arcana: "Knight of Wands", img: "อัศวินคทาเพลิงควายศึก.png",
         keywords: "กล้าหาญ • บุกตะลุย • รวดเร็วร้อนแรง • นักผจญภัย",
         meaning: "นักรบสายเวทเพลิงควบอาชาพุ่งทะยานไปข้างหน้า ความกล้าหาญ เด็ดเดี่ยว ความทะเยอทะยาน และการลงมือปฏิบัติอย่างรวดเร็วไร้ความลังเล",
         work: "งานลุย งานเดินทาง ตัดสินใจฉับไว มีพลังขับเคลื่อนโปรเจกต์ให้เสร็จไว แต่อย่าด่วนสรุปจนลืมรอบคอบ",
@@ -1043,7 +1043,7 @@
         love: "เสน่ห์ร้อนแรง เข้าหาอย่างเปิดเผยรวดเร็ว ระวังความรักแบบมาไวไปไว หรือความใจร้อนในอารมณ์"
       },
       {
-        id: 34, num: "ราชินีคทา", name: "แม่ครูอาคมเพลิง", arcana: "Queen of Wands", img: "13แม่ครูอาคมเพลิง.png",
+        id: 34, num: "ราชินีคทา", name: "แม่ครูอาคมเพลิง", arcana: "Queen of Wands", img: "ราชินีไม้เท้าแห่งอาคมเพลิง.png",
         keywords: "เสน่ห์มั่นใจ • ผู้นำหญิง • เมตตามหานิยม • พลังดึงดูด",
         meaning: "นางพญาแห่งเปลวเพลิงผู้สง่างาม เปี่ยมด้วยเสน่ห์เมตตามหานิยม ความมั่นใจในศักยภาพตนเอง และภาวะผู้นำที่อบอุ่นดึงดูดใจ",
         work: "โดดเด่นในฐานะผู้นำ การประสานงานกับผู้คน ค้าขายเจริญรุ่งเรืองด้วยเสน่ห์และวาทศิลป์",
@@ -1051,7 +1051,7 @@
         love: "มีเสน่ห์ล้นเหลือ เป็นที่หมายปองของหลายคน คนมีคู่เป็นแรงสนับสนุนและกำลังใจสำคัญให้คู่ครอง"
       },
       {
-        id: 35, num: "ราชาคทา", name: "เจ้าสำนักคฑาเพลิง", arcana: "King of Wands", img: "14เจ้าสำนักคฑาเพลิง.png",
+        id: 35, num: "ราชาคทา", name: "เจ้าสำนักคฑาเพลิง", arcana: "King of Wands", img: "เจ้าสำนักคทาเพลิงแห่งวิหารทอง.png",
         keywords: "บารมี • วิสัยทัศน์ผู้นำ • ประสบการณ์ยิ่งใหญ่ • ชัยชนะเหนืออุปสรรค",
         meaning: "มหาอาจารย์เจ้าสำนักผู้กุมคทาเพลิงสุวรรณ บารมีและวิสัยทัศน์กว้างไกล ผู้นำระดับสูงที่นำพาคณะสู่ความสำเร็จด้วยประสบการณ์และความเด็ดขาด",
         work: "ประสบความสำเร็จสูงสุดในสายงาน อยู่ในตำแหน่งผู้บริหาร เจ้าของกิจการ หรือผู้มีอำนาจตัดสินใจ",
@@ -1407,27 +1407,7 @@
     let deckPool = [];
     let chosenCards = [];
     let audioCtx = null;
-    let isUnlockedMode3 = false; // เริ่มต้นล็อกเสมอ ไม่จำค่าข้ามครั้ง
-
-    // สร้างตัวเลือกวันที่ 1-31 และปี พ.ศ. 2500 - 2569
-    function initDateDropdowns() {
-      const daySelect = document.getElementById('seeker-day');
-      const yearSelect = document.getElementById('seeker-year');
-
-      for (let d = 1; d <= 31; d++) {
-        const opt = document.createElement('option');
-        opt.value = d;
-        opt.innerText = `วันที่ ${d}`;
-        daySelect.appendChild(opt);
-      }
-
-      for (let y = 2569; y >= 2500; y--) {
-        const opt = document.createElement('option');
-        opt.value = y;
-        opt.innerText = `พ.ศ. ${y}`;
-        yearSelect.appendChild(opt);
-      }
-    }
+    let isUnlockedMode3 = false;
 
     function getAudioContext() {
       if (!audioCtx) {
@@ -1590,7 +1570,6 @@
 
       fan.appendChild(track);
 
-      // กลิ้งลูกกลิ้งเมาส์บนคอมพิวเตอร์เพื่อเลื่อนไพ่ซ้าย-ขวา
       fan.onwheel = (e) => {
         if (e.deltaY !== 0) {
           e.preventDefault();
@@ -1598,7 +1577,6 @@
         }
       };
 
-      // เลื่อนตำแหน่งเริ่มต้นมาไว้กึ่งกลางสำรับ
       setTimeout(() => {
         fan.scrollLeft = (fan.scrollWidth - fan.clientWidth) / 2;
       }, 50);
@@ -1654,7 +1632,7 @@
                 <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
               </div>
               <div class="card-face card-front" id="front-${i}">
-                <img src="${chosenCards[i].img}" alt="${chosenCards[i].name}" onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='21พระแม่ธรณีแห่งสายน้ำจักรวาล (1).png';}">
+                <img src="${chosenCards[i].img}" alt="${chosenCards[i].name}" onerror="if(!this.dataset.t){this.dataset.t=1; this.src=this.src.replace('(1.png','(1).png');}">
               </div>
             </div>
           </div>
@@ -1670,7 +1648,6 @@
         cardWrapper.classList.add('flipped');
         renderInterpretationItem(idx);
 
-        // เลื่อนหน้าจอลงมาหาบทวิเคราะห์คำทำนายอย่างนุ่มนวล
         setTimeout(() => {
           const sheet = document.getElementById('reading-sheet');
           if (sheet) {
@@ -1680,17 +1657,16 @@
       }
     }
 
-    // คำนวณและสร้างกล่องวิเคราะห์ดวงชะตาเฉพาะบุคคล
     function buildDestinyBanner() {
       const nickname = document.getElementById('seeker-nickname').value.trim() || 'ผู้มีจิตศรัทธา';
-      const day = document.getElementById('seeker-day').value;
+      const day = document.getElementById('seeker-day').value.trim();
       const month = document.getElementById('seeker-month').value;
-      const yearBE = document.getElementById('seeker-year').value;
+      const yearBE = document.getElementById('seeker-year').value.trim();
 
       const bannerArea = document.getElementById('destiny-banner-area');
       if (!bannerArea) return;
 
-      if (!day || !month || !yearBE) {
+      if (!day || !month || !yearBE || parseInt(day) < 1 || parseInt(day) > 31 || parseInt(yearBE) < 2400) {
         bannerArea.innerHTML = `
           <div class="seeker-destiny-banner">
             <div class="seeker-name">✦ ดวงชะตา: คุณ ${nickname} ✦</div>
@@ -1703,7 +1679,6 @@
         return;
       }
 
-      // คำนวณวันเกิดและธาตุ
       const yearAD = parseInt(yearBE) - 543;
       const birthDate = new Date(yearAD, parseInt(month) - 1, parseInt(day));
       const dayNames = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
@@ -1722,7 +1697,7 @@
         'วันเสาร์': { el: 'ธาตุไฟลึกลับ / ดินแกร่ง', trait: 'อดทนสูง หนักแน่น เงียบขรึม มีโลกส่วนตัว ลึกลับและมีสัมผัสพิเศษ', guide: 'ผ่านบททดสอบแห่งชีวิตมาอย่างโชกโชน ไม่มีสิ่งใดทำลายความอดทนอันแกร่งกล้าของท่านได้' }
       };
 
-      const info = elementMap[dayOfWeek];
+      const info = elementMap[dayOfWeek] || elementMap['วันจันทร์'];
 
       bannerArea.innerHTML = `
         <div class="seeker-destiny-banner">
@@ -1741,7 +1716,6 @@
       const content = document.getElementById('reading-content');
       const card = chosenCards[idx];
 
-      // สร้างแผ่นดวงลูกดวงครั้งแรกที่เปิดไพ่
       if (document.querySelectorAll('.interpretation-card').length === 0) {
         buildDestinyBanner();
       }
@@ -1801,7 +1775,6 @@
     }
 
     function resetToDeck() {
-      // ๑ รหัส ต่อการดูดวง ๓ ใบ ๑ ครั้ง: ถ้าดูจบแล้วกดเริ่มใหม่ ให้ล็อกคืนทันที
       if (isUnlockedMode3 && chosenCards.length > 0) {
         isUnlockedMode3 = false;
         currentMode = 1;
@@ -1826,10 +1799,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    window.onload = () => {
-      initDateDropdowns();
-      resetToDeck();
-    };
+    window.onload = resetToDeck;
   </script>
 </body>
 </html>
