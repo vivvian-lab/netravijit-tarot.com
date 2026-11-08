@@ -35,6 +35,7 @@
       font-family: 'Sarabun', sans-serif;
       min-height: 100vh;
       padding-bottom: 120px;
+      overflow-x: hidden;
     }
 
     .thai-border-frame {
@@ -88,7 +89,7 @@
       display: flex;
       justify-content: center;
       gap: 15px;
-      margin: 18px 0 20px;
+      margin: 18px 0 15px;
       padding: 0 15px;
     }
 
@@ -115,14 +116,79 @@
       font-size: 1.25rem;
       color: var(--gold-bright);
       margin-bottom: 15px;
-      min-height: 32px;
+      min-height: 35px;
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
     }
 
-    /* Control Area */
-    .control-area {
-      text-align: center;
-      margin: 0 0 25px;
+    /* STAGE 1: DECK VIEW (กองไพ่) */
+    .deck-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0 30px;
+    }
+
+    .deck-stack {
+      position: relative;
+      width: 140px;
+      height: 235px;
+      margin: 15px auto 25px;
+      cursor: pointer;
+      perspective: 800px;
+    }
+
+    .deck-card-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      border: 2px solid var(--gold-primary);
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+      transition: transform 0.3s ease;
+    }
+    .deck-card-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .deck-card-layer:nth-child(1) { transform: translate(0, 0); z-index: 5; }
+    .deck-card-layer:nth-child(2) { transform: translate(-3px, -3px); z-index: 4; filter: brightness(0.9); }
+    .deck-card-layer:nth-child(3) { transform: translate(3px, -6px); z-index: 3; filter: brightness(0.8); }
+    .deck-card-layer:nth-child(4) { transform: translate(-5px, -9px); z-index: 2; filter: brightness(0.7); }
+    .deck-card-layer:nth-child(5) { transform: translate(4px, -12px); z-index: 1; filter: brightness(0.6); }
+
+    /* Shuffling Animation */
+    .deck-stack.shuffling .deck-card-layer:nth-child(1) {
+      animation: shuffleLeft 0.5s ease-in-out;
+    }
+    .deck-stack.shuffling .deck-card-layer:nth-child(2) {
+      animation: shuffleRight 0.5s ease-in-out 0.05s;
+    }
+    .deck-stack.shuffling .deck-card-layer:nth-child(3) {
+      animation: shuffleLeft 0.5s ease-in-out 0.1s;
+    }
+
+    @keyframes shuffleLeft {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-70px, -10px) rotate(-15deg); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes shuffleRight {
+      0% { transform: translate(-3px, -3px); }
+      50% { transform: translate(70px, -10px) rotate(15deg); }
+      100% { transform: translate(-3px, -3px); }
+    }
+
+    .deck-controls {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     .action-btn {
@@ -130,9 +196,9 @@
       border: 1px solid var(--gold-bright);
       color: #0d0608;
       font-family: 'Charm', cursive;
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       font-weight: 700;
-      padding: 10px 42px;
+      padding: 8px 32px;
       border-radius: 30px;
       cursor: pointer;
       box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
@@ -144,12 +210,68 @@
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
     }
 
-    /* Board Area */
+    .action-btn.secondary {
+      background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
+      color: var(--gold-bright);
+      border-color: var(--gold-primary);
+    }
+    .action-btn.secondary:hover {
+      background: linear-gradient(135deg, var(--crimson-light), #6b0710);
+      box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
+    }
+
+    /* STAGE 2: FAN ARC (คลี่ไพ่ครึ่งวงกลม) */
+    .fan-section {
+      display: none;
+      width: 100%;
+      max-width: 950px;
+      height: 380px;
+      margin: 10px auto 30px;
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .fan-card {
+      position: absolute;
+      left: 50%;
+      bottom: 20px;
+      width: 82px;
+      height: 140px;
+      margin-left: -41px;
+      border-radius: 8px;
+      border: 2px solid var(--gold-primary);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.85);
+      cursor: pointer;
+      transform-origin: center 260px;
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s, filter 0.25s;
+      overflow: hidden;
+    }
+    .fan-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .fan-card:hover {
+      z-index: 60 !important;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 10px 25px rgba(0,0,0,0.9);
+      filter: brightness(1.15);
+    }
+    .fan-card.picked {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-120px) scale(0.6) !important;
+      transition: all 0.4s ease;
+    }
+
+    /* STAGE 3: READING BOARD (โต๊ะพยากรณ์) */
     .board-container {
       max-width: 950px;
       margin: 0 auto 35px;
       padding: 10px 15px;
-      display: flex;
+      display: none;
       justify-content: center;
       align-items: stretch;
       gap: 25px;
@@ -171,7 +293,6 @@
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
     }
 
-    /* Card Sizing & Perspective */
     .card-wrapper {
       width: 220px;
       height: 380px;
@@ -208,14 +329,12 @@
       background: #0d090d;
     }
 
-    /* Card Back */
     .card-back {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
     }
-
     .card-back img {
       width: 100%;
       height: 100%;
@@ -244,12 +363,10 @@
       display: none;
     }
 
-    /* Card Front */
     .card-front {
       transform: rotateY(180deg);
       background-color: #0b0709;
     }
-
     .card-front img {
       width: 100%;
       height: 100%;
@@ -257,7 +374,7 @@
       display: block;
     }
 
-    /* Reading Interpretation Section */
+    /* Reading Sheet */
     .reading-sheet {
       max-width: 900px;
       margin: 40px auto 30px;
@@ -269,7 +386,6 @@
       display: none;
       clear: both;
     }
-
     .reading-sheet.active {
       display: block;
       animation: fadeIn 0.5s ease;
@@ -281,7 +397,6 @@
       padding-bottom: 15px;
       margin-bottom: 25px;
     }
-
     .reading-header h2 {
       font-family: 'Charm', cursive;
       font-size: 2.2rem;
@@ -365,6 +480,8 @@
 
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
+      .fan-section { height: 320px; }
+      .fan-card { width: 58px; height: 100px; margin-left: -29px; transform-origin: center 200px; }
       .card-wrapper { width: 110px; height: 190px; }
       .board-container { gap: 10px; padding: 5px; }
       .slot-label { font-size: 0.95rem; }
@@ -388,14 +505,35 @@
     <button class="mode-btn" id="btn-mode-3" onclick="switchMode(3)">พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)</button>
   </div>
 
-  <div class="hint-bar" id="hint-bar">✦ ตั้งจิตอธิษฐาน แล้วกด "อัญเชิญญาณสับไพ่" ✦</div>
+  <div class="hint-bar" id="hint-bar">✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦</div>
 
-  <div class="control-area">
-    <button class="action-btn" id="shuffle-btn" onclick="startReading()">✦ อัญเชิญญาณสับไพ่ ✦</button>
+  <!-- STAGE 1: กองไพ่สำหรับสับ -->
+  <div class="deck-section" id="deck-section">
+    <div class="deck-stack" id="deck-stack" onclick="shuffleDeck()" title="แตะเพื่อสับไพ่">
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+    </div>
+    <div class="deck-controls">
+      <button class="action-btn" onclick="shuffleDeck()">✦ อัญเชิญญาณสับไพ่ ✦</button>
+      <button class="action-btn secondary" id="spread-btn" onclick="spreadDeck()">✦ คลี่ไพ่เพื่อเลือก ✦</button>
+    </div>
+    <p id="shuffle-count" style="margin-top: 12px; font-size: 0.95rem; color: var(--text-muted);">สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)</p>
   </div>
 
+  <!-- STAGE 2: คลี่ไพ่ครึ่งวงกลมให้ลูกดวงเลือก -->
+  <div class="fan-section" id="fan-section"></div>
+
+  <!-- STAGE 3: โต๊ะวางไพ่ที่เลือกลงตำแหน่ง -->
   <div class="board-container" id="board"></div>
 
+  <div style="text-align: center; margin-bottom: 25px; display: none;" id="reset-area">
+    <button class="action-btn secondary" onclick="resetToDeck()">✦ สับไพ่เริ่มใหม่อีกครั้ง ✦</button>
+  </div>
+
+  <!-- คำทำนาย -->
   <div class="reading-sheet" id="reading-sheet">
     <div class="reading-header">
       <h2>บทวิเคราะห์ญาณพยากรณ์: เนตรวิจิตร</h2>
@@ -406,278 +544,212 @@
 
   <script>
     const tarotDeck = [
-    {
-        "id": 0,
-        "num": "0",
-        "name": "ผีตาโขน",
-        "arcana": "The Fool",
+      {
+        "id": 0, "num": "0", "name": "ผีตาโขน", "arcana": "The Fool",
         "img": "0ไพ่ผีตาโขนแห่งจันทรา .png",
         "keywords": "การเริ่มต้นใหม่ • อิสระ • การผจญภัย • กล้าก้าวไปข้างหน้า",
         "meaning": "การเริ่มต้นใหม่ด้วยจิตใจที่บริสุทธิ์และไร้ความกลัว กล้าก้าวออกจากกรอบเดิม ปลดปล่อยอิสรภาพในชีวิต มีการเดินทางหรือการผจญภัยในสิ่งที่ไม่คุ้นเคย",
         "work": "โอกาสริเริ่มงานใหม่ ธุรกิจใหม่ หรือโปรเจกต์ที่ต้องใช้ความคิดสร้างสรรค์สูง กล้าคิดต่างแล้วจะประสบผล",
         "finance": "การเงินหมุนเวียนเร็ว พร้อมจ่ายเพื่อประสบการณ์หรือความสุขส่วนตัว ระวังการใช้จ่ายตามอารมณ์ชั่ววูบ",
         "love": "คนโสดพบรักโดยไม่คาดฝัน ความรักที่ไร้กฎเกณฑ์ คนมีคู่ถึงเวลาเติมความมีชีวิตชีวาและร่วมผจญภัยไปด้วยกัน"
-    },
-    {
-        "id": 1,
-        "num": "I",
-        "name": "ปู่เจ้าสมิงพราย",
-        "arcana": "The Magician",
+      },
+      {
+        "id": 1, "num": "I", "name": "ปู่เจ้าสมิงพราย", "arcana": "The Magician",
         "img": "1ไพ่จอมขมังเวทไทย ปู่เจ้าสมิงพราย.png",
         "keywords": "พลังอำนาจ • ความสามารถ • ไหวพริบ • การสร้างสิ่งที่ต้องการ",
         "meaning": "พลังแห่งครูบาอาจารย์สายเวท ไหวพริบปฏิภาณ ความสามารถรอบด้านในการเสกสรรปั้นแต่งและลงมือทำจนสำเร็จดั่งใจนึก มีเครื่องมือและสติปัญญาพร้อมสรรพ",
         "work": "ใช้ทักษะเฉพาะตัว การเจรจา หรือความรู้ความเชี่ยวชาญสร้างผลงานโดดเด่น สามารถแก้ไขปัญหาเฉพาะหน้าได้ยอดเยี่ยม",
         "finance": "มีช่องทางทำเงินหลากหลาย หมุนเงินเก่ง ควบคุมรายรับรายจ่ายได้ด้วยความฉลาดเฉลียว",
         "love": "มีเสน่ห์ดึงดูดใจ วาจามหาเสน่ห์ คนคุยถูกใจในความเก่ง คนมีคู่ร่วมมือกันสร้างอนาคตได้ดั่งใจหวัง"
-    },
-    {
-        "id": 2,
-        "num": "II",
-        "name": "นางตานี",
-        "arcana": "The High Priestess",
+      },
+      {
+        "id": 2, "num": "II", "name": "นางตานี", "arcana": "The High Priestess",
         "img": "2ไพ่ทาโรต์นางตานีใต้แสงจันทร์.png",
         "keywords": "สัญชาตญาณ • ความลับ • สิ่งที่ซ่อนอยู่ • ลางสังหรณ์",
         "meaning": "พลังจิตวิญญาณแห่งความลี้ลับ สัญชาตญาณแม่นยำ ลางสังหรณ์หยั่งรู้ มีเรื่องราวหรือความจริงบางอย่างที่ยังซ่อนอยู่ใต้เงาจันทร์ จงฟังเสียงกระซิบจากหัวใจตนเอง",
         "work": "งานเบื้องหลัง การวิจัย หรือการวางแผนเชิงลึก อาศัยความสุขุมและเซนส์ในการประเมินคน อย่าเพิ่งเปิดเผยไพ่ในมือ",
         "finance": "มีรายรับลึกลับ รายได้ที่ไม่เปิดเผย หรือเงินเก็บส่วนตัว ระวังเรื่องการเงินที่มีเงื่อนงำซ่อนเร้น",
         "love": "ความสัมพันธ์ที่ยังไม่ชัดเจน ความรักซ่อนเร้น หรือเสน่ห์ดึงดูดลึกซึ้งเกินห้ามใจ คนโสดมีคนแอบปลื้ม"
-    },
-    {
-        "id": 3,
-        "num": "III",
-        "name": "แม่ย่านาง",
-        "arcana": "The Empress",
+      },
+      {
+        "id": 3, "num": "III", "name": "แม่ย่านาง", "arcana": "The Empress",
         "img": "3ไพ่จักรพรรดินีแห่งสายน้ำและดอกบัว.png",
         "keywords": "ความอุดมสมบูรณ์ • การดูแล • ความรัก • โชคลาภ",
         "meaning": "พลังแห่งมารดาผู้พิทักษ์และคุ้มครอง ความอุดมสมบูรณ์พูนสุข ความรักความเมตตา การดูแลเอาใจใส่ และโชคลาภที่หลั่งไหลเข้ามาดั่งสายน้ำ",
         "work": "ความสำเร็จราบรื่น ผลงานงอกเงย มีผู้ใหญ่และบริวารคอยช่วยเหลืออุปถัมภ์ กิจการค้าขายเจริญรุ่งเรือง",
         "finance": "โชคลาภเงินทองหลั่งไหล มีกินมีใช้ไม่ขัดสน ได้รับลาภลอยหรือความมั่งคั่งจากความเสน่หา",
         "love": "ความรักเปี่ยมสุข การดูแลเอาใจใส่ซึ่งกันและกันอย่างอบอุ่น คนโสดมีเกณฑ์พบรักแท้ที่พร้อมสร้างครอบครัว"
-    },
-    {
-        "id": 4,
-        "num": "IV",
-        "name": "ผีเจ้าที่",
-        "arcana": "The Emperor",
+      },
+      {
+        "id": 4, "num": "IV", "name": "ผีเจ้าที่", "arcana": "The Emperor",
         "img": "4จักรพรรดิแห่งศาลพระภูมิ.png",
         "keywords": "ความมั่นคง • อำนาจ • การปกครอง • รากฐานชีวิต",
         "meaning": "เจ้าแห่งอาณาเขต ผู้พิทักษ์ผืนแผ่นดินและเคหสถาน อำนาจการปกครอง ความเข้มแข็ง เด็ดขาด ระเบียบวินัย และการสร้างรากฐานชีวิตที่มั่นคงดั่งหินผา",
         "work": "ขึ้นสู่ตำแหน่งผู้นำ ได้รับอำนาจบริหารจัดการ หรือมีผู้ใหญ่ระดับสูงคอยหนุนหลัง งานต้องการความเด็ดขาด",
         "finance": "ฐานะมั่นคง การลงทุนในอสังหาริมทรัพย์ ที่ดิน หรือสินทรัพย์ระยะยาวให้ผลตอบแทนดีเยี่ยม",
         "love": "ความสัมพันธ์ที่พึ่งพาได้ มั่นคง เป็นเสาหลักให้แก่กัน แต่อาจต้องลดความเผด็จการหรือความเข้มงวดลงบ้าง"
-    },
-    {
-        "id": 5,
-        "num": "V",
-        "name": "พระอาจารย์",
-        "arcana": "The Hierophant",
+      },
+      {
+        "id": 5, "num": "V", "name": "พระอาจารย์", "arcana": "The Hierophant",
         "img": "5พระอาจารย์ในวิหารทองคำ.png",
         "keywords": "ครูบาอาจารย์ • ประเพณี • ความเชื่อ • การคุ้มครอง",
         "meaning": "บารมีแห่งพระรัตนตรัยและบูรพาจารย์ ธรรมเนียมประเพณีอันศักดิ์สิทธิ์ ศีลธรรม ความเชื่อที่ถูกต้อง และการได้รับการคุ้มครองแคล้วคลาดจากสิ่งศักดิ์สิทธิ์",
         "work": "การเรียนรู้เพิ่มเติม การอบรม ได้รับคำแนะนำชี้แนะจากผู้ทรงคุณวุฒิ การทำงานอย่างซื่อสัตย์สุจริตจะนำพาสู่ความเจริญ",
         "finance": "เงินบริสุทธิ์ ได้มาด้วยความสุจริต เหมาะแก่การทำบุญต่อชะตา สร้างทานบารมีเพื่อเปิดทางโชคลาภ",
         "love": "ความรักที่ถูกต้องตามทำนองคลองธรรม เข้าตามตรอกออกตามประตู ได้รับความเห็นชอบจากผู้ใหญ่ทั้งสองฝ่าย"
-    },
-    {
-        "id": 6,
-        "num": "VI",
-        "name": "แม่นาคกับพ่อมาก",
-        "arcana": "The Lovers",
+      },
+      {
+        "id": 6, "num": "VI", "name": "แม่นาคกับพ่อมาก", "arcana": "The Lovers",
         "img": "6คนรักใต้แสงจันทร์ริมสายน้ำ.png",
         "keywords": "ความรัก • ความผูกพัน • การเลือก • ความสัมพันธ์ลึกซึ้ง",
         "meaning": "ตำนานรักอมตะที่ก้าวข้ามภพภูมิ ความผูกพันอันลึกซึ้ง ความเสน่หาที่ยากจะตัดขาด และทางแยกของชีวิตที่ต้องตัดสินใจเลือกด้วยหัวใจและสติ",
         "work": "การจับคู่เป็นหุ้นส่วน การทำสัญญาร่วมมือ หรือการต้องเลือกระหว่างสองโอกาสสำคัญที่ส่งผลระยะยาว",
         "finance": "การเงินเชื่อมโยงกับคนรักหรือหุ้นส่วน มีโชคจากคู่ครอง แต่ระวังการใช้จ่ายตามอารมณ์เสน่หา",
         "love": "ความรักลึกซึ้ง ผูกพันแน่นแฟ้น หากมีปัญหาต้องเลือกระหว่างความถูกต้องกับความผูกพัน คนโสดพบคนถูกชะตาอย่างแรง"
-    },
-    {
-        "id": 7,
-        "num": "VII",
-        "name": "ผีกระหัง ผู้เดินทางสู่เมืองลับแล",
-        "arcana": "The Chariot",
+      },
+      {
+        "id": 7, "num": "VII", "name": "ผีกระหัง ผู้เดินทางสู่เมืองลับแล", "arcana": "The Chariot",
         "img": "7กระหังกลางแสงจันทร์.png",
         "keywords": "การเดินทาง • ชัยชนะ • ความมุ่งมั่น • การฝ่าฟันอุปสรรค",
         "meaning": "การทะยานบินข้ามความมืดมิดด้วยแรงกายและพลังใจ การเดินทางไกล ความมุ่งมั่นไม่ย่อท้อ การต่อสู้ฝ่าฟันอุปสรรคขวากหนามจนคว้าชัยชนะมาครอง",
         "work": "งานลุย งานแข่งขัน ต้องใช้ความพยายามสูง การเดินทางติดต่องานต่างถิ่นหรือต่างแดนจะประสบผลสำเร็จงดงาม",
         "finance": "ได้เงินจากการต่อสู้แข่งขัน เหนื่อยแต่ได้ผลตอบแทนคุ้มค่า ต้องควบคุมวินัยการเงินอย่างเข้มงวด",
         "love": "ความสัมพันธ์ที่ต้องใช้ความอดทนฝ่าฟันด่านทดสอบ รักทางไกล หรือการพยายามเอาชนะใจคนที่เข้าถึงยาก"
-    },
-    {
-        "id": 8,
-        "num": "VIII",
-        "name": "เสือสมิง",
-        "arcana": "Strength",
+      },
+      {
+        "id": 8, "num": "VIII", "name": "เสือสมิง", "arcana": "Strength",
         "img": "8เสือสมิง_ พลังแห่งพงไพร.png",
         "keywords": "ความกล้าหาญ • พลังใจ • การควบคุมอารมณ์ • เอาชนะความกลัว",
         "meaning": "พญาสมิงแห่งพงไพร พลังอำนาจที่ซ่อนอยู่ในความสงบนิ่ง ความกล้าหาญเด็ดเดี่ยว การควบคุมสัญชาตญาณดิบและอารมณ์โกรธด้วยจิตที่แข็งแกร่ง",
         "work": "สามารถรับมือกับงานยาก แรงกดดันมหาศาล หรือผู้ร่วมงานที่ดื้อรั้นได้อยู่หมัดด้วยความนุ่มนวลแต่เด็ดขาด",
         "finance": "เอาชนะปัญหาหนี้สินหรือภาวะการเงินตึงมือได้ด้วยความอดทน มีความสามารถในการหารายได้เข้ามาอย่างแข็งแกร่ง",
         "love": "ใช้ความเข้าใจและความอ่อนโยนสยบความดื้อดึงของคนรัก รักที่มั่นคงและพร้อมปกป้องกันและกัน"
-    },
-    {
-        "id": 9,
-        "num": "IX",
-        "name": "นักเดินทางถือโคมไฟไปเมืองลับแล (ฤๅษี)",
-        "arcana": "The Hermit",
+      },
+      {
+        "id": 9, "num": "IX", "name": "นักเดินทางถือโคมไฟไปเมืองลับแล (ฤๅษี)", "arcana": "The Hermit",
         "img": "9ไพ่ฤาษีแห่งเมืองลับแล.png",
         "keywords": "ค้นหาความจริง • การเดินทางค้นพบตัวเอง • ภูมิปัญญา • ความสงบ",
         "meaning": "การถือประทีปส่องทางสู่เมืองลับแลเพื่อค้นหาความจริงและคำตอบของชีวิต การปลีกวิเวกเพื่อค้นพบตัวเอง ได้รับภูมิปัญญาและคำชี้แนะจากผู้มีประสบการณ์",
         "work": "งานวิชาการ การวิจัย การเป็นที่ปรึกษา หรือการทบทวนกลยุทธ์อย่างรอบคอบ อย่าเพิ่งรีบร้อนลงมือ ให้ศึกษาให้ถ่องแท้",
         "finance": "ประหยัด พอเพียง ไม่ฟุ้งเฟ้อ การเงินนิ่งสงบ ปลอดภัยจากการเสี่ยงที่ไม่คุ้มค่า",
         "love": "ช่วงเวลาแห่งการอยู่กับตัวเอง ทบทวนความต้องการที่แท้จริง คนโสดรักสันโดษ คนมีคู่อาจต้องการพื้นที่ส่วนตัว"
-    },
-    {
-        "id": 10,
-        "num": "X",
-        "name": "กุมารทอง",
-        "arcana": "Wheel of Fortune",
+      },
+      {
+        "id": 10, "num": "X", "name": "กุมารทอง", "arcana": "Wheel of Fortune",
         "img": "10กุมารทองแห่งวงล้อทองคำ.png",
         "keywords": "โชคชะตา • การเปลี่ยนแปลง • โอกาสทางการเงิน • วาสนา",
         "meaning": "กุมารทองหมุนกงล้อแห่งวาสนา ชะตาชีวิตกำลังเปลี่ยนผ่านจากจุดต่ำสู่จุดรุ่งโรจน์ โอกาสทองทางการเงิน โชคลาภกะทันหัน และจังหวะชีวิตที่เปิดกว้าง",
         "work": "จุดเปลี่ยนสำคัญในหน้าที่การงาน ได้รับข้อเสนอใหม่ โปรเจกต์พลิกฟื้น หรือมีช่องทางธุรกิจใหม่ที่ไม่คาดคิด",
         "finance": "โชคลาภโดดเด่น มีเงินก้อนเข้ามา เสี่ยงโชคมีโอกาสได้ หรือการค้าขายมีลูกค้าไหลเวียนไม่ขาดสาย",
         "love": "พรหมลิขิตชักนำพา คนที่ใช่กำลังก้าวเข้ามาในชีวิต คนมีคู่ปัญหาที่คาราคาซังจะคลี่คลายสู่ทิศทางที่ดีขึ้น"
-    },
-    {
-        "id": 11,
-        "num": "XI",
-        "name": "นรกและสวรรค์",
-        "arcana": "Justice",
+      },
+      {
+        "id": 11, "num": "XI", "name": "นรกและสวรรค์", "arcana": "Justice",
         "img": "11ไพ่การพิพากษาแห่งสวรรค์และนรก.png",
         "keywords": "ความยุติธรรม • กฎแห่งกรรม • การตัดสินใจ • ผลของการกระทำ",
         "meaning": "ตราชั่งแห่งกรรมดีกรรมชั่ว ความถูกต้องชอบธรรม การตัดสินใจอย่างเที่ยงธรรม ทำสิ่งใดย่อมได้รับผลสิ่งนั้น ความจริงจะปรากฏและคืนความยุติธรรม",
         "work": "การเซ็นสัญญา ตรวจสอบเอกสาร คดีความ หรือข้อตกลง ต้องทำทุกอย่างด้วยความโปร่งใสและตรงไปตรงมา",
         "finance": "ความสมดุลระหว่างรายรับรายจ่าย ได้รับเงินชดเชยหรือผลประโยชน์ตามสิทธิ์ที่ชอบธรรม",
         "love": "ความสัมพันธ์ที่ต้องใช้เหตุผลและความจริงใจ หากให้เกียรติกันจะยืนยาว ความจริงใดที่ปิดบังจะถูกเปิดเผย"
-    },
-    {
-        "id": 12,
-        "num": "XII",
-        "name": "ผีอำ",
-        "arcana": "The Hanged Man",
+      },
+      {
+        "id": 12, "num": "XII", "name": "ผีอำ", "arcana": "The Hanged Man",
         "img": "12ไพ่ผีอำ_ วิญญาณห้อยหัว.png",
         "keywords": "การหยุดนิ่ง • การเสียสละ • การรอคอย • มองต่างมุม",
         "meaning": "สภาวะถูกตรึงแน่น ขยับไม่ได้ดั่งถูกผีอำ ช่วงเวลาแห่งการหยุดนิ่งเพื่อทบทวน การยอมเสียสละบางสิ่งเพื่อผลลัพธ์ที่ยิ่งใหญ่กว่า การเปลี่ยนมุมมองต่อชีวิต",
         "work": "งานชะลอตัว โครงการต้องรอคอยเวลา อย่าเพิ่งฝืนดันไปข้างหน้า ให้ใช้เวลานี้ปรับปรุงแก้ไขข้อผิดพลาด",
         "finance": "เงินสะดุดชั่วคราว มีเหตุต้องอดทนรอคอยเงินก้อน หรือต้องยอมตัดใจเสียทรัพย์เพื่อรักษาเรื่องใหญ่ไว้",
         "love": "ความสัมพันธ์นิ่งเฉย หรือรู้สึกอึดอัดกลืนไม่เข้าคายไม่ออก การยอมถอยหนึ่งก้าวเพื่อดูสถานการณ์คือทางออกที่ดีที่สุด"
-    },
-    {
-        "id": 13,
-        "num": "XIII",
-        "name": "ผีตายโหง",
-        "arcana": "Death",
+      },
+      {
+        "id": 13, "num": "XIII", "name": "ผีตายโหง", "arcana": "Death",
         "img": "13ไพ่ผีตายโหง_เลข๑๓_จัดกึ่งกลางใหม่.png",
         "keywords": "การสิ้นสุด • การเปลี่ยนผ่าน • การปล่อยวาง • การเริ่มต้นใหม่",
         "meaning": "การสิ้นสุดของวัฏจักรเดิมอย่างสิ้นเชิง ความตายของสิ่งเก่าเพื่อเปิดทางให้สิ่งใหม่ถือกำเนิด การปล่อยวางอดีตและความเจ็บปวดเพื่อก้าวสู่บทใหม่ของชีวิต",
         "work": "การลาออกจากงานเดิม การยุติโปรเจกต์ หรือการปรับโครงสร้างครั้งใหญ่เพื่อไปสู่โอกาสที่เติบโตกว่า",
         "finance": "ตัดหนี้ ตัดค่าใช้จ่ายที่ไม่จำเป็น จบปัญหาทางการเงินที่เรื้อรังมานานเพื่อเริ่มต้นวางแผนใหม่",
         "love": "การจบความสัมพันธ์ที่ Toxic หรือการปล่อยวางความหลังที่ทำร้ายจิตใจ เพื่อเปิดรับรักครั้งใหม่ที่บริสุทธิ์"
-    },
-    {
-        "id": 14,
-        "num": "XIV",
-        "name": "นางตะเคียน",
-        "arcana": "Temperance",
+      },
+      {
+        "id": 14, "num": "XIV", "name": "นางตะเคียน", "arcana": "Temperance",
         "img": "14นางตะเคียน เทพีแห่งสมดุล.png",
         "keywords": "ความสมดุล • การเยียวยา • ความอดทน • การประสานสิ่งต่าง ๆ",
         "meaning": "พลังแห่งนางไม้ผู้สงบนิ่ง เทพีแห่งความสมดุลและการถ่ายเทธาตุ การเยียวยารักษาบาดแผลในจิตใจ ความอดทนประนีประนอม และการประสานรอยร้าวให้กลับมาลงตัว",
         "work": "การเจรจาไกล่เกลี่ย การปรับตัวเข้ากับสภาพแวดล้อมใหม่ หรือการผสมผสานสองความคิดเห็นให้กลมกลืน",
         "finance": "การเงินเริ่มกลับมาสมดุล หมุนเวียนถ่ายเทได้คล่องตัวขึ้น ไม่ตึงมือและไม่ฟุ่มเฟือยจนเกินไป",
         "love": "การปรับความเข้าใจ การประนีประนอมและให้อภัย ความรักที่อาศัยเวลาในการเยียวยาจิตใจซึ่งกันและกัน"
-    },
-    {
-        "id": 15,
-        "num": "XV",
-        "name": "ยมบาล",
-        "arcana": "The Devil",
+      },
+      {
+        "id": 15, "num": "XV", "name": "ยมบาล", "arcana": "The Devil",
         "img": "15ไพ่ทาโรต์ยมบาลแห่งนรก.png",
         "keywords": "พันธนาการ • กิเลส • หนี้สิน • ความกลัว • การยึดติด",
         "meaning": "ภาพสะท้อนแห่งกิเลส ตัณหา หนี้สิน พันธนาการที่มองไม่เห็น และความกลัวที่เกาะกุมใจ จงตระหนักรู้ว่าโซ่ตรวนที่ผูกมัดอยู่นั้น เราเองคือผู้มีอำนาจในการปลดล็อก",
         "work": "ระวังข้อผูกมัดที่ไม่เป็นธรรม สัญญาซ่อนเงื่อน หรือการตกอยู่ใต้อิทธิพลมืดในที่ทำงาน อย่าเห็นแก่ประโยชน์เฉพาะหน้า",
         "finance": "ภาระหนี้สิน ดอกเบี้ย การถูกหลอกลวงทางการเงิน หรือการเสียทรัพย์เพราะกิเลสและการพนัน",
         "love": "ความสัมพันธ์ที่ลุ่มหลง หึงหวง รุนแรง หรือรักซ้อนที่ยากจะถอนตัว ต้องใช้สติปัญญาตัดบ่วงพันธนาการ"
-    },
-    {
-        "id": 16,
-        "num": "XVI",
-        "name": "ผีห่า",
-        "arcana": "The Tower",
+      },
+      {
+        "id": 16, "num": "XVI", "name": "ผีห่า", "arcana": "The Tower",
         "img": "16หอคอยถล่มท่ามกลางภูตผี.png",
         "keywords": "การเปลี่ยนแปลงฉับพลัน • การพังทลาย • ความจริงเปิดเผย",
         "meaning": "โรคห่าระบาดและหอคอยพังทลาย เหตุการณ์ไม่คาดฝันที่เข้ามากระทบกระเทือนอย่างฉับพลัน ความจริงที่ถูกซ่อนไว้ถูกเปิดเผย สิ่งที่สร้างขึ้นบนรากฐานที่ไม่มั่นคงต้องพังทลายเพื่อสร้างใหม่",
         "work": "เกิดปัญหาเฉพาะหน้ากะทันหัน การเปลี่ยนแปลงนโยบายอย่างรวดเร็ว หรือการยกเลิกสัญญากะทันหัน ต้องมีแผนสำรอง",
         "finance": "ระวังอุบัติเหตุทางการเงิน ค่าใช้จ่ายกะทันหัน ของพังเสียหาย อย่าประมาทในการลงทุนที่มีความเสี่ยง",
         "love": "การทะเลาะวิวาทรุนแรง ความลับแตก หรือความสัมพันธ์เกิดจุดแตกหักที่ต้องเผชิญหน้ากับความจริง"
-    },
-    {
-        "id": 17,
-        "num": "XVII",
-        "name": "ผีโขมด",
-        "arcana": "The Star",
+      },
+      {
+        "id": 17, "num": "XVII", "name": "ผีโขมด", "arcana": "The Star",
         "img": "17ไพ่ผีโขมดแห่งแสงดาว.png",
         "keywords": "ความหวัง • การฟื้นฟู • แสงสว่างหลังความมืด",
         "meaning": "ดวงไฟเรืองรองแห่งผีโขมดท่ามกลางป่าช้า แสงสว่างนำทางหลังพายุใหญ่พัดผ่าน ความหวังที่ฟื้นคืนชีพ การฟื้นฟูเยียวยาทั้งกายและใจ และแรงบันดาลใจที่สุกสว่าง",
         "work": "โอกาสใหม่เริ่มปรากฏ ความตึงเครียดผ่อนคลาย ได้รับการยอมรับและมีชื่อเสียงในทางบวก ผลงานเป็นที่ประจักษ์",
         "finance": "การเงินฟื้นตัว มีแสงสว่างปลายอุโมงค์ หนี้สินเริ่มคลี่คลาย มีช่องทางสร้างรายได้ใหม่ที่มั่นคง",
         "love": "ความรักที่บริสุทธิ์ สบายใจ ดุจเพื่อนคู่คิด คนโสดมีเกณฑ์พบคนที่เข้ามาช่วยเยียวยาหัวใจและเติมเต็มความหวัง"
-    },
-    {
-        "id": 18,
-        "num": "XVIII",
-        "name": "ผีกระสือ",
-        "arcana": "The Moon",
+      },
+      {
+        "id": 18, "num": "XVIII", "name": "ผีกระสือ", "arcana": "The Moon",
         "img": "18ผีกระสือใต้แสงจันทร์.png",
         "keywords": "ความสับสน • ภาพลวงตา • ความกลัว • เรื่องที่ยังไม่กระจ่าง",
         "meaning": "ดวงไฟลอยล่องใต้เงาจันทร์ ภาพลวงตา ความสับสนลังเล ความวิตกกังวล และเรื่องราวที่ยังคลุมเครือไม่กระจ่าง ระวังการตัดสินใจด้วยความหวาดระแวงหรือมองโลกในแง่ร้ายเกินจริง",
         "work": "ความไม่ชัดเจนในองค์กร นินทาลับหลัง หรือข้อมูลที่ได้รับมายังไม่ครบถ้วน อย่าเพิ่งด่วนตัดสินใจเรื่องสำคัญ",
         "finance": "ระวังถูกลวงด้วยผลประโยชน์เกินจริง การลงทุนที่คลุมเครือ หรือรายจ่ายซ่อนเร้นที่ไม่คาดฝัน",
         "love": "ความหวาดระแวง ไม่ไว้ใจกัน รักที่มีความลับหรือภาพลวงตา ต้องเปิดใจคุยกันด้วยความจริงใจไม่ใช่ความระแวง"
-    },
-    {
-        "id": 19,
-        "num": "XIX",
-        "name": "ผีบ้านผีเรือน",
-        "arcana": "The Sun",
+      },
+      {
+        "id": 19, "num": "XIX", "name": "ผีบ้านผีเรือน", "arcana": "The Sun",
         "img": "19ผีบ้านผีเรือน_ พรแห่งบรรพชน.png",
         "keywords": "ความสำเร็จ • ความสุข • ข่าวดี • ความสดใส",
         "meaning": "พรแห่งบรรพชนผู้พิทักษ์ แสงสุริยันอันอบอุ่นที่สาดส่องเข้ามาในเคหสถาน ความสำเร็จอันยิ่งใหญ่ ความสุข ความสดใส และข่าวดีมงคลที่กำลังเดินทางมาถึง",
         "work": "ประสบความสำเร็จสูงสุด ได้รับการเลื่อนขั้น ได้ชื่อเสียงเกียรติยศ กิจการเจริญก้าวหน้าอย่างสดใส",
         "finance": "การเงินมั่งคั่ง โชคลาภเปิดรับ มีความมั่นคงในครอบครัว มีเงินทองเข้ามาให้ชื่นใจ",
         "love": "ความรักสุขสมหวัง อบอุ่น มีเกณฑ์แต่งงาน มีบุตร หรือได้จัดงานมงคลฉลองร่วมกับคนในครอบครัว"
-    },
-    {
-        "id": 20,
-        "num": "XX",
-        "name": "เปรตได้รับส่วนบุญ",
-        "arcana": "Judgement",
+      },
+      {
+        "id": 20, "num": "XX", "name": "เปรตได้รับส่วนบุญ", "arcana": "Judgement",
         "img": "20ไพ่พิพากษาแห่งเปรตในวัดไทย.png",
         "keywords": "การตื่นรู้ • การชดใช้กรรม • การให้อภัย • โอกาสครั้งใหม่",
         "meaning": "เสียงกู่ร้องแห่งการตื่นรู้ ผลบุญที่แผ่ไปถึงช่วยปลดเปลื้องบ่วงกรรม การชำระล้างอดีต การให้อภัย และการได้รับโอกาสครั้งที่สองในการกลับมามีชีวิตที่สดใสและรุ่งเรือง",
         "work": "การประกาศผลงานสำคัญ การสอบผ่าน การคัดเลือก หรือการได้รับโอกาสแก้ตัวและแสดงฝีมือให้ประจักษ์",
         "finance": "ได้รับเงินค้างชำระ เงินมรดก หรือการปลดเปลื้องภาระหนี้สิน ควรร่วมทำบุญอุทิศกุศลเพื่อต่อดวงชะตา",
         "love": "คนรักเก่าติดต่อกลับมา หรือถึงเวลาให้อภัยและก้าวข้ามความขัดแย้งเดิมเพื่อเริ่มต้นความสัมพันธ์ใหม่ที่เข้าใจกันลึกซึ้ง"
-    },
-    {
-        "id": 21,
-        "num": "XXI",
-        "name": "พระแม่ธรณี",
-        "arcana": "The World",
-        "img": "21พระแม่ธรณีแห่งสายน้ำจักรวาล.png",
+      },
+      {
+        "id": 21, "num": "XXI", "name": "พระแม่ธรณี", "arcana": "The World",
+        "img": "21พระแม่ธรณีแห่งสายน้ำจักรวาล (1).png",
         "keywords": "ความสมบูรณ์ • ความสำเร็จ • การสิ้นสุดวงจร • การบรรลุเป้าหมาย",
         "meaning": "พระแม่ธรณีบีบมวยผมหลั่งสายน้ำชำระล้างมาร ความสมบูรณ์พูนสุขสูงสุด การสิ้นสุดวงจรอุปสรรค และการบรรลุเป้าหมายแห่งชีวิตอย่างงดงามและมั่นคงถาวร",
         "work": "โปรเจกต์ใหญ่สำเร็จสมบูรณ์แบบ ได้รับรางวัลหรือความสำเร็จระดับสากล ก้าวสู่อีกระดับของชีวิตการทำงาน",
         "finance": "ความมั่งคั่งมั่นคง อิสรภาพทางการเงิน มีความสุขกับสิ่งที่สร้างขึ้นมาด้วยหยาดเหงื่อแรงกาย",
         "love": "ความรักบริบูรณ์พร้อม เข้าสู่จุดที่สมบูรณ์แบบ มีความสุขสงบและสร้างความมั่นคงร่วมกันตลอดไป"
-    }
-];
+      }
+    ];
 
-  let currentMode = 1;
-    let selectedCards = [];
-    let hasShuffled = false;
-
-    // --- ระบบจำลองเสียงเอฟเฟกต์เวทมนตร์ (Web Audio API ไม่ต้องใช้ไฟล์เสียง) ---
+    let currentMode = 1;
+    let shuffleCount = 0;
+    let deckPool = [];
+    let chosenCards = [];
     let audioCtx = null;
+
     function getAudioContext() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -688,29 +760,43 @@
       return audioCtx;
     }
 
-    // 1. เสียงรูดสับไพ่ (ฟึ่บๆๆ)
+    // เสียงสับไพ่สมจริง (White Noise + Bandpass Filter)
     function playShuffleSound() {
       const ctx = getAudioContext();
-      const now = ctx.currentTime;
-      for (let i = 0; i < 7; i++) {
-        const time = now + i * 0.05;
-        const osc = ctx.createOscillator();
+      const sampleRate = ctx.sampleRate;
+      const bufferSize = sampleRate * 0.08;
+      
+      for (let i = 0; i < 6; i++) {
+        const startTime = ctx.currentTime + i * 0.06;
+        const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let j = 0; j < bufferSize; j++) {
+          data[j] = Math.random() * 2 - 1;
+        }
+
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(700 + Math.random() * 500, startTime);
+        filter.Q.value = 1.2;
+
         const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(120 + Math.random() * 180, time);
-        osc.frequency.exponentialRampToValueAtTime(30, time + 0.04);
+        gain.gain.setValueAtTime(0.01, startTime);
+        gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.07);
 
-        gain.gain.setValueAtTime(0.12, time);
-        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.04);
-
-        osc.connect(gain);
+        noise.connect(filter);
+        filter.connect(gain);
         gain.connect(ctx.destination);
-        osc.start(time);
-        osc.stop(time + 0.04);
+
+        noise.start(startTime);
+        noise.stop(startTime + 0.07);
       }
     }
 
-    // 2. เสียงปิ๊งประกายแก้วตอนแตะเปิดไพ่ (กริ๊ง~)
+    // เสียงปิ๊งประกายแก้ว (Chime Ping)
     function playChimeSound() {
       const ctx = getAudioContext();
       const now = ctx.currentTime;
@@ -720,7 +806,6 @@
         const gain = ctx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, now + idx * 0.04);
-
         gain.gain.setValueAtTime(0.12, now + idx * 0.04);
         gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 1.2);
 
@@ -735,19 +820,96 @@
       currentMode = mode;
       document.getElementById('btn-mode-1').classList.toggle('active', mode === 1);
       document.getElementById('btn-mode-3').classList.toggle('active', mode === 3);
-      resetBoard();
+      resetToDeck();
     }
 
-    function resetBoard() {
-      const board = document.getElementById('board');
-      const readingSheet = document.getElementById('reading-sheet');
-      const hint = document.getElementById('hint-bar');
-      board.innerHTML = '';
-      readingSheet.classList.remove('active');
-      document.getElementById('reading-content').innerHTML = '';
-      hasShuffled = false;
+    // สับไพ่
+    function shuffleDeck() {
+      playShuffleSound();
+      shuffleCount++;
+      const stack = document.getElementById('deck-stack');
+      stack.classList.remove('shuffling');
+      void stack.offsetWidth;
+      stack.classList.add('shuffling');
 
-      hint.innerText = '✦ ตั้งจิตอธิษฐาน แล้วกด "อัญเชิญญาณสับไพ่" ✦';
+      // สุ่มลำดับสำรับไพ่ใหม่ทุกครั้งที่กด
+      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+
+      const thaiNums = ["๐","๑","๒","๓","๔","๕","๖","๗","๘","๙"];
+      const countThai = shuffleCount.toString().split('').map(d => thaiNums[parseInt(d)]).join('');
+      document.getElementById('shuffle-count').innerText = `สับไพ่แล้ว ${countThai} ครั้ง (สับได้ตามจิตศรัทธา)`;
+      document.getElementById('hint-bar').innerHTML = `✦ อัญเชิญญาณสับไพ่แล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
+    }
+
+    // คลี่ไพ่เป็นครึ่งวงกลม
+    function spreadDeck() {
+      if (deckPool.length === 0) {
+        deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+      }
+      playShuffleSound();
+      chosenCards = [];
+
+      document.getElementById('deck-section').style.display = 'none';
+      const fan = document.getElementById('fan-section');
+      fan.innerHTML = '';
+      fan.style.display = 'block';
+
+      const total = deckPool.length;
+      deckPool.forEach((card, i) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'fan-card';
+        cardEl.id = `fan-card-${i}`;
+
+        // จัดองศาพัดครึ่งวงกลม
+        const delta = i - (total - 1) / 2;
+        const angle = delta * 3.8;
+        const transX = delta * 18;
+        const transY = Math.abs(delta) * 2.8;
+
+        cardEl.style.transform = `translateX(${transX}px) translateY(${transY}px) rotate(${angle}deg)`;
+        cardEl.style.zIndex = i + 1;
+        cardEl.innerHTML = `<img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'">`;
+
+        cardEl.onclick = () => pickCardFromFan(i, card, cardEl);
+        fan.appendChild(cardEl);
+      });
+
+      updateHintForPicking();
+    }
+
+    function updateHintForPicking() {
+      const remaining = currentMode - chosenCards.length;
+      const thaiDigits = ["๐","๑","๒","๓"];
+      if (remaining > 0) {
+        document.getElementById('hint-bar').innerHTML = `✦ ตั้งจิตอธิษฐาน แตะเลือกไพ่ที่ดลใจ (ต้องการอีก <strong>${thaiDigits[remaining]}</strong> ใบ) ✦`;
+      }
+    }
+
+    // ลูกดวงแตะหยิบไพ่จากพัด
+    function pickCardFromFan(index, card, cardEl) {
+      if (chosenCards.length >= currentMode) return;
+      if (cardEl.classList.contains('picked')) return;
+
+      playChimeSound();
+      cardEl.classList.add('picked');
+      chosenCards.push(card);
+
+      if (chosenCards.length < currentMode) {
+        updateHintForPicking();
+      } else {
+        // เลือกครบแล้ว พาไปที่โต๊ะวางไพ่
+        document.getElementById('hint-bar').innerHTML = '✦ สถิตญาณพร้อมแล้ว... <strong>แตะที่ไพ่</strong> เพื่อเปิดชะตา ✦';
+        setTimeout(revealBoardWithChosenCards, 500);
+      }
+    }
+
+    // จัดวางไพ่ที่เลือกลงตำแหน่งบนโต๊ะ
+    function revealBoardWithChosenCards() {
+      document.getElementById('fan-section').style.display = 'none';
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      board.style.display = 'flex';
+      document.getElementById('reset-area').style.display = 'block';
 
       const labels = currentMode === 1 
         ? ["ดวงชะตาวันนี้"] 
@@ -761,10 +923,12 @@
           <div class="card-wrapper" id="card-${i}" onclick="revealCard(${i})">
             <div class="card-inner">
               <div class="card-face card-back">
-                <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='หลังไพ่[Card Back].png';}">
+                <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
                 <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
               </div>
-              <div class="card-face card-front" id="front-${i}"></div>
+              <div class="card-face card-front" id="front-${i}">
+                <img src="${chosenCards[i].img}" alt="${chosenCards[i].name}" onerror="if(!this.dataset.alt){this.dataset.alt='1';this.src='21พระแม่ธรณีแห่งสายน้ำจักรวาล.png';}">
+              </div>
             </div>
           </div>
         `;
@@ -772,38 +936,11 @@
       }
     }
 
-    function startReading() {
-      playShuffleSound(); // เล่นเสียงสับไพ่
-
-      const shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
-      selectedCards = shuffled.slice(0, currentMode);
-      hasShuffled = true;
-
-      for (let i = 0; i < currentMode; i++) {
-        document.getElementById(`card-${i}`).classList.remove('flipped');
-        const front = document.getElementById(`front-${i}`);
-        front.innerHTML = `<img src="${selectedCards[i].img}" alt="${selectedCards[i].name}">`;
-      }
-
-      document.getElementById('reading-content').innerHTML = '';
-      document.getElementById('reading-sheet').classList.remove('active');
-
-      const hint = document.getElementById('hint-bar');
-      if (currentMode === 1) {
-        hint.innerHTML = '✦ สำรับเนตรวิจิตรพร้อมแล้ว <strong>แตะที่ไพ่</strong> เพื่อเปิดดวงชะตา ✦';
-      } else {
-        hint.innerHTML = '✦ สำรับเนตรวิจิตรพร้อมแล้ว <strong>แตะเลือกเปิดไพ่ใบใดก่อนก็ได้</strong> ตามจิตศรัทธา ✦';
-      }
-    }
-
+    // พลิกไพ่และแสดงคำทำนาย
     function revealCard(idx) {
-      if (!hasShuffled) {
-        startReading();
-      }
-
       const cardWrapper = document.getElementById(`card-${idx}`);
       if (!cardWrapper.classList.contains('flipped')) {
-        playChimeSound(); // เล่นเสียงปิ๊งเมื่อแตะเปิดไพ่
+        playChimeSound();
         cardWrapper.classList.add('flipped');
         renderInterpretationItem(idx);
       }
@@ -812,7 +949,7 @@
     function renderInterpretationItem(idx) {
       const sheet = document.getElementById('reading-sheet');
       const content = document.getElementById('reading-content');
-      const card = selectedCards[idx];
+      const card = chosenCards[idx];
 
       const labels = currentMode === 1 
         ? ["ญาณหยั่งรู้ประจำวัน"] 
@@ -868,7 +1005,22 @@
       sheet.classList.add('active');
     }
 
-    window.onload = resetBoard;
+    // เริ่มใหม่
+    function resetToDeck() {
+      shuffleCount = 0;
+      chosenCards = [];
+      document.getElementById('deck-section').style.display = 'flex';
+      document.getElementById('fan-section').style.display = 'none';
+      document.getElementById('board').style.display = 'none';
+      document.getElementById('reset-area').style.display = 'none';
+      document.getElementById('reading-sheet').classList.remove('active');
+      document.getElementById('reading-content').innerHTML = '';
+      document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
+      document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
+      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+    }
+
+    window.onload = resetToDeck;
   </script>
 </body>
 </html>
