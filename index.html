@@ -103,7 +103,7 @@
       box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
-    /* CARD กรอกข้อมูลผูกดวง */
+    /* กล่องผูกดวงชะตา */
     .destiny-card {
       max-width: 620px;
       margin: 10px auto 20px;
@@ -233,7 +233,7 @@
       box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
     }
 
-    /* STAGE 2: SPREAD RIBBON (โต๊ะคลี่ไพ่สไลด์ รองรับทั้งมือถือและคอม) */
+    /* STAGE 2: โต๊ะคลี่ไพ่แบบสไลด์ (Smooth Scroll Ribbon) */
     .fan-section {
       display: none;
       width: 100%;
@@ -251,17 +251,10 @@
       background: rgba(15, 8, 12, 0.7);
       box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.85);
     }
-    .fan-section::-webkit-scrollbar {
-      height: 6px;
-    }
-    .fan-section::-webkit-scrollbar-track {
-      background: rgba(10, 6, 8, 0.8);
-      border-radius: 10px;
-    }
-    .fan-section::-webkit-scrollbar-thumb {
-      background: var(--gold-primary);
-      border-radius: 10px;
-    }
+    .fan-section::-webkit-scrollbar { height: 6px; }
+    .fan-section::-webkit-scrollbar-track { background: rgba(10, 6, 8, 0.8); border-radius: 10px; }
+    .fan-section::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 10px; }
+
     .fan-track {
       display: inline-flex;
       align-items: center;
@@ -283,16 +276,8 @@
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
-    .fan-card:first-child {
-      margin-left: 0;
-    }
-    .fan-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      pointer-events: none;
-    }
+    .fan-card:first-child { margin-left: 0; }
+    .fan-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
     .fan-card:hover, .fan-card:active {
       z-index: 500 !important;
       border-color: var(--gold-bright);
@@ -307,12 +292,26 @@
       transition: all 0.35s ease;
     }
 
+    /* STAGE 3: โต๊ะวางไพ่ (กึ่งกลาง 100% ไม่เบี้ยวซ้าย ไม่บีบลีบ) */
+    #board, .board-container {
+      width: 100% !important;
+      max-width: 950px;
+      margin: 25px auto 35px !important;
+      padding: 10px 15px;
+      display: none;
+      justify-content: center !important;
+      align-items: flex-start !important;
+      gap: 25px;
+      box-sizing: border-box;
+    }
+
     .card-slot {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
-      flex: 0 0 auto;
+      flex: 0 0 auto !important;
+      flex-shrink: 0 !important;
     }
 
     .slot-label {
@@ -320,14 +319,16 @@
       font-size: 1.2rem;
       color: var(--gold-bright);
       text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+      text-align: center;
     }
 
     .card-wrapper {
-      width: 220px;
-      height: 380px;
+      width: 200px;
+      height: 345px;
       perspective: 1200px;
       cursor: pointer;
       position: relative;
+      flex-shrink: 0 !important;
     }
 
     .card-inner {
@@ -402,7 +403,7 @@
       color: var(--gold-bright);
     }
 
-    /* กล่องผลวิเคราะห์ดวงเฉพาะบุคคล */
+    /* กล่องผลวิเคราะห์ดวงชะตา */
     .seeker-destiny-banner {
       background: linear-gradient(135deg, rgba(74, 5, 11, 0.7), rgba(25, 15, 22, 0.9));
       border: 1px solid var(--gold-primary);
@@ -500,7 +501,7 @@
       line-height: 1.5;
     }
 
-    /* POPUP MODAL (ปลดล็อก 19 บาท) */
+    /* POPUP ปลดล็อกค่ายกครู 19 บาท */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -530,7 +531,7 @@
       font-family: 'Charm', cursive;
       font-size: 1.8rem;
       color: var(--gold-bright);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .modal-price-badge {
@@ -541,7 +542,7 @@
       padding: 4px 18px;
       border-radius: 20px;
       font-size: 1rem;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       font-weight: 600;
     }
 
@@ -551,7 +552,7 @@
       border-radius: 8px;
       width: 190px;
       height: 190px;
-      margin: 0 auto 12px;
+      margin: 0 auto 10px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -560,7 +561,7 @@
     .qr-container img { width: 100%; height: 100%; object-fit: contain; }
 
     .passcode-box {
-      margin: 18px 0 12px;
+      margin: 16px 0 10px;
       display: flex;
       gap: 8px;
       justify-content: center;
@@ -591,12 +592,13 @@
       background: #06c755;
       color: #fff;
       text-decoration: none;
-      padding: 8px 20px;
+      padding: 9px 18px;
       border-radius: 20px;
       font-size: 0.95rem;
       font-weight: 600;
-      margin-top: 8px;
+      margin-top: 5px;
       transition: all 0.3s;
+      box-shadow: 0 3px 12px rgba(6, 199, 85, 0.35);
     }
     .line-btn:hover { background: #05a847; transform: scale(1.03); }
 
@@ -619,10 +621,11 @@
       .fan-section { padding: 25px 12px 15px; margin: 10px auto 20px; }
       .fan-track { padding: 10px 25px 15px 15px; }
       .fan-card { width: 68px; height: 118px; margin-left: -32px; }
-      .card-wrapper { width: 110px; height: 190px; }
-      .board-container { gap: 10px; padding: 5px; }
-      .slot-label { font-size: 0.95rem; }
-      .click-prompt { font-size: 0.75rem; padding: 2px 8px; }
+      #board, .board-container { gap: 8px !important; padding: 5px !important; }
+      .card-slot { gap: 6px; }
+      .card-wrapper { width: 105px !important; height: 180px !important; }
+      .slot-label { font-size: 0.88rem; }
+      .click-prompt { font-size: 0.7rem; padding: 2px 6px; }
       .aspects-grid { grid-template-columns: 1fr; }
       .destiny-inputs { flex-direction: column; align-items: stretch; }
       .destiny-input { width: 100%; }
@@ -647,7 +650,7 @@
     </button>
   </div>
 
-  <!-- กล่องกรอกชื่อเล่นและวันเกิดเพื่อผูกดวง -->
+  <!-- กล่องผูกดวงชะตา -->
   <div class="destiny-card">
     <h3>✦ ผูกกระแสญาณดวงชะตา (ไม่บังคับ) ✦</h3>
     <p style="font-size: 0.88rem; color: var(--text-muted);">ระบุชื่อเล่นและวันเดือนปีเกิด พ.ศ. เพื่อให้แม่หมอคำนวณธาตุกำเนิดร่วมกับหน้าไพ่</p>
@@ -691,7 +694,7 @@
     <p id="shuffle-count" style="margin-top: 12px; font-size: 0.95rem; color: var(--text-muted);">สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)</p>
   </div>
 
-  <!-- STAGE 2: คลี่ไพ่ครึ่งวงกลม -->
+  <!-- STAGE 2: โต๊ะคลี่ไพ่สไลด์ -->
   <div class="fan-section" id="fan-section"></div>
 
   <!-- STAGE 3: โต๊ะวางไพ่ -->
@@ -701,15 +704,13 @@
     <button class="action-btn secondary" onclick="resetToDeck()">✦ สับไพ่เริ่มใหม่อีกครั้ง ✦</button>
   </div>
 
-  <!-- คำทำนาย -->
+  <!-- แผ่นคำทำนาย -->
   <div class="reading-sheet" id="reading-sheet">
     <div class="reading-header">
       <h2>บทวิเคราะห์ญาณพยากรณ์: เนตรวิจิตรบรรจง</h2>
       <p style="color: var(--text-muted); font-size: 0.95rem;">รหัสคำทำนายตามศาสตร์สำรับโบราณ โดยแม่หมอ</p>
     </div>
-    <!-- กล่องข้อมูลลูกดวง -->
     <div id="destiny-banner-area"></div>
-    <!-- เนื้อหาไพ่ -->
     <div id="reading-content"></div>
   </div>
 
@@ -734,17 +735,22 @@
     <div class="modal-card">
       <button class="close-modal-btn" onclick="closeUnlockModal()">×</button>
       <div class="modal-title">✦ ปลดล็อกญาณพยากรณ์ ๓ ใบ ✦</div>
-      <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 10px;">เปิดชะตา อดีต • ปัจจุบัน • อนาคต</div>
+      <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 6px;">เปิดชะตา อดีต • ปัจจุบัน • อนาคต</div>
       
       <div class="modal-price-badge">ค่ายกครู ๑๙ บาท</div>
       
       <div class="qr-container">
-        <img src="wallet-qr.png" alt="TrueMoney Wallet QR Code" onerror="this.src='https://placehold.co/180x180/ffffff/000000?text=TrueMoney+QR';">
+        <img src="wallet-qr.png" alt="TrueMoney / PromptPay QR" onerror="this.src='QR วอลเล็ค.jpg';">
       </div>
-      <p style="font-size: 0.85rem; color: var(--gold-bright);">สแกนชำระผ่าน TrueMoney Wallet</p>
+      <p style="font-size: 1.05rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 2px;">
+        ชื่อบัญชี: ศุภรัตน์ แซ่จัน
+      </p>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">
+        สแกนชำระผ่าน TrueMoney Wallet / พร้อมเพย์ทุกธนาคาร (140-***-224)
+      </p>
 
-      <a href="https://line.me" target="_blank" id="line-contact-link" class="line-btn">
-        <span>💬 ส่งสลิปรับรหัสทาง LINE</span>
+      <a href="https://line.me/ti/p/HCgUGegW9A" target="_blank" id="line-contact-link" class="line-btn">
+        <span>💬 ส่งสลิปรับรหัสทาง LINE (MONTRA OFFICIAL)</span>
       </a>
 
       <div class="passcode-box">
@@ -757,7 +763,7 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-7FArXCmF8C5_vgRNegUKNdG6BdwJb0S1Bnr5EWAQfHqase_S6a2hvMBpwiiyIF7oFg/exec";
-    const LINE_LINK = "https://line.me";
+    const LINE_LINK = "https://line.me/ti/p/HCgUGegW9A";
 
     // สำรับไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบสากล
     const tarotDeck = [
@@ -1584,7 +1590,7 @@
 
       fan.appendChild(track);
 
-      // กลิ้งลูกกลิ้งเมาส์บนคอมพิวเตอร์ เพื่อเลื่อนไพ่ซ้าย-ขวาได้ทันที
+      // กลิ้งลูกกลิ้งเมาส์บนคอมพิวเตอร์เพื่อเลื่อนไพ่ซ้าย-ขวา
       fan.onwheel = (e) => {
         if (e.deltaY !== 0) {
           e.preventDefault();
@@ -1592,7 +1598,7 @@
         }
       };
 
-      // เลื่อนตำแหน่งเริ่มต้นมาไว้กึ่งกลางสำรับ เพื่อความสะดวกในการเลือก
+      // เลื่อนตำแหน่งเริ่มต้นมาไว้กึ่งกลางสำรับ
       setTimeout(() => {
         fan.scrollLeft = (fan.scrollWidth - fan.clientWidth) / 2;
       }, 50);
@@ -1629,6 +1635,7 @@
       const board = document.getElementById('board');
       board.innerHTML = '';
       board.style.display = 'flex';
+      board.style.justifyContent = 'center';
       document.getElementById('reset-area').style.display = 'block';
 
       const labels = currentMode === 1 
@@ -1662,6 +1669,14 @@
         playChimeSound();
         cardWrapper.classList.add('flipped');
         renderInterpretationItem(idx);
+
+        // เลื่อนหน้าจอลงมาหาบทวิเคราะห์คำทำนายอย่างนุ่มนวล
+        setTimeout(() => {
+          const sheet = document.getElementById('reading-sheet');
+          if (sheet) {
+            sheet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 550);
       }
     }
 
@@ -1808,6 +1823,7 @@
       document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
       document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
       deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     window.onload = () => {
