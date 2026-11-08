@@ -233,57 +233,78 @@
       box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
     }
 
-    /* STAGE 2: คลี่ไพ่ */
+    /* STAGE 2: SPREAD RIBBON (โต๊ะคลี่ไพ่สไลด์ รองรับทั้งมือถือและคอม) */
     .fan-section {
       display: none;
       width: 100%;
       max-width: 1000px;
-      height: 380px;
-      margin: 10px auto 30px;
-      position: relative;
-      perspective: 1000px;
+      margin: 15px auto 30px;
+      padding: 35px 20px 20px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold-primary) rgba(20, 10, 16, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 12px;
+      background: rgba(15, 8, 12, 0.7);
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.85);
     }
-
+    .fan-section::-webkit-scrollbar {
+      height: 6px;
+    }
+    .fan-section::-webkit-scrollbar-track {
+      background: rgba(10, 6, 8, 0.8);
+      border-radius: 10px;
+    }
+    .fan-section::-webkit-scrollbar-thumb {
+      background: var(--gold-primary);
+      border-radius: 10px;
+    }
+    .fan-track {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 40px 20px 20px;
+    }
     .fan-card {
-      position: absolute;
-      left: 50%;
-      bottom: 20px;
-      width: 75px;
-      height: 130px;
-      margin-left: -37px;
-      border-radius: 6px;
+      position: relative;
+      flex: 0 0 auto;
+      width: 82px;
+      height: 142px;
+      margin-left: -38px;
+      border-radius: 8px;
       border: 1.5px solid var(--gold-primary);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.85);
+      box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.85);
       cursor: pointer;
-      transform-origin: center 280px;
-      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.25s, filter 0.25s;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
       overflow: hidden;
+      background: #0d090d;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .fan-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-    .fan-card:hover {
-      z-index: 120 !important;
+    .fan-card:first-child {
+      margin-left: 0;
+    }
+    .fan-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+    .fan-card:hover, .fan-card:active {
+      z-index: 500 !important;
       border-color: var(--gold-bright);
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.9), 0 10px 25px rgba(0,0,0,0.95);
-      filter: brightness(1.2);
-      transform: translateY(-25px) scale(1.15) !important;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.95), 0 8px 25px rgba(0,0,0,0.9);
+      filter: brightness(1.15);
+      transform: translateY(-24px) scale(1.18);
     }
     .fan-card.picked {
       opacity: 0;
       pointer-events: none;
-      transform: translateY(-120px) scale(0.6) !important;
-      transition: all 0.4s ease;
-    }
-
-    /* STAGE 3: โต๊ะวางไพ่ */
-    .board-container {
-      max-width: 950px;
-      margin: 0 auto 35px;
-      padding: 10px 15px;
-      display: none;
-      justify-content: center;
-      align-items: stretch;
-      gap: 25px;
-      flex-wrap: nowrap;
+      transform: translateY(-100px) scale(0.5) !important;
+      transition: all 0.35s ease;
     }
 
     .card-slot {
@@ -595,8 +616,9 @@
 
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
-      .fan-section { height: 320px; }
-      .fan-card { width: 52px; height: 95px; margin-left: -26px; transform-origin: center 220px; }
+      .fan-section { padding: 25px 12px 15px; margin: 10px auto 20px; }
+      .fan-track { padding: 10px 25px 15px 15px; }
+      .fan-card { width: 68px; height: 118px; margin-left: -32px; }
       .card-wrapper { width: 110px; height: 190px; }
       .board-container { gap: 10px; padding: 5px; }
       .slot-label { font-size: 0.95rem; }
@@ -1546,25 +1568,34 @@
       fan.innerHTML = '';
       fan.style.display = 'block';
 
-      const total = deckPool.length;
+      const track = document.createElement('div');
+      track.className = 'fan-track';
+
       deckPool.forEach((card, i) => {
         const cardEl = document.createElement('div');
         cardEl.className = 'fan-card';
         cardEl.id = `fan-card-${i}`;
-
-        // จัดมุมพัดโค้งอัตโนมัติให้ ๗๘ ใบเรียงตัวสวยงามพอดีจอ
-        const delta = i - (total - 1) / 2;
-        const angle = delta * (85 / total);
-        const transX = delta * (760 / total);
-        const transY = Math.abs(delta) * (40 / (total / 2));
-
-        cardEl.style.transform = `translateX(${transX}px) translateY(${transY}px) rotate(${angle}deg)`;
         cardEl.style.zIndex = i + 1;
         cardEl.innerHTML = `<img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'">`;
 
         cardEl.onclick = () => pickCardFromFan(i, card, cardEl);
-        fan.appendChild(cardEl);
+        track.appendChild(cardEl);
       });
+
+      fan.appendChild(track);
+
+      // กลิ้งลูกกลิ้งเมาส์บนคอมพิวเตอร์ เพื่อเลื่อนไพ่ซ้าย-ขวาได้ทันที
+      fan.onwheel = (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          fan.scrollLeft += e.deltaY;
+        }
+      };
+
+      // เลื่อนตำแหน่งเริ่มต้นมาไว้กึ่งกลางสำรับ เพื่อความสะดวกในการเลือก
+      setTimeout(() => {
+        fan.scrollLeft = (fan.scrollWidth - fan.clientWidth) / 2;
+      }, 50);
 
       updateHintForPicking();
     }
@@ -1573,7 +1604,7 @@
       const remaining = currentMode - chosenCards.length;
       const thaiDigits = ["๐","๑","๒","๓"];
       if (remaining > 0) {
-        document.getElementById('hint-bar').innerHTML = `✦ ตั้งจิตอธิษฐาน แตะเลือกไพ่ที่ดลใจ (ต้องการอีก <strong>${thaiDigits[remaining]}</strong> ใบ) ✦`;
+        document.getElementById('hint-bar').innerHTML = `✦ เลื่อนสไลด์ซ้าย-ขวา แตะเลือกไพ่ที่ดลใจ (ต้องการอีก <strong>${thaiDigits[remaining]}</strong> ใบ) ✦`;
       }
     }
 
