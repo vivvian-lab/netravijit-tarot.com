@@ -1,1 +1,1 @@
-# tarot-reading
+# Netravijit-tarot.com
