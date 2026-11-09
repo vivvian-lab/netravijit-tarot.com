@@ -1618,15 +1618,6 @@
       hintBar.innerHTML = `✦ อัญเชิญญาณสับไพ่ ๗๘ ใบแล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
     }
   }
-
-      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
-
-      const thaiNums = ["๐","๑","๒","๓","๔","๕","๖","๗","๘","๙"];
-      const countThai = shuffleCount.toString().split('').map(d => thaiNums[parseInt(d)]).join('');
-      document.getElementById('shuffle-count').innerText = `สับไพ่แล้ว ${countThai} ครั้ง (สับได้ตามจิตศรัทธา)`;
-      document.getElementById('hint-bar').innerHTML = `✦ อัญเชิญญาณสับไพ่ ๗๘ ใบแล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
-    }
-
     function spreadDeck() {
       if (deckPool.length === 0) {
         deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
