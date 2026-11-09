@@ -1592,8 +1592,9 @@ function revealAllCards() {
         isUnlockedMode3 = true;
 
         // ๒. ปลดล็อกรูปแม่กุญแจ 🔒 บนปุ่ม
-        const lockIcon = document.getElementById('mode-3-lock');
-        if (lockIcon) lockIcon.style.display = 'none';
+        if (document.getElementById('mode-3-lock')) {
+  document.getElementById('mode-3-lock').style.display = 'none';
+}
 
         // ๓. สลับหน้าจอเข้าสู่โหมด ๓ ใบ
         if (typeof switchMode === 'function') {
