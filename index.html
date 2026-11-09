@@ -1585,15 +1585,22 @@ function revealAllCards() {
         if (passcodeBox) passcodeBox.style.display = 'none';
         if (errorText) errorText.innerText = '';
 
-        // แจ้งเตือนความสำเร็จ
+       // แจ้งเตือนความสำเร็จ
         alert('✦ ปลดล็อกญาณสำเร็จ ✦\nยินดีต้อนรับสู่การพยากรณ์ชะตา ๓ ใบ (อดีต ปัจจุบัน อนาคต) เจ้าค่ะ 🔮✨');
 
-        // สลับหน้าจอเข้าสู่โหมด ๓ ใบอัตโนมัติ
+        // ๑. ปลดล็อกตัวแปรแม่กุญแจโหมด ๓ ใบให้เป็นจริง
+        isUnlockedMode3 = true;
+
+        // ๒. ปลดล็อกรูปแม่กุญแจ 🔒 บนปุ่ม
+        const lockIcon = document.getElementById('mode-3-lock');
+        if (lockIcon) lockIcon.style.display = 'none';
+
+        // ๓. สลับหน้าจอเข้าสู่โหมด ๓ ใบ
         if (typeof switchMode === 'function') {
           switchMode(3);
         }
 
-        // รีเซ็ตสำรับไพ่ใหม่เพื่อให้พร้อมเลือก ๓ ใบ
+        // ๔. คลี่ไพ่ให้พร้อมเลือก ๓ ใบ
         if (typeof spreadDeck === 'function') {
           spreadDeck();
         }
