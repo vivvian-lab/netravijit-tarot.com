@@ -630,6 +630,30 @@
       .destiny-inputs { flex-direction: column; align-items: stretch; }
       .destiny-input { width: 100%; }
     }
+    /* ===== ขยายขนาดไพ่พยากรณ์ให้ใหญ่พอดีสายตา ===== */
+.card, 
+.tarot-card, 
+.card-container,
+.card-display img,
+.tarot-card img {
+  width: 280px !important;
+  max-width: 82vw !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  display: block !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* ปรับให้ขยายเพิ่มขึ้นอีกนิดเมื่อเปิดดูบนคอมพิวเตอร์ */
+@media (min-width: 768px) {
+  .card, 
+  .tarot-card, 
+  .card-container,
+  .card-display img,
+  .tarot-card img {
+    width: 320px !important;
+  }
+}
   </style>
 </head>
 <body>
