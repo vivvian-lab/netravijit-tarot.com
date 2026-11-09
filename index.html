@@ -1534,21 +1534,38 @@
         const result = await response.json();
 
         if (result.success) {
-          playChimeSound();
-          isUnlockedMode3 = true;
-          const lockIcon = document.getElementById('mode-3-lock');
-          if (lockIcon) lockIcon.style.display = 'none';
-          closeUnlockModal();
-          switchMode(3);
-        } else {
-          errorText.style.color = '#ff6b6b';
-          errorText.innerText = result.message || 'รหัสไม่ถูกต้อง';
+        if (typeof playChimeSound === 'function') playChimeSound();
+        isUnlockedMode3 = true;
+
+        // ปลดล็อกไอคอนกุญแจ
+        const lockIcon = document.getElementById('mode-3-lock');
+        if (lockIcon) lockIcon.style.display = 'none';
+
+        // ปิด modal ถ้ามี (แบบปลอดภัยไม่ให้โค้ดพัง)
+        if (typeof closeUnlockModal === 'function') {
+          try { closeUnlockModal(); } catch (e) {}
         }
-      } catch (err) {
-        errorText.style.color = '#ff6b6b';
-        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+
+        // ซ่อนกล่องกรอกรหัสและข้อความแจ้งเตือน
+        const passcodeBox = document.querySelector('.passcode-box');
+        if (passcodeBox) passcodeBox.style.display = 'none';
+        if (errorText) errorText.innerText = '';
+
+        // สลับไปโหมด ๓ ใบ
+        if (typeof switchMode === 'function') {
+          switchMode(3);
+        }
+
+        alert('✦ ปลดล็อกญาณสำเร็จ ✦\nเข้าสู่โหมดพยากรณ์ ๓ ใบ (อดีต ปัจจุบัน อนาคต) เรียบร้อยแล้วเจ้าค่ะ 🔮✨');
+
+        // สั่งเริ่มสำรับใหม่เพื่อเปิดโอกาสให้เลือกไพ่ ๓ ใบ
+        const restartBtn = Array.from(document.querySelectorAll('button, .action-btn')).find(b => b.innerText.includes('สับไพ่') || b.innerText.includes('เริ่มใหม่'));
+        if (restartBtn) {
+          restartBtn.click();
+        } else if (typeof spreadDeck === 'function') {
+          spreadDeck();
+        }
       }
-    }
 
     function shuffleDeck() {
       playShuffleSound();
