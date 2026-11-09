@@ -1881,7 +1881,7 @@ function revealAllCards() {
     }
 
     function resetToDeck() {
-      if (isUnlockedMode3 && chosenCards.length > 0) {
+      if (isUnlockedMode3 && chosenCards.length >= 3) {
         isUnlockedMode3 = false;
         currentMode = 1;
         const lockIcon = document.getElementById('mode-3-lock');
