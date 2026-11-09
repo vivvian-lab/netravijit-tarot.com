@@ -1515,65 +1515,109 @@
       }
     }
 
-    async function checkPasscode() {
-      const inputEl = document.getElementById('passcode-input');
-      const errorText = document.getElementById('passcode-error');
-      const input = inputEl ? inputEl.value.trim() : '';
+   // =========================================================================
+  // ระบบตรวจสอบรหัสผ่าน, ปลดล็อกญาณ และสลับเข้าสู่โหมด ๓ ใบอัตโนมัติ
+  // =========================================================================
+  async function checkPasscode() {
+    const inputEl = document.getElementById('passcode-input');
+    const errorText = document.getElementById('passcode-error');
+    const input = inputEl ? inputEl.value.trim() : '';
 
-      if (!input) {
+    if (!input) {
+      if (errorText) {
         errorText.style.color = '#ff6b6b';
         errorText.innerText = 'กรุณากรอกรหัสปลดล็อก';
-        return;
       }
+      return;
+    }
 
+    if (errorText) {
       errorText.style.color = 'var(--gold-bright)';
       errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
+    }
 
-      try {
-        const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
-        const result = await response.json();
+    try {
+      const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
+      const result = await response.json();
 
-        if (result.success) {
-        if (typeof playChimeSound === 'function') playChimeSound();
+      if (result.success) {
+        // เล่นเสียงกระดิ่งปลดล็อก (ถ้ามี)
+        if (typeof playChimeSound === 'function') {
+          try { playChimeSound(); } catch (e) {}
+        }
+
+        // ปลดล็อกสถานะโหมด ๓ ใบ
         isUnlockedMode3 = true;
 
-        // ปลดล็อกไอคอนกุญแจ
+        // ซ่อนไอคอนกุญแจล็อก
         const lockIcon = document.getElementById('mode-3-lock');
         if (lockIcon) lockIcon.style.display = 'none';
 
-        // ปิด modal ถ้ามี (แบบปลอดภัยไม่ให้โค้ดพัง)
+        // ปิดหน้าต่าง Popup ถ้ามี
         if (typeof closeUnlockModal === 'function') {
           try { closeUnlockModal(); } catch (e) {}
         }
 
-        // ซ่อนกล่องกรอกรหัสและข้อความแจ้งเตือน
+        // ซ่อนกล่องกรอกรหัสและล้างข้อความ
         const passcodeBox = document.querySelector('.passcode-box');
         if (passcodeBox) passcodeBox.style.display = 'none';
         if (errorText) errorText.innerText = '';
 
-        // สลับไปโหมด ๓ ใบ
+        // แจ้งเตือนความสำเร็จ
+        alert('✦ ปลดล็อกญาณสำเร็จ ✦\nยินดีต้อนรับสู่การพยากรณ์ชะตา ๓ ใบ (อดีต ปัจจุบัน อนาคต) เจ้าค่ะ 🔮✨');
+
+        // สลับหน้าจอเข้าสู่โหมด ๓ ใบอัตโนมัติ
         if (typeof switchMode === 'function') {
           switchMode(3);
         }
 
-        alert('✦ ปลดล็อกญาณสำเร็จ ✦\nเข้าสู่โหมดพยากรณ์ ๓ ใบ (อดีต ปัจจุบัน อนาคต) เรียบร้อยแล้วเจ้าค่ะ 🔮✨');
-
-        // สั่งเริ่มสำรับใหม่เพื่อเปิดโอกาสให้เลือกไพ่ ๓ ใบ
-        const restartBtn = Array.from(document.querySelectorAll('button, .action-btn')).find(b => b.innerText.includes('สับไพ่') || b.innerText.includes('เริ่มใหม่'));
-        if (restartBtn) {
-          restartBtn.click();
-        } else if (typeof spreadDeck === 'function') {
+        // รีเซ็ตสำรับไพ่ใหม่เพื่อให้พร้อมเลือก ๓ ใบ
+        if (typeof spreadDeck === 'function') {
           spreadDeck();
         }
+      } else {
+        if (errorText) {
+          errorText.style.color = '#ff6b6b';
+          errorText.innerText = result.message || 'รหัสไม่ถูกต้อง หรือถูกใช้งานไปแล้ว';
+        }
       }
+    } catch (err) {
+      if (errorText) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+      }
+    }
+  }
 
-    function shuffleDeck() {
-      playShuffleSound();
-      shuffleCount++;
-      const stack = document.getElementById('deck-stack');
+  // =========================================================================
+  // ระบบสับไพ่และนับจำนวนครั้ง (ทำงานร่วมกับโหมด ๑ ใบ และ ๓ ใบ)
+  // =========================================================================
+  function shuffleDeck() {
+    if (typeof playShuffleSound === 'function') {
+      try { playShuffleSound(); } catch (e) {}
+    }
+    shuffleCount++;
+
+    const stack = document.getElementById('deck-stack');
+    if (stack) {
       stack.classList.remove('shuffling');
       void stack.offsetWidth;
       stack.classList.add('shuffling');
+    }
+
+    const thaiNums = ["๐", "๑", "๒", "๓", "๔", "๕", "๖", "๗", "๘", "๙"];
+    const countThai = shuffleCount.toString().split('').map(d => thaiNums[parseInt(d)]).join('');
+    
+    const shuffleCountEl = document.getElementById('shuffle-count');
+    if (shuffleCountEl) {
+      shuffleCountEl.innerText = `สับไพ่แล้ว ${countThai} ครั้ง (สับได้ตามจิตศรัทธา)`;
+    }
+
+    const hintBar = document.getElementById('hint-bar');
+    if (hintBar) {
+      hintBar.innerHTML = `✦ อัญเชิญญาณสับไพ่ ๗๘ ใบแล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
+    }
+  }
 
       deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
 
