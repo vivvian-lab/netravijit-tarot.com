@@ -725,7 +725,7 @@
   <div class="board-container" id="board"></div>
 
   <div style="text-align: center; margin-bottom: 25px; display: none;" id="reset-area">
-    <button class="action-btn secondary" onclick="resetToDeck()">✦ สับไพ่เริ่มใหม่อีกครั้ง ✦</button>
+    <button id="reveal-all-btn" class="action-btn" onclick="revealAllCards()" style="background: linear-gradient(135deg, #8b1113, #b81419); border: 1px solid #d4af37; color: #fff; padding: 10px 26px; border-radius: 25px; font-size: 1.05rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px;">✦ เปิดไพ่ทั้งหมดพร้อมกัน ✦</button>
   </div>
 
   <!-- แผ่นคำทำนาย -->
@@ -789,6 +789,28 @@
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-7FArXCmF8C5_vgRNegUKNdG6BdwJb0S1Bnr5EWAQfHqase_S6a2hvMBpwiiyIF7oFg/exec";
     const LINE_LINK = "https://page.line.me/494ywdqs";
 
+    // ฟังก์ชันสำหรับเปิดไพ่ทั้งหมดพร้อมกัน
+function revealAllCards() {
+  const board = document.getElementById('board');
+  if (!board) return;
+
+  // ค้นหาไพ่บนโต๊ะทั้งหมด
+  const cards = board.querySelectorAll('.card, .card-slot, [onclick], div[class*="card"]');
+  let delay = 0;
+
+  cards.forEach(card => {
+    setTimeout(() => {
+      card.click();
+    }, delay);
+    delay += 250; // หน่วงเวลาเปิดทีละใบเล็กน้อย เพื่อให้แอนิเมชันพลิกไพ่สวยงาม
+  });
+
+  // เมื่อเปิดครบแล้ว ให้ซ่อนปุ่มนี้ไป เพื่อไม่ให้ลูกดวงกดซ้ำ
+  setTimeout(() => {
+    const resetArea = document.getElementById('reset-area');
+    if (resetArea) resetArea.style.display = 'none';
+  }, delay + 400);
+}
     // สำรับไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบ (ชื่อไฟล์ภาพตรงกับโฟลเดอร์ Google Drive ทุกใบ 100%)
     const tarotDeck = [
       // ==================== มหามายา ๒๒ ใบ (MAJOR ARCANA) ====================
