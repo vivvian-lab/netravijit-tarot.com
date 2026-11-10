@@ -1884,20 +1884,20 @@ function revealAllCards() {
     }
 
    function resetToDeck() {
-      shuffleCount = 0;
-      chosenCards = [];
-      document.getElementById('deck-section').style.display = 'flex';
-      document.getElementById('fan-section').style.display = 'none';
-      document.getElementById('board').style.display = 'none';
-      document.getElementById('reset-area').style.display = 'none';
-      document.getElementById('reading-sheet').classList.remove('active');
-      document.getElementById('destiny-banner-area').innerHTML = '';
-      document.getElementById('reading-content').innerHTML = '';
-      document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
-      document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
-      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  shuffleCount = 0;
+  chosenCards = [];
+  document.getElementById('deck-section').style.display = 'flex';
+  document.getElementById('fan-section').style.display = 'none';
+  document.getElementById('board').style.display = 'none';
+  document.getElementById('reset-area').style.display = 'none';
+  document.getElementById('reading-sheet').classList.remove('active');
+  document.getElementById('destiny-banner-area').innerHTML = '';
+  document.getElementById('reading-content').innerHTML = '';
+  document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
+  document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
+  deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
     window.onload = resetToDeck;
   </script>
