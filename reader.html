@@ -2,740 +2,1905 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>เนตรวิจิตรบรรจง • โต๊ะพยากรณ์แม่หมอ</title>
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>เนตรวิจิตรบรรจง - ไพ่ทาโรต์ภูตผีไทยโบราณ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel+Decorative:wght@700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #0c0509;
-      --bg-panel: #160a12;
+      --bg-deep: #0a0608;
+      --bg-card: #150f14;
       --gold-primary: #d4af37;
-      --gold-glow: #ffd966;
-      --accent-red: #8b0000;
-      --text-light: #f5ebe6;
-      --text-muted: #c4a9b2;
+      --gold-bright: #ffd700;
+      --crimson-blood: #800a12;
+      --crimson-light: #b3101d;
+      --text-gold: #f5e6be;
+      --text-muted: #bfa993;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--bg-dark);
-      background-image: radial-gradient(circle at 50% 20%, #290f1e 0%, var(--bg-dark) 85%);
-      color: var(--text-light);
+      background-color: var(--bg-deep);
+      background-image: 
+        radial-gradient(circle at 50% 15%, rgba(128, 10, 18, 0.35) 0%, transparent 65%),
+        radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(10, 6, 8, 0.98), rgba(5, 3, 4, 1));
+      color: var(--text-gold);
       font-family: 'Sarabun', sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      padding-bottom: 120px;
       overflow-x: hidden;
     }
 
-    /* แถบหัวแม่หมอ */
-    header {
-      padding: 12px 16px;
-      background: rgba(22, 10, 18, 0.95);
-      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(8px);
+    .thai-border-frame {
+      position: fixed;
+      top: 8px; left: 8px; right: 8px; bottom: 8px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      pointer-events: none;
+      z-index: 99;
     }
 
-    .brand h1 {
-      font-family: 'Cinzel', serif;
+    header { text-align: center; padding: 30px 20px 10px; }
+
+    .kranok-badge {
+      display: inline-block;
+      font-family: 'Charm', cursive;
       font-size: 1.05rem;
-      letter-spacing: 1px;
-      color: var(--gold-primary);
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+      letter-spacing: 2px;
+      color: var(--gold-bright);
+      padding: 3px 20px;
+      border-top: 1px solid var(--gold-primary);
+      border-bottom: 1px solid var(--gold-primary);
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
     }
 
-    .brand span {
-      font-size: 0.72rem;
+    h1 {
+      font-family: 'Charm', cursive;
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: var(--gold-bright);
+      text-shadow: 0 0 15px rgba(212, 175, 55, 0.6), 0 2px 4px #000;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 1rem;
       color: var(--text-muted);
+      max-width: 720px;
+      margin: 0 auto;
+      line-height: 1.6;
     }
 
-    .header-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .btn-action {
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-glow);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .btn-action:active {
-      transform: scale(0.95);
-      background: var(--gold-primary);
-      color: #000;
-    }
-
-    /* ตัวเลือกโหมดจำนวนใบ */
     .mode-bar {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      padding: 10px 14px;
-      background: rgba(10, 4, 8, 0.6);
+      gap: 15px;
+      margin: 18px 0 15px;
+      padding: 0 15px;
     }
 
-    .mode-pill {
-      background: transparent;
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      color: var(--text-muted);
-      padding: 5px 14px;
-      border-radius: 16px;
-      font-size: 0.82rem;
+    .mode-btn {
+      background: rgba(30, 20, 26, 0.8);
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-bright);
+      padding: 8px 22px;
+      border-radius: 4px;
+      font-family: 'Charm', cursive;
+      font-size: 1.15rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .mode-pill.active {
-      background: linear-gradient(135deg, var(--accent-red), #4a0000);
-      border-color: var(--gold-glow);
-      color: var(--gold-glow);
-      font-weight: 600;
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-    }
-
-    /* โต๊ะปูไพ่ */
-    .mat-container {
-      flex: 1;
-      padding: 16px;
+      transition: all 0.3s ease;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 8px;
+      user-select: none;
+    }
+    .mode-btn:hover, .mode-btn.active {
+      background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
-    .spread-slots {
+    /* กล่องผูกดวงชะตา */
+    .destiny-card {
+      max-width: 650px;
+      margin: 10px auto 20px;
+      padding: 18px 22px;
+      background: rgba(23, 14, 20, 0.85);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      text-align: center;
+    }
+    .destiny-card h3 {
+      font-family: 'Charm', cursive;
+      color: var(--gold-bright);
+      font-size: 1.35rem;
+      margin-bottom: 4px;
+    }
+    .destiny-inputs {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 12px;
-      width: 100%;
-      max-width: 720px;
-      min-height: 180px;
-      margin-top: 6px;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .destiny-input, .destiny-select {
+      background: #0d070b;
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-bright);
+      font-family: 'Sarabun', sans-serif;
+      font-size: 0.95rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      outline: none;
+      transition: border 0.3s;
+    }
+    .destiny-input:focus, .destiny-select:focus {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    }
+    .destiny-input { width: 140px; text-align: center; }
+    .destiny-select { cursor: pointer; }
+
+    .hint-bar {
+      text-align: center;
+      font-family: 'Charm', cursive;
+      font-size: 1.25rem;
+      color: var(--gold-bright);
+      margin-bottom: 15px;
+      min-height: 35px;
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
     }
 
-    .slot-box {
-      width: 105px;
-      height: 168px;
-      border: 1px dashed rgba(212, 175, 55, 0.35);
-      border-radius: 8px;
+    /* STAGE 1: กองไพ่ */
+    .deck-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      position: relative;
-      background: rgba(22, 10, 18, 0.4);
-      transition: all 0.3s ease;
+      margin: 15px 0 30px;
     }
 
-    .slot-box.filled {
-      border: 1px solid var(--gold-primary);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-      background: transparent;
+    .deck-stack {
+      position: relative;
+      width: 140px;
+      height: 235px;
+      margin: 15px auto 25px;
+      cursor: pointer;
+      perspective: 800px;
+    }
+
+    .deck-card-layer {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      border-radius: 10px;
+      border: 2px solid var(--gold-primary);
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8);
+      transition: transform 0.3s ease;
+    }
+    .deck-card-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .deck-card-layer:nth-child(1) { transform: translate(0, 0); z-index: 5; }
+    .deck-card-layer:nth-child(2) { transform: translate(-3px, -3px); z-index: 4; filter: brightness(0.9); }
+    .deck-card-layer:nth-child(3) { transform: translate(3px, -6px); z-index: 3; filter: brightness(0.8); }
+    .deck-card-layer:nth-child(4) { transform: translate(-5px, -9px); z-index: 2; filter: brightness(0.7); }
+    .deck-card-layer:nth-child(5) { transform: translate(4px, -12px); z-index: 1; filter: brightness(0.6); }
+
+    .deck-stack.shuffling .deck-card-layer:nth-child(1) { animation: shuffleLeft 0.5s ease-in-out; }
+    .deck-stack.shuffling .deck-card-layer:nth-child(2) { animation: shuffleRight 0.5s ease-in-out 0.05s; }
+    .deck-stack.shuffling .deck-card-layer:nth-child(3) { animation: shuffleLeft 0.5s ease-in-out 0.1s; }
+
+    @keyframes shuffleLeft {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-70px, -10px) rotate(-15deg); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes shuffleRight {
+      0% { transform: translate(-3px, -3px); }
+      50% { transform: translate(70px, -10px) rotate(15deg); }
+      100% { transform: translate(-3px, -3px); }
+    }
+
+    .deck-controls { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+
+    .action-btn {
+      background: linear-gradient(135deg, var(--gold-primary), #8a6c17);
+      border: 1px solid var(--gold-bright);
+      color: #0d0608;
+      font-family: 'Charm', cursive;
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 8px 32px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+      transition: all 0.3s ease;
+    }
+    .action-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, var(--gold-bright), #d4af37);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+    }
+    .action-btn.secondary {
+      background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
+      color: var(--gold-bright);
+      border-color: var(--gold-primary);
+    }
+    .action-btn.secondary:hover {
+      background: linear-gradient(135deg, var(--crimson-light), #6b0710);
+      box-shadow: 0 0 20px rgba(179, 16, 29, 0.6);
+    }
+
+    /* STAGE 2: โต๊ะคลี่ไพ่แบบสไลด์ */
+    .fan-section {
+      display: none;
+      width: 100%;
+      max-width: 1000px;
+      margin: 15px auto 30px;
+      padding: 35px 20px 20px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: var(--gold-primary) rgba(20, 10, 16, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 12px;
+      background: rgba(15, 8, 12, 0.7);
+      box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.85);
+    }
+    .fan-section::-webkit-scrollbar { height: 6px; }
+    .fan-section::-webkit-scrollbar-track { background: rgba(10, 6, 8, 0.8); border-radius: 10px; }
+    .fan-section::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 10px; }
+
+    .fan-track {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 40px 20px 20px;
+    }
+    .fan-card {
+      position: relative;
+      flex: 0 0 auto;
+      width: 82px;
+      height: 142px;
+      margin-left: -38px;
+      border-radius: 8px;
+      border: 1.5px solid var(--gold-primary);
+      box-shadow: -4px 4px 12px rgba(0, 0, 0, 0.85);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.2s;
+      overflow: hidden;
+      background: #0d090d;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fan-card:first-child { margin-left: 0; }
+    .fan-card img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+    .fan-card:hover, .fan-card:active {
+      z-index: 500 !important;
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.95), 0 8px 25px rgba(0,0,0,0.9);
+      filter: brightness(1.15);
+      transform: translateY(-24px) scale(1.18);
+    }
+    .fan-card.picked {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-100px) scale(0.5) !important;
+      transition: all 0.35s ease;
+    }
+
+    /* STAGE 3: โต๊ะวางไพ่ */
+    #board, .board-container {
+      width: 100% !important;
+      max-width: 950px;
+      margin: 25px auto 35px !important;
+      padding: 10px 15px;
+      display: none;
+      justify-content: center !important;
+      align-items: flex-start !important;
+      gap: 25px;
+      box-sizing: border-box;
+    }
+
+    .card-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      flex: 0 0 auto !important;
+      flex-shrink: 0 !important;
     }
 
     .slot-label {
-      font-size: 0.72rem;
-      color: var(--gold-primary);
-      margin-bottom: 4px;
-      font-weight: 600;
+      font-family: 'Charm', cursive;
+      font-size: 1.2rem;
+      color: var(--gold-bright);
+      text-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+      text-align: center;
     }
 
-    /* ตัวการ์ดไพ่ */
-    .tarot-card {
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-      position: relative;
-      perspective: 1000px;
+    .card-wrapper {
+      width: 200px;
+      height: 345px;
+      perspective: 1200px;
       cursor: pointer;
+      position: relative;
+      flex-shrink: 0 !important;
     }
 
     .card-inner {
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
-      transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      transform-style: preserve-3d;
+      width: 100%; height: 100%;
       position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(0.2, 0.85, 0.32, 1.2);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.85), 0 0 15px rgba(212, 175, 55, 0.25);
     }
 
-    .tarot-card.flipped .card-inner {
-      transform: rotateY(180deg);
-    }
+    .card-wrapper.flipped .card-inner { transform: rotateY(180deg); }
 
     .card-face {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 8px;
+      top: 0; left: 0; width: 100%; height: 100%;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 12px;
       overflow: hidden;
+      border: 2px solid var(--gold-primary);
+      background: #0d090d;
+    }
+
+    .card-back { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .card-back img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .click-prompt {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 6, 8, 0.9);
       border: 1px solid var(--gold-primary);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      color: var(--gold-bright);
+      font-family: 'Charm', cursive;
+      font-size: 0.95rem;
+      padding: 3px 14px;
+      border-radius: 15px;
+      pointer-events: none;
+      white-space: nowrap;
+      text-shadow: 0 0 5px var(--gold-bright);
     }
 
-    .card-back {
-      background: linear-gradient(135deg, #1f0814 0%, #0d0407 100%);
-      box-shadow: inset 0 0 12px rgba(212, 175, 55, 0.25);
-    }
+    .card-wrapper.flipped .click-prompt { display: none; }
+    .card-front { transform: rotateY(180deg); background-color: #0b0709; }
+    .card-front img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-    .card-back-emblem {
-      width: 44px;
-      height: 44px;
+    /* Reading Sheet */
+    .reading-sheet {
+      max-width: 900px;
+      margin: 40px auto 30px;
+      padding: 35px 30px;
+      background: rgba(21, 15, 20, 0.96);
       border: 1px solid var(--gold-primary);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--gold-glow);
-      font-size: 1.2rem;
-      text-shadow: 0 0 8px var(--gold-primary);
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+      display: none;
+      clear: both;
     }
+    .reading-sheet.active { display: block; animation: fadeIn 0.5s ease; }
 
-    .card-front {
-      background: #140811;
-      transform: rotateY(180deg);
-      padding: 6px;
+    .reading-header {
       text-align: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 15px;
+      margin-bottom: 25px;
+    }
+    .reading-header h2 {
+      font-family: 'Charm', cursive;
+      font-size: 2.2rem;
+      color: var(--gold-bright);
     }
 
-    .card-fallback-art {
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, #2d0f20, #12050c);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-      border: 1px solid rgba(212, 175, 55, 0.4);
+    /* กล่องผลวิเคราะห์ดวงชะตา */
+    .seeker-destiny-banner {
+      background: linear-gradient(135deg, rgba(74, 5, 11, 0.7), rgba(25, 15, 22, 0.9));
+      border: 1px solid var(--gold-primary);
       border-radius: 6px;
-    }
-
-    .card-fallback-num {
-      font-family: 'Cinzel', serif;
-      font-size: 0.72rem;
-      color: var(--gold-primary);
-    }
-
-    .card-fallback-name {
-      font-size: 0.8rem;
-      color: var(--gold-glow);
-      margin: 6px 0;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    .card-fallback-sub {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-    }
-
-    /* แถบคลี่ไพ่ ๗๘ ใบให้ลูกดวงแตะเลือก */
-    .deck-strip-section {
-      width: 100%;
-      margin-top: auto;
-      padding: 12px 0 20px;
-      background: rgba(10, 4, 8, 0.8);
-      border-top: 1px solid rgba(212, 175, 55, 0.25);
-    }
-
-    .strip-hint {
+      padding: 18px 20px;
+      margin-bottom: 25px;
       text-align: center;
-      font-size: 0.82rem;
-      color: var(--gold-glow);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+    }
+    .seeker-destiny-banner .seeker-name {
+      font-family: 'Charm', cursive;
+      font-size: 1.55rem;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+    }
+    .seeker-destiny-banner .seeker-details {
+      font-size: 0.95rem;
+      color: #ede3d1;
       margin-bottom: 8px;
     }
-
-    .card-strip {
-      display: flex;
-      overflow-x: auto;
-      padding: 10px 20px;
-      gap: -24px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
+    .seeker-destiny-banner .element-insight {
+      font-size: 0.95rem;
+      color: var(--text-gold);
+      background: rgba(0,0,0,0.35);
+      padding: 8px 12px;
+      border-radius: 4px;
+      border-left: 3px solid var(--gold-bright);
+      text-align: left;
+      line-height: 1.6;
     }
 
-    .card-strip::-webkit-scrollbar {
-      display: none;
+    .interpretation-card {
+      margin-bottom: 30px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+      animation: fadeIn 0.5s ease;
     }
+    .interpretation-card:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 
-    .strip-card {
-      flex: 0 0 52px;
-      height: 84px;
-      margin-right: -24px;
-      border: 1px solid var(--gold-primary);
-      border-radius: 6px;
-      background: linear-gradient(135deg, #260a1a, #0d0407);
-      box-shadow: -4px 0 8px rgba(0, 0, 0, 0.5);
-      cursor: pointer;
+    .card-meta-title {
+      font-family: 'Charm', cursive;
+      font-size: 1.6rem;
+      color: var(--gold-bright);
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: var(--gold-primary);
-      font-size: 0.8rem;
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .strip-card:active {
-      transform: translateY(-16px) scale(1.1);
-      z-index: 10;
-      border-color: var(--gold-glow);
-      box-shadow: 0 0 12px var(--gold-glow);
-    }
-
-    .table-controls {
-      display: flex;
       gap: 10px;
     }
 
-    .btn-table {
-      background: linear-gradient(135deg, #360f23, #1a0611);
-      border: 1px solid var(--gold-primary);
-      color: var(--gold-glow);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .card-keywords {
+      display: inline-block;
+      font-size: 0.95rem;
+      color: var(--gold-primary);
+      margin-bottom: 12px;
+      background: rgba(212, 175, 55, 0.1);
+      padding: 2px 10px;
+      border-radius: 4px;
     }
 
-    .btn-table.primary {
-      background: linear-gradient(135deg, var(--accent-red), #540000);
-      border-color: var(--gold-glow);
-      font-weight: 600;
+    .card-essence {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #ede3d1;
+      margin-bottom: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 12px 16px;
+      border-left: 3px solid var(--crimson-blood);
+      border-radius: 0 6px 6px 0;
     }
 
-    .btn-table:active {
-      transform: scale(0.96);
+    .aspects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 15px;
+      margin-top: 15px;
     }
 
-    /* โมดอลคัมภีร์ญาณทวนความหมายสด */
+    .aspect-box {
+      background: rgba(35, 20, 28, 0.6);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      border-radius: 6px;
+      padding: 12px 15px;
+    }
+
+    .aspect-title {
+      font-family: 'Charm', cursive;
+      font-size: 1.15rem;
+      color: var(--gold-bright);
+      margin-bottom: 5px;
+    }
+
+    .aspect-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* POPUP ปลดล็อกค่ายกครู 19 บาท */
     .modal-overlay {
       position: fixed;
-      inset: 0;
-      background: rgba(5, 2, 4, 0.88);
-      backdrop-filter: blur(6px);
-      z-index: 100;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
       display: none;
-      align-items: center;
       justify-content: center;
-      padding: 16px;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: var(--bg-panel);
-      border: 1px solid var(--gold-primary);
-      border-radius: 12px;
-      width: 100%;
-      max-width: 460px;
-      max-height: 85vh;
-      overflow-y: auto;
+      align-items: center;
+      z-index: 1000;
       padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-card {
+      background: #170d14;
+      border: 2px solid var(--gold-primary);
+      border-radius: 12px;
+      max-width: 420px;
+      width: 100%;
+      padding: 28px 22px;
+      text-align: center;
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
       position: relative;
     }
 
-    .modal-close {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      font-size: 1.4rem;
-      color: var(--text-muted);
-      cursor: pointer;
-    }
-
-    .search-input {
-      width: 100%;
-      background: rgba(10, 4, 8, 0.7);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      border-radius: 8px;
-      color: var(--text-light);
-      padding: 8px 12px;
-      font-size: 0.85rem;
-      margin-bottom: 12px;
-      outline: none;
-    }
-
-    .cheat-card-item {
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-    }
-
-    .cheat-header {
-      display: flex;
-      justify-content: space-between;
-      color: var(--gold-glow);
-      font-weight: 600;
-      font-size: 0.9rem;
+    .modal-title {
+      font-family: 'Charm', cursive;
+      font-size: 1.8rem;
+      color: var(--gold-bright);
       margin-bottom: 4px;
     }
 
-    .cheat-keywords {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      line-height: 1.4;
+    .modal-price-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--crimson-blood), #4a050b);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+      padding: 4px 18px;
+      border-radius: 20px;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      font-weight: 600;
     }
 
-    .cheat-cat {
-      font-size: 0.74rem;
-      color: var(--gold-primary);
-      margin-top: 4px;
+    .qr-container {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 8px;
+      width: 190px;
+      height: 190px;
+      margin: 0 auto 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
+    .qr-container img { width: 100%; height: 100%; object-fit: contain; }
+
+    .passcode-box {
+      margin: 16px 0 10px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .passcode-input {
+      background: #0d060a;
+      border: 1px solid var(--gold-primary);
+      color: var(--gold-bright);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      text-align: center;
+      width: 160px;
+      outline: none;
+      letter-spacing: 2px;
+    }
+    .passcode-input:focus {
+      border-color: var(--gold-bright);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    .line-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #06c755;
+      color: #fff;
+      text-decoration: none;
+      padding: 9px 18px;
+      border-radius: 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-top: 5px;
+      transition: all 0.3s;
+      box-shadow: 0 3px 12px rgba(6, 199, 85, 0.35);
+    }
+    .line-btn:hover { background: #05a847; transform: scale(1.03); }
+
+    .close-modal-btn {
+      position: absolute;
+      top: 10px; right: 14px;
+      background: none; border: none;
+      color: var(--text-muted);
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      .fan-section { padding: 25px 12px 15px; margin: 10px auto 20px; }
+      .fan-track { padding: 10px 25px 15px 15px; }
+      .fan-card { width: 68px; height: 118px; margin-left: -32px; }
+      #board, .board-container { gap: 8px !important; padding: 5px !important; }
+      .card-slot { gap: 6px; }
+      .card-wrapper { width: 105px !important; height: 180px !important; }
+      .slot-label { font-size: 0.88rem; }
+      .click-prompt { font-size: 0.7rem; padding: 2px 6px; }
+      .aspects-grid { grid-template-columns: 1fr; }
+      .destiny-inputs { flex-direction: column; align-items: stretch; }
+      .destiny-input { width: 100%; }
+    }
+    /* ===== ขยายขนาดไพ่พยากรณ์ให้ใหญ่พอดีสายตา ===== */
+.card, 
+.tarot-card, 
+.card-container,
+.card-display img,
+.tarot-card img {
+  width: 280px !important;
+  max-width: 82vw !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  display: block !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* ปรับให้ขยายเพิ่มขึ้นอีกนิดเมื่อเปิดดูบนคอมพิวเตอร์ */
+@media (min-width: 768px) {
+  .card, 
+  .tarot-card, 
+  .card-container,
+  .card-display img,
+  .tarot-card img {
+    width: 320px !important;
+  }
+}
   </style>
 </head>
 <body>
 
-  <!-- แถบหัวแม่หมอ -->
+  <div class="thai-border-frame"></div>
+
   <header>
-    <div class="brand">
-      <h1>NETRA VIJIT</h1>
-      <span>โต๊ะพยากรณ์แม่หมอ ๗๘ ใบ</span>
-    </div>
-    <div class="header-actions">
-      <button class="btn-action" onclick="openCheatSheet()">
-        📜 คัมภีร์ญาณ
-      </button>
-      <button class="btn-action" onclick="resetMat()">
-        🔄 ล้างกระดาน
-      </button>
-    </div>
+    <div class="kranok-badge">✦ สถิตจิตวิญญาณแห่งตำนานสยาม ✦</div>
+    <h1>เนตรวิจิตรบรรจง</h1>
+    <p class="subtitle">สื่อกระแสญาณผ่านสำรับวิญญาณไทยโบราณ ๗๘ ใบครบสำรับ (มหามายา ๒๒ สำรับหลัก • ปัญจธาตุ ๕๖ สำรับย่อย) ปลดเปลื้องปริศนาแห่งอดีต ปัจจุบัน และอนาคต</p>
   </header>
 
-  <!-- ตัวเลือกโหมดจำนวนใบ -->
   <div class="mode-bar">
-    <button class="mode-pill active" onclick="setMode(1)">๑ ใบ (แก่นคำตอบ)</button>
-    <button class="mode-pill" onclick="setMode(3)">๓ ใบ (อดีต-ปัจจุบัน-อนาคต)</button>
-    <button class="mode-pill" onclick="setMode(5)">๕ ใบ (ชะตาพิสดาร)</button>
+    <button class="mode-btn active" id="btn-mode-1" onclick="switchMode(1)">พยากรณ์ ๑ ใบ (พลังจิตประจำวัน)</button>
+    <button class="mode-btn" id="btn-mode-3" onclick="switchMode(3)">
+      <span>พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)</span>
+    </button>
   </div>
 
-  <!-- โต๊ะปูไพ่เสมือนจริง -->
-  <main class="mat-container">
-    <div class="spread-slots" id="slots-area"></div>
-
-    <div class="table-controls">
-      <button class="btn-table" onclick="shuffleCurrentDeck()">
-        🌀 สับญาณไพ่
-      </button>
-      <button class="btn-table primary" id="reveal-btn" onclick="revealAllCards()">
-        ✦ เปิดไพ่ทั้งหมด ✦
-      </button>
+  <!-- กล่องผูกดวงชะตา: พิมพ์ตัวเลขได้โดยตรงทันที -->
+  <div class="destiny-card">
+    <h3>✦ ผูกกระแสญาณดวงชะตา (ไม่บังคับ) ✦</h3>
+    <p style="font-size: 0.88rem; color: var(--text-muted);">ระบุชื่อเล่นและวันเดือนปีเกิด พ.ศ. เพื่อให้แม่หมอคำนวณธาตุกำเนิดร่วมกับหน้าไพ่</p>
+    <div class="destiny-inputs">
+      <input type="text" id="seeker-nickname" class="destiny-input" placeholder="ชื่อเล่นของคุณ" maxlength="20">
+      <input type="number" id="seeker-day" class="destiny-input" placeholder="วันที่ (1-31)" min="1" max="31">
+      <select id="seeker-month" class="destiny-select">
+        <option value="">เดือนเกิด</option>
+        <option value="1">มกราคม</option>
+        <option value="2">กุมภาพันธ์</option>
+        <option value="3">มีนาคม</option>
+        <option value="4">เมษายน</option>
+        <option value="5">พฤษภาคม</option>
+        <option value="6">มิถุนายน</option>
+        <option value="7">กรกฎาคม</option>
+        <option value="8">สิงหาคม</option>
+        <option value="9">กันยายน</option>
+        <option value="10">ตุลาคม</option>
+        <option value="11">พฤศจิกายน</option>
+        <option value="12">ธันวาคม</option>
+      </select>
+      <input type="number" id="seeker-year" class="destiny-input" placeholder="ปี พ.ศ. เกิด (เช่น 2542)" min="2450" max="2570">
     </div>
-  </main>
+  </div>
 
-  <!-- แผงคลี่สำรับ ๗๘ ใบให้ลูกดวงแตะเลือก -->
-  <section class="deck-strip-section">
-    <div class="strip-hint" id="strip-hint-text">
-      ✨ ส่งมือถือให้ลูกดวงตั้งจิตอธิษฐาน แล้วแตะเลือกไพ่ที่สัมผัสจิต (เลือก ๑ ใบ)
+  <div class="hint-bar" id="hint-bar">✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦</div>
+
+  <!-- STAGE 1: กองไพ่ -->
+  <div class="deck-section" id="deck-section">
+    <div class="deck-stack" id="deck-stack" onclick="shuffleDeck()" title="แตะเพื่อสับไพ่">
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
+      <div class="deck-card-layer"><img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'"></div>
     </div>
-    <div class="card-strip" id="card-strip"></div>
-  </section>
+    <div class="deck-controls">
+      <button class="action-btn" onclick="shuffleDeck()">✦ อัญเชิญญาณสับไพ่ ✦</button>
+      <button class="action-btn secondary" id="spread-btn" onclick="spreadDeck()">✦ คลี่ไพ่เพื่อเลือก ✦</button>
+    </div>
+    <p id="shuffle-count" style="margin-top: 12px; font-size: 0.95rem; color: var(--text-muted);">สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)</p>
+  </div>
 
-  <!-- โมดอลคัมภีร์ญาณ ๗๘ ใบสำหรับแม่หมอ -->
-  <div class="modal-overlay" id="cheat-modal">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeCheatSheet()">&times;</span>
-      <h3 style="color: var(--gold-glow); font-family: 'Cinzel', serif; margin-bottom: 8px;">📜 คัมภีร์ญาณเนตรวิจิตร ๗๘ ใบ</h3>
-      <input type="text" id="cheat-search" class="search-input" placeholder="พิมพ์ชื่อไพ่ หรือความหมายเพื่อค้นหา..." oninput="filterCheatList()">
-      <div id="cheat-list" style="max-height: 60vh; overflow-y: auto;"></div>
+  <!-- STAGE 2: โต๊ะคลี่ไพ่สไลด์ -->
+  <div class="fan-section" id="fan-section"></div>
+
+  <!-- STAGE 3: โต๊ะวางไพ่ -->
+  <div class="board-container" id="board"></div>
+
+  <div style="text-align: center; margin-bottom: 25px; display: none;" id="reset-area">
+    <button id="reveal-all-btn" class="action-btn" onclick="revealAllCards()" style="background: linear-gradient(135deg, #8b1113, #b81419); border: 1px solid #d4af37; color: #fff; padding: 10px 26px; border-radius: 25px; font-size: 1.05rem; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: bold; letter-spacing: 1px;">✦ เปิดไพ่ทั้งหมดพร้อมกัน ✦</button>
+  </div>
+
+  <!-- แผ่นคำทำนาย -->
+  <div class="reading-sheet" id="reading-sheet">
+    <div class="reading-header">
+      <h2>บทวิเคราะห์ญาณพยากรณ์: เนตรวิจิตรบรรจง</h2>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">รหัสคำทำนายตามศาสตร์สำรับโบราณ โดยแม่หมอ</p>
+    </div>
+    <div id="destiny-banner-area"></div>
+    <div id="reading-content"></div>
+  </div>
+
+  <!-- คำเตือน -->
+  <footer style="max-width: 820px; margin: 50px auto 20px; padding: 25px 20px; text-align: center; border-top: 1px dashed rgba(212, 175, 55, 0.3); color: var(--text-muted); font-size: 0.95rem; line-height: 1.8;">
+    <div style="font-family: 'Charm', cursive; font-size: 1.25rem; color: var(--gold-bright); margin-bottom: 8px; text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);">
+      ✦ พึงใช้วิจารณญาณในการเปิดรับคำทำนาย ✦
+    </div>
+    <p style="margin-bottom: 8px; color: #f5e6be;">
+      ศาสตร์แห่งไพ่เป็นเพียงกระจกสะท้อนพลังงานและแนวทางเตือนสติเท่านั้น ไม่ใช่ชะตาลิขิตที่เปลี่ยนแปลงไม่ได้
+    </p>
+    <p style="color: #e0a3a7; font-size: 0.9rem; margin-bottom: 8px;">
+      *ไม่ควรนำคำทำนายไปใช้ตัดสินใจเรื่องใหญ่ในชีวิตเพียงลำพัง และไม่สามารถใช้ทดแทนคำวินิจฉัยทางการแพทย์ ข้อกฎหมาย หรือคำแนะนำทางการเงินจากผู้เชี่ยวชาญได้*
+    </p>
+    <p style="color: var(--text-muted); font-size: 0.9rem;">
+      สุดท้ายแล้ว... อนาคตที่ดีที่สุดล้วนถูกสร้างขึ้นจากสติ ปัญญา และการลงมือทำของคุณเอง
+    </p>
+  </footer>
+
+  <!-- POPUP ปลดล็อกค่ายกครู 19 บาท -->
+  <div class="modal-overlay" id="unlock-modal" onclick="if(event.target === this) closeUnlockModal()">
+    <div class="modal-card">
+      <button class="close-modal-btn" onclick="closeUnlockModal()">×</button>
+      <div class="modal-title">✦ ปลดล็อกญาณพยากรณ์ ๓ ใบ ✦</div>
+      <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 6px;">เปิดชะตา อดีต • ปัจจุบัน • อนาคต</div>
+      
+      <div class="modal-price-badge">ค่ายกครู ๑๙ บาท</div>
+      
+      <div class="qr-container">
+        <img src="wallet-qr.jpg" alt="TrueMoney / PromptPay QR">
+      </div>
+      <p style="font-size: 1.05rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 2px;">
+        ชื่อบัญชี: ศุภรัตน์ แซ่จัน
+      </p>
+      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">
+        สแกนชำระผ่าน TrueMoney Wallet / พร้อมเพย์ทุกธนาคาร (140-***-224)
+      </p>
+
+      <a href="https://page.line.me/494ywdqs" target="_blank" id="line-contact-link" class="line-btn">
+        <span>💬 ส่งสลิปรับรหัสทาง LINE (@494ywdqs)</span>
+      </a>
+
+      <div class="passcode-box">
+        <input type="text" id="passcode-input" class="passcode-input" placeholder="รหัสปลดล็อก" onkeydown="if(event.key === 'Enter') checkPasscode()">
+        <button class="action-btn" style="padding: 6px 18px; font-size: 1.05rem;" onclick="checkPasscode()">ปลดล็อก</button>
+      </div>
+      <p id="passcode-error" style="color: #ff6b6b; font-size: 0.85rem; min-height: 20px;"></p>
     </div>
   </div>
 
   <script>
-    // ฐานข้อมูลไพ่ครบทั้ง ๗๘ ใบ
-    const tarotDeckData = [
-      // Major Arcana (๒๒ ใบ)
-      { id: 0, name: "The Fool", thai: "พรายพเนจร (๐)", tag: "จุดเริ่มต้น • อิสระ • การเสี่ยงดวง", work: "เริ่มโปรเจกต์ใหม่ ไม่ยึดติดกรอบเดิม กล้าได้กล้าเสีย", love: "พบรักกะทันหัน หรือรักอิสระไม่ผูกมัด", warning: "ระวังความประมาท ขาดการวางแผนจนพลาดเรื่องเอกสาร" },
-      { id: 1, name: "The Magician", thai: "จอมอาคม (๑)", tag: "พรสวรรค์ • การสื่อสาร • ทางออกรอบตัว", work: "ปิดดีลสำเร็จ ใช้ไหวพริบแก้ปัญหาเฉพาะหน้าดีเลิศ", love: "คารมมีเสน่ห์ ดึงดูดคนเข้ามาง่าย คุยเก่ง", warning: "ระวังคำพูดสองแง่สองง่ามจนถูกมองว่าไม่จริงใจ" },
-      { id: 2, name: "The High Priestess", thai: "แม่หมอญาณทิพย์ (๒)", tag: "สัญชาตญาณ • ความลับ • เสน่ห์ลึกลับ", work: "พึ่งเซนส์ตัวเอง งานเบื้องหลัง งานวิจัยหรืองานสีเทา", love: "รักซ่อนเร้น ความรู้สึกคลุมเครือ เสน่ห์ดึงดูดเงียบ ๆ", warning: "อารมณ์แปรปรวนง่าย เก็บความลับจนอึดอัดใจ" },
-      { id: 3, name: "The Empress", thai: "เทวีมาตา (๓)", tag: "ความอุดมสมบูรณ์ • เสน่ห์ • ผู้ใหญ่อุปถัมภ์", work: "ผลงานงอกเงย การเงินไหลเวียนคล่องตัว ผู้ใหญ่คอยช่วยเหลือ", love: "รักอบอุ่น ได้รับการดูแล หรือมีเกณฑ์ตั้งครรภ์/สร้างครอบครัว", warning: "ใช้จ่ายตามใจตัวเองมากเกินไปจนฟุ่มเฟือย" },
-      { id: 4, name: "The Emperor", thai: "จักรพรรดิภูผา (๔)", tag: "อำนาจ • ความมั่นคง • การควบคุม", work: "เลื่อนตำแหน่ง คุมบริวาร บริหารจัดการเด็ดขาด มั่นคงสูง", love: "ได้คู่เป็นผู้ใหญ่ ฐานะมั่นคง แต่นิสัยเผด็จการ", warning: "ความหัวแข็ง ไม่ยอมปรับตัวทำให้เสียบริวาร" },
-      { id: 5, name: "The Hierophant", thai: "คุรุสังฆา (๕)", tag: "คำสอน • ศีลธรรม • ขนบธรรมเนียม", work: "งานราชการ การศึกษา องค์กรใหญ่ เอกสารสัญญาถูกต้อง", love: "รักแบบผู้ใหญ่ ให้เกียรติกัน แต่งงานตามประเพณี", warning: "ยึดติดกรอบเดิมจนพลาดโอกาสการเปลี่ยนแปลงใหม่ ๆ" },
-      { id: 6, name: "The Lovers", thai: "พันธสัญญาคู่แท้ (๖)", tag: "ทางแยก • การตัดสินใจ • แรงดึงดูด", work: "ร่วมหุ้นส่วน งานเจรจาต่อรอง ต้องเลือกทางใดทางหนึ่ง", love: "มีคนเข้ามาให้เลือก เสน่หาลึกซึ้ง หรือรักสามเส้า", warning: "ความลังเลจับปลาสองมือจะทำให้สูญเสียทั้งหมด" },
-      { id: 7, name: "The Chariot", thai: "อัศวินเกวียนศึก (๗)", tag: "มุ่งมั่น • ฝ่าฟัน • การเดินทางไกล", work: "งานหนักต้องลุยเดี่ยว เดินทางไกล ชนะอุปสรรคด้วยใจสู้", love: "ต้องใช้ความอดทนจีบ หรือต่างฝ่ายต่างไม่ยอมกัน", warning: "ใจร้อน อารมณ์รุนแรงจนอาจเกิดอุบัติเหตุหรือปากเสียง" },
-      { id: 8, name: "Strength", thai: "นางพญาสงบพยัคฆ์ (๘)", tag: "ความนิ่ง • สยบอารมณ์ • จิตใจเข้มแข็ง", work: "แก้ปัญหาขัดแย้งด้วยความนุ่มนวล จัดการคนยาก ๆ อยู่หมัด", love: "ฝ่ายหญิงคุมความสัมพันธ์ หรือรักคนที่เอาแต่ใจแต่คุมได้", warning: "เหนื่อยล้าจากการต้องแบกรับปัญหาไว้คนเดียว" },
-      { id: 9, name: "The Hermit", thai: "ฤๅษีจำศีล (๙)", tag: "ค้นหาตนเอง • สันโดษ • ปัญญาญาณ", work: "งานค้นคว้า งานที่ต้องใช้สมาธิ ชะลอตัวเพื่อวางแผนลึกซึ้ง", love: "โสด สันโดษ เว้นระยะห่าง หรือคิดทบทวนเงียบ ๆ", warning: "ปิดกั้นตัวเองจากสังคมภายนอกจนกลายเป็นความโดดเดี่ยว" },
-      { id: 10, name: "Wheel of Fortune", thai: "กงล้อวัฏสงสาร (๑๐)", tag: "จังหวะชีวิต • โชคลาภ • การพลิกผัน", work: "จังหวะชีวิตเปลี่ยนในทางที่ดี โอกาสใหม่เลื่อนขั้น โชคฟลุก", love: "พรหมลิขิตพบเจอคนคุ้นเคย หรือความสัมพันธ์พัฒนาแบบก้าวกระโดด", warning: "อย่าประมาท สิ่งที่ได้มาง่ายอาจหมดไปเร็วตามวัฏจักร" },
-      { id: 11, name: "Justice", thai: "ตราชูแห่งสัจจะ (๑๑)", tag: "ความจริง • ยุติธรรม • สัญญาข้อกฎหมาย", work: "เซ็นสัญญา คดีความ สอบแข่งขัน ได้รับผลตอบแทนตามผลงาน", love: "ความสัมพันธ์ชัดเจน ใช้เหตุผลคุยกัน หรือการจดทะเบียน", warning: "ตึงเกินไป ไม่ยอมผ่อนปรนจะเกิดข้อพิพาทรุนแรง" },
-      { id: 12, name: "The Hanged Man", thai: "พรายแขวนหัว (๑๒)", tag: "การรอคอย • เสียสละ • เปลี่ยนมุมมอง", work: "งานชะลอตัว ชะงักงัน ต้องยอมถอยหนึ่งก้าวเพื่อดูภาพรวม", love: "ติดอยู่ในวังวน ยอมเจ็บเพื่อคนที่รัก ความสัมพันธ์คาราคาซัง", warning: "ยึดติดกับสิ่งที่แก้ไขไม่ได้จนทรมานจิตใจ" },
-      { id: 13, name: "Death", thai: "มัจจุราชผลัดภพ (๑๓)", tag: "การสิ้นสุด • ล้างสิ่งเก่า • การเกิดใหม่", work: "จบโปรเจกต์เดิม ออกจากงาน ปิดกิจการเพื่อเริ่มสิ่งใหม่", love: "การเลิกรา ตัดขาด เพื่อเริ่มต้นชีวิตใหม่ที่ดีกว่าเดิม", warning: "อย่ายื้ออดีตที่ตายไปแล้ว ยิ่งฝืนจะยิ่งเจ็บปวด" },
-      { id: 14, name: "Temperance", thai: "เทวีนทีปรองดอง (๑๔)", tag: "ปรับสมดุล • ประนีประนอม • การโยกย้าย", work: "โยกย้ายแผนก ผสมผสานไอเดียต่างขั้วให้ลงตัว", love: "ค่อยเป็นค่อยไป ปรับจูนนิสัยเข้าหากัน เดินทางร่วมกัน", warning: "ความลังเล จับทิศทางไม่ถูก โลเลไม่เด็ดขาด" },
-      { id: 15, name: "The Devil", thai: "ราคะมารจำแลง (๑๕)", tag: "กิเลส • ความลุ่มหลง • พันธนาการ", work: "ผลประโยชน์มหาศาล แต่วิธีการอาจมีเลศนัยหรือเทา ๆ", love: "เสน่หาเร่าร้อน หึงหวง มูฟออนไม่ได้ เป็นพิษต่อจิตใจ", warning: "ระวังถูกชักจูงหรือติดกับดักเพราะความโลภและตัณหา" },
-      { id: 16, name: "The Tower", thai: "หอคอยสายฟ้าฟาด (๑๖)", tag: "กะทันหัน • ตาสว่าง • การพังทลาย", work: "ยกเลิกกะทันหัน แตกหัก ข้อมูลรั่วไหล หรือการเปลี่ยนแปลงฉับพลัน", love: "ทะเลาะรุนแรง ความลับแตก เลิกราแบบไม่ทันตั้งตัว", warning: "ตั้งสติรับมือกับความไม่แน่นอน อย่าตัดสินใจด้วยอารมณ์ชั่ววูบ" },
-      { id: 17, name: "The Star", thai: "ดารารัศมีแห่งความหวัง (๑๗)", tag: "ความหวัง • การฟื้นฟู • ชื่อเสียงผุดผ่อง", work: "เริ่มเห็นแสงสว่าง ได้รับการยอมรับ งานสายครีเอทีฟโดดเด่น", love: "พบรักที่ทำให้สบายใจ อบอุ่น มีความหวังใหม่ที่บริสุทธิ์", warning: "เพ้อฝันในจินตนาการมากเกินไปจนลืมลงมือทำจริง" },
-      { id: 18, name: "The Moon", thai: "จันทราลวงตา (๑๘)", tag: "ความวิตกกังวล • คลุมเครือ • ภาพลวงตา", work: "สถานการณ์ไม่ชัดเจน นโยบายไม่นิ่ง ระวังการแทงข้างหลัง", love: "ระแวง ไม่ไว้ใจ มีเรื่องปกปิด ซึมเศร้าอึดอัด", warning: "ความคิดมากเกินจริงกำลังหลอกหลอน ควรปล่อยวาง" },
-      { id: 19, name: "The Sun", thai: "สุริยาเรืองโรจน์ (๑๙)", tag: "ความสำเร็จ • ความสุข • ชัยชนะยิ่งใหญ่", work: "สำเร็จสูงสุด เงินก้อนเข้า มีชื่อเสียงโด่งดัง งานรุ่งเรือง", love: "รักสดใส เปิดเผย มีความสุขมาก หรือได้บุตรสืบสกุล", warning: "ระวังความเย่อหยิ่งทนงตน มองข้ามคนรอบข้าง" },
-      { id: 20, name: "Judgement", thai: "สดับเสียงพิพากษา (๒๐)", tag: "ตื่นรู้ • กรรมส่งผล • การตัดสินครั้งสำคัญ", work: "ประกาศผลสอบ การคืนชีพของงานเดิม ได้โอกาสแก้ตัว", love: "คนรักเก่าติดต่อกลับมา หรือถึงเวลาตัดสินใจครั้งใหญ่", warning: "ยอมรับความจริงและการกระทำในอดีตอย่างตรงไปตรงมา" },
-      { id: 21, name: "The World", thai: "มหาจักรวาลบรรจบ (๒๑)", tag: "ความสมบูรณ์แบบ • สำเร็จครบถ้วน • ก้าวสู่อีกขั้น", work: "ปิดฉากโปรเจกต์สำเร็จงดงาม โกอินเตอร์ การเดินทางต่างประเทศ", love: "สมหวัง ครบเครื่อง เป็นคู่แท้ที่เติมเต็มกันอย่างสมบูรณ์", warning: "อย่าหยุดพัฒนาตนเองแม้จะเดินทางถึงจุดสูงสุดแล้ว" },
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-7FArXCmF8C5_vgRNegUKNdG6BdwJb0S1Bnr5EWAQfHqase_S6a2hvMBpwiiyIF7oFg/exec";
+    const LINE_LINK = "https://page.line.me/494ywdqs";
 
-      // Wands / ไม้เท้า (๑๔ ใบ)
-      { id: 22, name: "Ace of Wands", thai: "กำเนิดคบเพลิงภูต (๑ ไม้เท้า)", tag: "ไฟริเริ่ม • ไอเดียใหม่ • แรงบันดาลใจ", work: "โปรเจกต์ใหม่เริ่มขึ้น มีพลังอยากลุยงานอย่างเต็มที่", love: "เริ่มต้นคุยกับคนที่ถูกใจ มีแรงกระตุ้นให้อยากเข้าหา", warning: "มีไฟแต่ขาดการวางแผนระยะยาว ระวังหมดไฟเร็ว" },
-      { id: 23, name: "Two of Wands", thai: "สองคทาวางผัง (๒ ไม้เท้า)", tag: "วิสัยทัศน์ • การวางแผน • ทางเลือกคู่ขนาน", work: "วางแผนระยะยาว มองหาลู่ทางขยายกิจการหรือร่วมหุ้น", love: "ชั่งใจระหว่างคนสองคน หรือความสัมพันธ์ทางไกล", warning: "ลังเลไม่กล้าก้าวออกจากจุดปลอดภัย" },
-      { id: 24, name: "Three of Wands", thai: "สามคทามองไกล (๓ ไม้เท้า)", tag: "การขยายตัว • เดินทาง • รอผลลัพธ์", work: "งานขยายตัวไปต่างแดนหรือสาขาใหม่ สิ่งที่ลงแรงเริ่มส่งผล", love: "เฝ้ารอคนรักทางไกล หรือพร้อมเปิดรับคนใหม่เข้ามา", warning: "อย่าเพิ่งชะล่าใจ ควรรอจนกว่าผลลัพธ์จะเข้ากระเป๋าจริง" },
-      { id: 25, name: "Four of Wands", thai: "สี่คทาเคหาฉลอง (๔ ไม้เท้า)", tag: "ความมั่นคง • เฉลิมฉลอง • ก้าวสู่หลักไมล์", work: "งานบรรลุเป้าหมาย จัดตั้งบริษัท หรือสถานที่ทำงานมั่นคง", love: "หมั้นหมาย แต่งงาน หรือย้ายมาอยู่บ้านเดียวกันอย่างอบอุ่น", warning: "อย่ามัวแต่เฉลิมฉลองจนละเลยหน้าที่ต่อไป" },
-      { id: 26, name: "Five of Wands", thai: "ห้าคทาประลองกำลัง (๕ ไม้เท้า)", tag: "การแข่งขัน • ขัดแย้ง • ความวุ่นวาย", work: "ความเห็นไม่ตรงกันในทีม แย่งชิงผลงาน บรรยากาศวุ่นวาย", love: "ลิ้นกับฟัน ทะเลาะจุกจิก มีคู่แข่งหัวใจ", warning: "ระวังเสียเวลาไปกับการถกเถียงเรื่องไร้สาระ" },
-      { id: 27, name: "Six of Wands", thai: "หกคทาเกียรติยศมีชัย (๖ ไม้เท้า)", tag: "ชัยชนะ • การยอมรับ • รางวัลแห่งความพยายาม", work: "งานสำเร็จลุล่วง ได้รับคำชม เลื่อนตำแหน่ง มีชื่อเสียง", love: "เอาชนะใจคนที่ชอบได้สำเร็จ ความสัมพันธ์ราบรื่น", warning: "อย่าหลงระเริงกับคำเยินยอจนลืมพัฒนาตนเอง" },
-      { id: 28, name: "Seven of Wands", thai: "เจ็ดคทายืนหยัดสู้ (๗ ไม้เท้า)", tag: "การป้องกัน • ยืนหยัด • ฝ่าแรงเสียดทาน", work: "งานรุมเร้า ต้องพิสูจน์ฝีมือ แข่งขันรักษาตำแหน่งของตน", love: "ต้องปกป้องความสัมพันธ์จากแรงกดดันรอบตัว", warning: "อย่าดันทุรังแบกภาระเกินกำลัง ควรหาคนช่วยสนับสนุน" },
-      { id: 29, name: "Eight of Wands", thai: "แปดคทาพุ่งทะยาน (๘ ไม้เท้า)", tag: "ความรวดเร็ว • ข่าวสาร • งานไหลมาเทมา", work: "ข่าวดีเรื่องงานเข้ามา การสื่อสารฉับไว งานเดินหน้าอย่างรวดเร็ว", love: "พัฒนาความสัมพันธ์เร็ว พลัดพรากจากการเดินทางบ่อย", warning: "ทำอะไรรวดเร็วเกินไปจนตกหล่นรายละเอียดสำคัญ" },
-      { id: 30, name: "Nine of Wands", thai: "เก้าคทาระวังภัย (๙ ไม้เท้า)", tag: "ความเหนื่อยล้า • ระแวง • ด่านสุดท้าย", work: "งานใกล้เสร็จแต่เหนื่อยสายตัวแทบขาด ต้องเฝ้าระวังไม่ให้พลาด", love: "เข็ดกับความรักที่ผ่านมา มีกำแพงในใจสูง", warning: "ความระแวงเกินไปทำให้ไม่สามารถเปิดใจให้ใครได้" },
-      { id: 31, name: "Ten of Wands", thai: "สิบคทาแบกภาระ (๑๐ ไม้เท้า)", tag: "แบกรับภาระหนัก • ความกดดัน • งานล้นมือ", work: "งานหนักเกินตัว ต้องรับผิดชอบทุกอย่างคนเดียวจนเครียด", love: "เหนื่อยกับการประคองความสัมพันธ์เพียงลำพัง", warning: "ควรรู้จักปฏิเสธและกระจายงานก่อนร่างกายจะทรุด" },
-      { id: 32, name: "Page of Wands", thai: "พรายหนุ่มถือคทา (มหาดเล็กไม้เท้า)", tag: "ข่าวสารงาน • ความกระตือรือร้น • การเรียนรู้", work: "ได้รับข่าวดีเรื่องงาน ได้ลองฝึกฝนโปรเจกต์ใหม่ ๆ ที่ตื่นเต้น", love: "มีคนอายุน้อยกว่าหรือคนกระตือรือร้นเข้ามาคุย", warning: "ใจร้อน ขาดความอดทน ทำอะไรแบบเด็ก ๆ" },
-      { id: 33, name: "Knight of Wands", thai: "อัศวินเพลิงคะนอง (อัศวินไม้เท้า)", tag: "ความกล้าหาญ • ลุยงาน • ใจร้อนบุ่มบ่าม", work: "ลุยงานเต็มที่ เดินทางติดต่อธุรกิจแบบรวดเร็วและกล้าได้กล้าเสีย", love: "จีบแรง มาเร็วเคลมเร็ว มีเสน่ห์เร่าร้อน", warning: "ระวังความใจร้อน หุนหันพลันแล่นจนเกิดความเสียหาย" },
-      { id: 34, name: "Queen of Wands", thai: "นางพญาเพลิงเจิดจ้า (ราชินีไม้เท้า)", tag: "ผู้นำหญิง • มีเสน่ห์มั่นใจ • เก่งรอบด้าน", work: "ผู้บริหารหญิงโดดเด่น คุมงานคล่อง มีบารมีและเสน่ห์ในการนำทีม", love: "มีเสน่ห์ดึงดูด พึ่งพาตัวเองได้ ไม่ยอมลงให้ใครง่าย ๆ", warning: "ระวังความมั่นใจเกินเหตุจนดูหยิ่งในสายตาผู้อื่น" },
-      { id: 35, name: "King of Wands", thai: "ราชาคทาอัคคี (ราชาไม้เท้า)", tag: "ผู้นำสูงสุด • วิสัยทัศน์กว้างไกล • เด็ดเดี่ยว", work: "เจ้าของกิจการ ผู้บริหารระดับสูง วางนโยบายและนำพาองค์กรเติบโต", love: "คู่ครองเป็นผู้นำ มีความรับผิดชอบสูง มั่นคง", warning: "ความเอาแต่ใจและเผด็จการอาจสร้างความอึดอัดแก่คนใกล้ชิด" },
+    // ฟังก์ชันสำหรับเปิดไพ่ทั้งหมดพร้อมกัน
+function revealAllCards() {
+  const board = document.getElementById('board');
+  if (!board) return;
 
-      // Cups / ถ้วย (๑๔ ใบ)
-      { id: 36, name: "Ace of Cups", thai: "หนึ่งจอกหลั่งธารารัก (๑ ถ้วย)", tag: "รักแรกพบ • เปี่ยมสุข • จิตใจอิ่มเอม", work: "ได้ทำงานที่รัก บรรยากาศการทำงานเต็มไปด้วยความสุข", love: "พบรักใหม่ที่บริสุทธิ์ ความรู้สึกท่วมท้นในใจ", warning: "ใช้อารมณ์นำเหตุผลมากเกินไปจนมองข้ามความจริง" },
-      { id: 37, name: "Two of Cups", thai: "สองจอกเชื่อมสัจจะ (๒ ถ้วย)", tag: "มิตรภาพ • พันธมิตร • ความเข้าใจตรงกัน", work: "ตกลงทำสัญญาราบรื่น หุ้นส่วนเข้ากันได้ดีมาก", love: "ใจตรงกัน สื่อสารเข้าใจ เป็นคู่ที่เกื้อหนุนกัน", warning: "อย่าพึ่งพาหรือตามใจอีกฝ่ายจนสูญเสียความเป็นตัวเอง" },
-      { id: 38, name: "Three of Cups", thai: "สามจอกรื่นเริงฉลอง (๓ ถ้วย)", tag: "สังสรรค์ • มิตรแท้ • ข่าวดีน่ายินดี", work: "ร่วมงานเป็นทีมอย่างมีความสุข เลี้ยงฉลองปิดโปรเจกต์", love: "เพื่อนแนะนำให้รู้จัก หรือมีความสัมพันธ์ที่สดใสสนุกสนาน", warning: "ระวังมือที่สาม หรือความสัมพันธ์แบบเพื่อนที่ซับซ้อน" },
-      { id: 39, name: "Four of Cups", thai: "สี่จอกเบื่อหน่ายพิจารณา (๔ ถ้วย)", tag: "ความเฉยชา • ปฏิเสธโอกาส • เบื่อหน่าย", work: "หมดความกระตือรือร้น มองข้ามข้อเสนอดี ๆ ที่เข้ามา", love: "ยังไม่ถูกใจใคร หรือรู้สึกว่าความสัมพันธ์จืดชืด", warning: "การปิดกั้นตัวเองจะทำให้พลาดโอกาสดี ๆ ในชีวิตไปอย่างน่าเสียดาย" },
-      { id: 40, name: "Five of Cups", thai: "ห้าจอกโศกาอาลัย (๕ ถ้วย)", tag: "ความผิดหวัง • เสียใจ • ยึดติดกับสิ่งที่เสียไป", work: "โปรเจกต์ไม่เป็นไปตามหวัง เสียดายเงินหรือโอกาส", love: "ผิดหวัง เสียใจกับอดีต ยังมูฟออนไม่ได้", warning: "หันกลับมามองสิ่งที่ยังเหลืออยู่ อย่ามัวจมกับความสูญเสีย" },
-      { id: 41, name: "Six of Cups", thai: "หกจอกรำลึกอดีต (๖ ถ้วย)", tag: "หวนคืนวันวาน • ความไร้เดียงสา • คนรักเก่า", work: "ได้กลับไปร่วมงานกับคนคุ้นเคย หรือนำไอเดียเก่ามาปัดฝุ่นใหม่", love: "คนรักเก่าวนกลับมา หรือพบคนถูกใจที่เข้ามารู้สึกคุ้นเคยเหมือนผูกพันมานาน", warning: "อย่าเอาแต่อยู่ในอดีตจนไม่ยอมก้าวไปข้างหน้า" },
-      { id: 42, name: "Seven of Cups", thai: "เจ็ดจอกมายาเพ้อฝัน (๗ ถ้วย)", tag: "ภาพลวงตา • ตัวเลือกมากมาย • ฟุ้งซ่าน", work: "มีไอเดียเยอะแต่ยังไม่ลงมือทำ ระวังข้อเสนอหลอกลวง", love: "มีตัวเลือกเยอะแต่ยังไม่เจอตัวจริง หรือเพ้อฝันถึงสเปกในฝัน", warning: "ดึงสติตัวเองกลับมาสู่โลกแห่งความเป็นจริงแล้วเลือกสิ่งที่จับต้องได้" },
-      { id: 43, name: "Eight of Cups", thai: "แปดจอกละทิ้งก้าวเดิน (๘ ถ้วย)", tag: "หันหลังให้ • เดินจากไป • แสวงหาความหมายใหม่", work: "ลาออกจากงานเดิมที่หมดใจ เพื่อไปหาหนทางใหม่ที่มีคุณค่ากว่า", love: "ตัดใจเดินออกมาจากความสัมพันธ์ที่ไปต่อไม่ได้", warning: "การยอมแพ้เร็วเกินไปอาจทำให้พลาดรางวัลที่อยู่ใกล้แค่เอื้อม" },
-      { id: 44, name: "Nine of Cups", thai: "เก้าจอกสมฤทัยปรารถนา (๙ ถ้วย)", tag: "สมปรารถนา • สุขสบาย • เสน่ห์เย้ายวน", work: "ได้ผลตอบแทนคุ้มค่า มีความสุขกับความสำเร็จส่วนตัว", love: "มีความสุขกับตัวเอง เสน่ห์แรง หรือมีโลกส่วนตัวสูงในเรื่องรัก", warning: "ระวังความหลงตัวเองและตามใจกิเลสจนเกินพอดี" },
-      { id: 45, name: "Ten of Cups", thai: "สิบจอกสุขนิรันดร์ (๑๐ ถ้วย)", tag: "ครอบครัวอบอุ่น • สมหวังสูงสุด • ความสุขแท้จริง", work: "ร่วมงานกับทีมเหมือนคนในครอบครัว องค์กรมั่นคงสงบสุข", love: "ความรักสุขสมบูรณ์ ได้แต่งงาน สร้างครอบครัวที่มั่นคง", warning: "ประคับประคองความสุขนี้ไว้ด้วยการใส่ใจซึ่งกันและกันสม่ำเสมอ" },
-      { id: 46, name: "Page of Cups", thai: "พรายน้อยถือจอก (มหาดเล็กถ้วย)", tag: "ข่าวสารความรู้สึก • อ่อนหวาน • ความคิดสร้างสรรค์", work: "ได้ข่าวเรื่องงานสายศิลปะ หรือมีโอกาสแสดงความสามารถด้านความคิดสร้างสรรค์", love: "มีคนอายุน้อยกว่ามาแอบชอบ แสดงออกอย่างน่ารักอ่อนหวาน", warning: "อารมณ์อ่อนไหวเกินไป เก็บทุกเรื่องมาคิดมาก" },
-      { id: 47, name: "Knight of Cups", thai: "อัศวินจอมโรแมนติก (อัศวินถ้วย)", tag: "ความอ่อนโยน • มิตรสหาย • ข้อเสนอจริงใจ", work: "ได้รับข้อเสนอที่ดี มีคนยื่นมือเข้ามาช่วยเหลือเรื่องงานด้วยไมตรีจิต", love: "เจอคนโรแมนติก พูดจาไพเราะ เข้ามาจีบแบบสุภาพบุรุษ", warning: "ระวังคำหวานแต่ขาดการกระทำที่หนักแน่นจริงจัง" },
-      { id: 48, name: "Queen of Cups", thai: "ราชินีธาราวิมล (ราชินีถ้วย)", tag: "ความเข้าอกเข้าใจ • ความเมตตา • หยั่งรู้อารมณ์", work: "งานสายดูแล บริการ ที่ปรึกษา ใช้หัวใจและจิตวิทยาในการทำงาน", love: "รักลึกซึ้ง ทุ่มเทให้คู่ครอง อ่อนโยนและพร้อมดูแล", warning: "อย่าปล่อยให้อารมณ์ของคนอื่นมากลืนกินความสุขของตนเอง" },
-      { id: 49, name: "King of Cups", thai: "ราชาสมุทรลึกซึ้ง (ราชาถ้วย)", tag: "การควบคุมอารมณ์ • สุขุม • ที่ปรึกษาผู้ทรงภูมิ", work: "ผู้บริหารที่ใจเย็น รับฟังลูกน้อง บริหารความขัดแย้งได้ยอดเยี่ยม", love: "คนรักอบอุ่น เข้าใจโลก ไม่ใจร้อน มีวุฒิภาวะสูง", warning: "เก็บกดความรู้สึกไว้ข้างในมากเกินไปจนคนรอบข้างเดาใจยาก" },
+  // ค้นหาไพ่บนโต๊ะทั้งหมด
+  const cards = board.querySelectorAll('.card, .card-slot, [onclick], div[class*="card"]');
+  let delay = 0;
 
-      // Swords / ดาบ (๑๔ ใบ)
-      { id: 50, name: "Ace of Swords", thai: "หนึ่งศัสตราตัดสัจจะ (๑ ดาบ)", tag: "ความกระจ่างแจ้ง • การตัดสินใจเด็ดขาด • ชัยชนะทางปัญญา", work: "มองเห็นทางออกชัดเจน ชนะข้อพิพาทด้วยข้อเท็จจริงและเหตุผล", love: "พูดคุยอย่างเปิดอก เคลียร์ปัญหาคาใจได้เด็ดขาด", warning: "คำพูดที่ตรงไปตรงมาอาจทิ่มแทงหัวใจผู้อื่นอย่างรุนแรง" },
-      { id: 51, name: "Two of Swords", thai: "สองดาบปิดตาสับสน (๒ ดาบ)", tag: "ทางสองแพร่ง • ปิดกั้นข้อมูล • กลืนไม่เข้าคายไม่ออก", work: "ตัดสินใจไม่ถูก ข้อมูลไม่เพียงพอ อยู่ในภาวะลังเล", love: "ลังเลระหว่างสองทาง ปิดหูปิดตาไม่อยากรับรู้ความจริง", warning: "การหลีกเลี่ยงความจริงไม่ได้ช่วยให้ปัญหาคลี่คลายลง" },
-      { id: 52, name: "Three of Swords", thai: "สามดาบแทงดวงใจ (๓ ดาบ)", tag: "ความชอกช้ำ • คำพูดกรีดแทง • รักสามเส้า", work: "ผิดหวังจากคำวิจารณ์ ถูกหักหลังทางธุรกิจ หรือยกเลิกสัญญา", love: "เจ็บปวดจากความจริง ถูกบอกเลิก หรือปัญหาเรื่องมือที่สาม", warning: "รักษาแผลใจด้วยสติและเวลา อย่าซ้ำเติมความรู้สึกตนเอง" },
-      { id: 53, name: "Four of Swords", thai: "สี่ดาบสงบนิ่งพักฟื้น (๔ ดาบ)", tag: "พักฟื้น • หยุดชั่วคราว • การทำสมาธิ", work: "ชะลองานไว้ก่อนเพื่อพักผ่อน ร่างกายล้า ต้องหยุดชาร์จพลัง", love: "เว้นระยะห่างเพื่อสงบสติอารมณ์ ไม่ควรคุยเรื่องซีเรียสช่วงนี้", warning: "อย่าพักนานจนกลายเป็นการผัดวันประกันพรุ่ง" },
-      { id: 54, name: "Five of Swords", thai: "ห้าดาบชนะชิงเหลี่ยม (๕ ดาบ)", tag: "เอาชนะคะคาน • ความพ่ายแพ้ • การแก่งแย่ง", work: "ชนะแต่ได้ศัตรู บรรยากาศเอาเปรียบชิงเหลี่ยมกันในที่ทำงาน", love: "ทะเลาะกันเพื่อเอาชนะ เอาแต่ใจจนบั่นทอนความสัมพันธ์", warning: "ชัยชนะที่แลกมาด้วยมิตรภาพมักไม่คุ้มค่าในระยะยาว" },
-      { id: 55, name: "Six of Swords", thai: "หกดาบข้ามนาวาสู่ฝั่ง (๖ ดาบ)", tag: "ผ่านพ้นมรสุม • การเยียวยา • ค่อยเป็นค่อยไป", work: "ปัญหาเริ่มคลี่คลาย ก้าวข้ามวิกฤตสู่วันที่ราบรื่นขึ้น", love: "ความตึงเครียดลดลง อุปสรรคผ่านพ้น ชวนกันไปพักผ่อน", warning: "ยังต้องใช้เวลาเยียวยา อย่าเพิ่งรีบเร่งผลลัพธ์จนเกินไป" },
-      { id: 56, name: "Seven of Swords", thai: "เจ็ดดาบเล่ห์กลลับลวง (๗ ดาบ)", tag: "เล่ห์เหลี่ยม • ความลับ • เอาตัวรอดหลังฉาก", work: "การวางแผนลับ ๆ ชิงไหวชิงพริบ ระวังการถูกล้วงข้อมูล", love: "มีความลับปกปิด ไม่เปิดเผยความจริงทั้งหมดต่อกัน", warning: "การกระทำที่ไม่ซื่อตรงจะย้อนกลับมาทำลายความน่าเชื่อถือของตนเอง" },
-      { id: 57, name: "Eight of Swords", thai: "แปดดาบกักขังมืดแปดด้าน (๘ ดาบ)", tag: "ติดกับดักความคิด • มืดแปดด้าน • ไร้ทางออก", work: "รู้สึกอึดอัด ถูกผูกมัดด้วยกฎระเบียบหรือหนี้สินจนขยับยาก", love: "รู้สึกตกเป็นเบี้ยล่าง ไม่กล้าเดินออกมาเพราะคิดว่าทำไม่ได้", warning: "ที่จริงพันธนาการเกิดจากความกลัวในจิตใจตนเอง ปลดปล่อยความคิดแล้วจะพบทางออก" },
-      { id: 58, name: "Nine of Swords", thai: "เก้าดาบสะดุ้งตื่นกังวล (๙ ดาบ)", tag: "นอนไม่หลับ • วิตกกังวลรุนแรง • ฝันร้าย", work: "เครียดจัด กลัวความผิดพลาด แบกรับความกังวลจนส่งผลต่อสุขภาพ", love: "คิดมาก ระแวง ฟุ้งซ่านไปเองจนกินไม่ได้นอนไม่หลับ", warning: "เก้าในสิบของความกังวลในหัวมักไม่เกิดขึ้นจริง มีสติอยู่กับปัจจุบัน" },
-      { id: 59, name: "Ten of Swords", thai: "สิบดาบปักหลังสิ้นสุด (๑๐ ดาบ)", tag: "ถึงจุดต่ำสุด • แตกหัก • จบสิ้นเพื่อเริ่มใหม่", work: "โปรเจกต์ล่ม ถูกปลด หรือต้องยอมรับความล้มเหลวเพื่อปิดจ็อบ", love: "เจ็บปวดถึงขีดสุด ความสัมพันธ์จบลงอย่างไม่อาจฟื้นฟูได้อีก", warning: "เมื่อถึงจุดต่ำสุดแล้ว จะไม่มีอะไรแย่ไปกว่านี้ มีแต่จะดีขึ้นจากนี้ไป" },
-      { id: 60, name: "Page of Swords", thai: "พรายช่างสังเกต (มหาดเล็กดาบ)", tag: "ความสงสัย • ตรวจสอบข้อเท็จจริง • ตื่นตัว", work: "สืบข้อมูล ค้นคว้าข้อเท็จจริง จับผิด หรือเตรียมความพร้อมรับมือปัญหา", love: "คอยแอบส่องโซเชียล จับผิด หรือระแวงพฤติกรรมอีกฝ่าย", warning: "ความอยากรู้อยากเห็นมากเกินไปอาจสร้างความขัดแย้งโดยไม่จำเป็น" },
-      { id: 61, name: "Knight of Swords", thai: "อัศวินดาบพุ่งชน (อัศวินดาบ)", tag: "บุกทะลวง • ตรงไปตรงมา • พูดจาขวานผ่าซาก", work: "ลุยแก้ปัญหาแบบไม่กลัวเกรง ลุยงานด่วนที่ต้องใช้ความเด็ดขาด", love: "คุยกันตรง ๆ แรง ๆ ไม่ง้อ ไม่แคร์ความรู้สึกกันเท่าที่ควร", warning: "ความปากไวและใจร้อนจะสร้างศัตรูได้ง่ายโดยไม่รู้ตัว" },
-      { id: 62, name: "Queen of Swords", thai: "ราชินีดวงตามรกต (ราชินีดาย)", tag: "เฉียบขาด • ใช้เหตุผล • ไม่ยอมอ่อนข้อ", work: "ผู้บริหารหญิงที่เด็ดขาด ยึดความถูกต้องเป็นหลัก ทำงานมีมาตรฐานสูง", love: "ตั้งกำแพงสูง ไม่ยอมอ่อนข้อให้ใครง่าย ๆ พึ่งพาตนเอง", warning: "ระวังท่าทีที่เย็นชาเกินไปจะทำให้คนรอบข้างหวาดกลัวและถอยห่าง" },
-      { id: 63, name: "King of Swords", thai: "ราชาตุลาการเด็ดขาด (ราชาดาบ)", tag: "ปัญญาเฉียบแหลม • ความยุติธรรม • อำนาจการตัดสินใจ", work: "ตัดสินใจอย่างเป็นธรรมตามหลักการ นักกฎหมาย ที่ปรึกษาผู้ทรงอำนาจ", love: "ใช้เหตุผลเหนืออารมณ์ ชัดเจนแต่ขาดความหวานและความโรแมนติก", warning: "อย่าตัดสินทุกเรื่องด้วยตรรกะจนลืมเห็นอกเห็นใจเพื่อนมนุษย์" },
+  cards.forEach(card => {
+    setTimeout(() => {
+      card.click();
+    }, delay);
+    delay += 250; // หน่วงเวลาเปิดทีละใบเล็กน้อย เพื่อให้แอนิเมชันพลิกไพ่สวยงาม
+  });
 
-      // Pentacles / เหรียญ (๑๔ ใบ)
-      { id: 64, name: "Ace of Pentacles", thai: "หนึ่งเหรียญทองคำมหาลาภ (๑ เหรียญ)", tag: "โอกาสทางการเงิน • ทรัพย์หลั่งไหล • ความมั่นคงงอกเงย", work: "ได้งานใหม่ ได้โบนัส การลงทุนเริ่มผลิดอกออกผล มีลาภลอย", love: "ความสัมพันธ์มั่นคง เป็นที่พึ่งพาทางกายและใจได้อย่างดีเยี่ยม", warning: "เมื่อได้รับโอกาสมาแล้ว ต้องรีบลงมือทำจริง อย่าปล่อยให้หลุดมือ" },
-      { id: 65, name: "Two of Pentacles", thai: "สองเหรียญหมุนเวียนสมดุล (๒ เหรียญ)", tag: "การบริหารจัดการเงิน • หมุนเงิน • ความยืดหยุ่น", work: "จับปลาสองมือ ทำงานหลายอย่างพร้อมกัน หมุนเงินคล่องตัวแต่ตึงมือ", love: "ต้องจัดสรรเวลาให้ความรักและการงานให้สมดุลกัน", warning: "ระวังหมุนเงินไม่ทันจนเกิดภาวะชักหน้าไม่ถึงหลัง" },
-      { id: 66, name: "Three of Pentacles", thai: "สามเหรียญร่วมสร้างผลงาน (๓ เหรียญ)", tag: "การทำงานเป็นทีม • ทักษะความเชี่ยวชาญ • สร้างสรรค์ผลงาน", work: "งานได้รับการยอมรับ ร่วมงานกับผู้เชี่ยวชาญ ได้เงินจากฝีมือตนเอง", love: "ช่วยกันสร้างอนาคต หรือมีคนแนะนำสิ่งดี ๆ ให้แก่กัน", warning: "หมั่นพัฒนาทักษะตนเองและเปิดรับคำแนะนำจากเพื่อนร่วมงาน" },
-      { id: 67, name: "Four of Pentacles", thai: "สี่เหรียญกอดทรัพย์หวงแหน (๔ เหรียญ)", tag: "การเก็บออม • หวงทรัพย์ • กลัวการเปลี่ยนแปลง", work: "รักษาฐานะความมั่นคงไว้ได้ดี ไม่กล้าเสี่ยงลงทุนเพิ่ม", love: "หวงคนรัก ขี้หึง หรือยึดติดกับความสัมพันธ์เดิม ๆ ไม่ยอมปล่อย", warning: "การตระหนี่ถี่เหนียวเกินไปจะปิดกั้นโอกาสแห่งการเติบโต" },
-      { id: 68, name: "Five of Pentacles", thai: "ห้าเหรียญหนาวเหน็บขาดแคลน (๕ เหรียญ)", tag: "การสูญเสีย • ขาดสภาพคล่อง • ความรู้สึกโดดเดี่ยว", work: "สะดุดทางการเงิน ตกงาน ขาดทุน หรือรู้สึกไม่มีใครช่วยเหลือ", love: "รู้สึกไม่ได้รับความรัก ถูกทอดทิ้งในวันที่ลำบาก", warning: "มองรอบตัวแล้วขอความช่วยเหลือ อย่าจมอยู่กับความสิ้นหวังเพียงลำพัง" },
-      { id: 69, name: "Six of Pentacles", thai: "หกเหรียญแบ่งปันเกื้อหนุน (๖ เหรียญ)", tag: "การแบ่งปัน • ได้รับการอุปถัมภ์ • ให้และรับ", work: "ได้เงินช่วยเหลือ ได้รับความเมตตาจากผู้ใหญ่ หรือเป็นผู้ให้แก่บริวาร", love: "ช่วยเหลือเกื้อกูลกัน หรือฝ่ายหนึ่งเป็นผู้ให้มากกว่าผู้รับ", warning: "ระวังการให้จนตนเองเดือดร้อน หรือทวงบุญคุณกันในภายหลัง" },
-      { id: 70, name: "Seven of Pentacles", thai: "เจ็ดเหรียญเฝ้ารอเก็บเกี่ยว (๗ เหรียญ)", tag: "การรอคอยผลผลิต • ประเมินผล • การลงทุนระยะยาว", work: "ผลงานที่ลงแรงไว้กำลังเติบโต อยู่ในช่วงประเมินผลกำไรเพื่อต่อยอด", love: "ความสัมพันธ์พัฒนาช้า ๆ อย่างมั่นคง รอเวลาสุกงอม", warning: "อย่าใจร้อนเร่งรัดผลลัพธ์ ของดีย่อมต้องใช้เวลาในการบ่มเพาะ" },
-      { id: 71, name: "Eight of Pentacles", thai: "แปดเหรียญขัดเกลาฝีมือ (๘ เหรียญ)", tag: "ความชำนาญ • ความมุมานะ • รายได้จากวิชาชีพ", work: "ตั้งหน้าตั้งตาทำงานฝีมือ ผลงานประณีต ยิ่งทำยิ่งชำนาญ รายได้มั่นคง", love: "ไม่มีเวลาหวานชื่น มุ่งมั่นสร้างเนื้อสร้างตัวเพื่ออนาคต", warning: "บ้างานมากเกินไปจนละเลยสุขภาพและความสัมพันธ์ใกล้ชิด" },
-      { id: 72, name: "Nine of Pentacles", thai: "เก้าเหรียญสุขสำราญมั่งคั่ง (๙ เหรียญ)", tag: "ความมั่งคั่งด้วยลำแข้ง • สวยรวยเก่ง • พึ่งพาตนเอง", work: "ฐานะการเงินมั่นคงมาก สบายใจกับความสำเร็จที่สร้างมาด้วยตนเอง", love: "โสดอย่างมีระดับ มีความสุขกับชีวิตตนเอง หรือได้คู่ที่ฐานะดีเลิศ", warning: "ระวังความเคยชินกับการอยู่คนเดียวจนปิดกั้นไม่ให้ใครเข้ามา" },
-      { id: 73, name: "Ten of Pentacles", thai: "สิบเหรียญมรดกวงศ์ตระกูล (๑๐ เหรียญ)", tag: "ความมั่นคงรุ่นสู่รุ่น • มรดกตกทอด • มั่งคั่งสูงสุด", work: "ธุรกิจครอบครัวมั่นคง ได้รับมรดก อสังหาริมทรัพย์ หรือเงินก้อนใหญ่", love: "ครอบครัวทั้งสองฝ่ายยอมรับ แต่งงานสร้างรากฐานที่มั่งคั่งร่วมกัน", warning: "ระวังข้อพิพาทเรื่องผลประโยชน์หรือทรัพย์สินภายในตระกูล" },
-      { id: 74, name: "Page of Pentacles", thai: "พรายน้อยเรียนรู้ทรัพย์ (มหาดเล็กเหรียญ)", tag: "โอกาสทางการเงินใหม่ • การศึกษาลงทุน • ขยันขันแข็ง", work: "ได้รับข่าวดีเรื่องเงินทุน ได้ศึกษาต่อยอดทักษะการทำเงินใหม่ ๆ", love: "ความรักเรียบง่าย มั่นคง ค่อย ๆ พัฒนาความรู้สึกไปด้วยกัน", warning: "ค่อย ๆ ลงทุน อย่าเพิ่งทุ่มเงินก้อนใหญ่โดยที่ยังไม่เข้าใจถ่องแท้" },
-      { id: 75, name: "Knight of Pentacles", thai: "อัศวินก้าวช้าแต่มั่นคง (อัศวินเหรียญ)", tag: "ความพากเพียร • มั่นคงซื่อตรง • ช้าแต่ชัวร์", work: "ทำงานรอบคอบ ไม่ยอมผิดพลาด วางแผนการเงินอย่างรัดกุมที่สุด", love: "รักมั่นคง ซื่อสัตย์ แต่ไม่โรแมนติก เน้นสร้างอนาคตที่จับต้องได้", warning: "เชื่องช้าเกินไปจนอาจพลาดโอกาสทางธุรกิจที่ต้องอาศัยความเร็ว" },
-      { id: 76, name: "Queen of Pentacles", thai: "ราชินีธรณีอุดมสมบูรณ์ (ราชินีเหรียญ)", tag: "แม่บ้านการเรือน • บริหารเงินฉลาด • ดูแลเอาใจใส่", work: "บริหารบัญชีการเงินยอดเยี่ยม จัดการงานในบ้านและธุรกิจได้ครบเครื่อง", love: "คนรักคอยดูแลเอาใจใส่เรื่องอาหารการกินและความเป็นอยู่อย่างดีเลิศ", warning: "กังวลเรื่องเงินทองและความมั่นคงจนลืมหาความสุขใส่ตัว" },
-      { id: 77, name: "King of Pentacles", thai: "ราชาเศรษฐีบารมีค้ำจุน (ราชาเหรียญ)", tag: "มหาเศรษฐี • มั่นคงสูงสุด • เจ้าของกิจการผู้มั่งคั่ง", work: "ประสบความสำเร็จสูงสุดด้านการเงินและธุรกิจ มีบารมีและเครดิตยอดเยี่ยม", love: "คู่ครองฐานะมั่นคงมาก เป็นเสาหลักและที่พึ่งพาให้ทั้งครอบครัวได้อย่างสมบูรณ์", warning: "ระวังการวัดคุณค่าของทุกสิ่งในชีวิตด้วยเงินตราเพียงอย่างเดียว" }
+  // เมื่อเปิดครบแล้ว ให้ซ่อนปุ่มนี้ไป เพื่อไม่ให้ลูกดวงกดซ้ำ
+  setTimeout(() => {
+    const resetArea = document.getElementById('reset-area');
+    if (resetArea) resetArea.style.display = 'none';
+  }, delay + 400);
+}
+    // สำรับไพ่เนตรวิจิตรบรรจง ครบ ๗๘ ใบ (ชื่อไฟล์ภาพตรงกับโฟลเดอร์ Google Drive ทุกใบ 100%)
+    const tarotDeck = [
+      // ==================== มหามายา ๒๒ ใบ (MAJOR ARCANA) ====================
+      {
+        id: 0, num: "0", name: "ผีตาโขน", arcana: "The Fool", img: "0ไพ่ผีตาโขนแห่งจันทรา .png",
+        keywords: "การเริ่มต้นใหม่ • อิสระ • การผจญภัย • กล้าก้าวไปข้างหน้า",
+        meaning: "การเริ่มต้นใหม่ด้วยจิตใจบริสุทธิ์ ไร้ความกลัว กล้าก้าวออกจากกรอบเดิม ปลดปล่อยอิสรภาพและผจญภัยสู่สิ่งใหม่",
+        work: "โอกาสริเริ่มงานใหม่ โปรเจกต์ที่ใช้ความคิดสร้างสรรค์สูง กล้าคิดต่างแล้วจะรุ่ง",
+        finance: "เงินหมุนเวียนเร็ว พร้อมจ่ายเพื่อประสบการณ์ ระวังการใช้จ่ายตามอารมณ์ชั่ววูบ",
+        love: "คนโสดพบรักไม่คาดฝัน ความรักไร้กฎเกณฑ์ คนมีคู่เติมความสดใสให้ความสัมพันธ์"
+      },
+      {
+        id: 1, num: "I", name: "ปู่เจ้าสมิงพราย", arcana: "The Magician", img: "1ไพ่จอมขมังเวทไทย ปู่เจ้าสมิงพราย.png",
+        keywords: "พลังอำนาจ • ความสามารถ • ไหวพริบ • เสกสรรค์ดั่งใจ",
+        meaning: "พลังครูบาอาจารย์สายเวท ไหวพริบปฏิภาณ ความสามารถรอบด้านในการลงมือทำจนสำเร็จดั่งใจนึก",
+        work: "ใช้ทักษะเฉพาะตัวและการเจรจาสร้างผลงานโดดเด่น แก้ปัญหาเฉพาะหน้าได้ยอดเยี่ยม",
+        finance: "มีช่องทางทำเงินหลากหลาย หมุนเงินเก่ง ควบคุมรายรับรายจ่ายได้อย่างชาญฉลาด",
+        love: "วาจามหาเสน่ห์ มีเสน่ห์ดึงดูดใจ คนคุยประทับใจ คนมีคู่จับมือสร้างอนาคตร่วมกันได้ดี"
+      },
+      {
+        id: 2, num: "II", name: "นางตานี", arcana: "The High Priestess", img: "2ไพ่ทาโรต์นางตานีใต้แสงจันทร์.png",
+        keywords: "สัญชาตญาณ • ความลับ • สิ่งที่ซ่อนอยู่ • ลางสังหรณ์",
+        meaning: "พลังจิตวิญญาณแห่งความลี้ลับ สัญชาตญาณแม่นยำ มีเรื่องราวหรือความจริงที่ยังซ่อนเร้นใต้เงาจันทร์",
+        work: "งานเบื้องหลัง วิจัย หรือวางแผนเชิงลึก ใช้เซนส์ประเมินคน อย่าเพิ่งเปิดเผยไพ่ในมือ",
+        finance: "มีรายรับลับๆ หรือเงินเก็บส่วนตัว ระวังเรื่องการเงินที่มีเงื่อนงำซ่อนเร้น",
+        love: "ความสัมพันธ์ยังไม่ชัดเจน มีเสน่ห์ลึกลับดึงดูดใจ คนโสดมีคนแอบปลื้มอยู่เงียบๆ"
+      },
+      {
+        id: 3, num: "III", name: "แม่ย่านาง", arcana: "The Empress", img: "3ไพ่จักรพรรดินีแห่งสายน้ำและดอกบัว.png",
+        keywords: "ความอุดมสมบูรณ์ • การดูแล • ความรัก • โชคลาภ",
+        meaning: "พลังแห่งมารดาผู้พิทักษ์ ความอุดมสมบูรณ์พูนสุข ความรักความเมตตา และโชคลาภที่หลั่งไหลเข้ามาดั่งสายน้ำ",
+        work: "ผลงานงอกเงย มีผู้ใหญ่และบริวารคอยช่วยเหลืออุปถัมภ์ ค้าขายเจริญรุ่งเรือง",
+        finance: "เงินทองหลั่งไหลไม่ขัดสน ได้รับลาภลอยหรือความมั่งคั่งจากความเสน่หา",
+        love: "ความรักเปี่ยมสุข ดูแลเอาใจใส่อบอุ่น คนโสดพบรักแท้ที่พร้อมสร้างครอบครัว"
+      },
+      {
+        id: 4, num: "IV", name: "ผีเจ้าที่", arcana: "The Emperor", img: "4จักรพรรดิแห่งศาลพระภูมิ.png",
+        keywords: "ความมั่นคง • อำนาจ • การปกครอง • รากฐานชีวิต",
+        meaning: "เจ้าแห่งอาณาเขต ผู้พิทักษ์เคหสถาน อำนาจปกครอง ความเด็ดขาด และการสร้างรากฐานชีวิตที่มั่นคงดั่งหินผา",
+        work: "ขึ้นสู่ตำแหน่งผู้นำ มีผู้ใหญ่ระดับสูงหนุนหลัง งานต้องการความเด็ดขาดชัดเจน",
+        finance: "ฐานะมั่นคง การลงทุนในอสังหาริมทรัพย์ ที่ดิน หรือสินทรัพย์ระยะยาวให้ผลดีเยี่ยม",
+        love: "ความสัมพันธ์มั่นคง เป็นเสาหลักให้แก่กัน ควรระวังการควบคุมกันมากเกินไป"
+      },
+      {
+        id: 5, num: "V", name: "พระอาจารย์", arcana: "The Hierophant", img: "5พระอาจารย์ในวิหารทองคำ.png",
+        keywords: "ครูบาอาจารย์ • ประเพณี • ศีลธรรม • สิ่งศักดิ์สิทธิ์คุ้มครอง",
+        meaning: "บารมีพระรัตนตรัยและบูรพาจารย์ ธรรมเนียมประเพณีอันศักดิ์สิทธิ์ และการได้รับการคุ้มครองแคล้วคลาด",
+        work: "การเรียนรู้เพิ่มเติม ได้รับคำชี้แนะจากผู้ใหญ่ ทำงานซื่อสัตย์สุจริตแล้วจะเจริญ",
+        finance: "เงินบริสุทธิ์ได้มาด้วยความสุจริต เหมาะแก่การทำบุญต่อชะตาสร้างทานบารมี",
+        love: "รักถูกต้องตามทำนองคลองธรรม เข้าตามตรอกออกตามประตู ผู้ใหญ่ทั้งสองฝ่ายเห็นชอบ"
+      },
+      {
+        id: 6, num: "VI", name: "แม่นาคกับพ่อมาก", arcana: "The Lovers", img: "6คนรักใต้แสงจันทร์ริมสายน้ำ.png",
+        keywords: "ความรัก • ความผูกพัน • การเลือก • สายสัมพันธ์ลึกซึ้ง",
+        meaning: "ตำนานรักอมตะข้ามภพภูมิ ความผูกพันอันลึกซึ้ง และทางแยกของชีวิตที่ต้องตัดสินใจเลือกด้วยสติและหัวใจ",
+        work: "การจับคู่หุ้นส่วน การทำสัญญาร่วมมือ หรือต้องเลือกระหว่างสองโอกาสสำคัญ",
+        finance: "การเงินเชื่อมโยงกับคนรักหรือหุ้นส่วน ระวังการใช้จ่ายตามอารมณ์เสน่หา",
+        love: "ความรักผูกพันลึกซึ้ง คนโสดพบคนถูกชะตาอย่างแรง คนมีคู่พร้อมฝ่าฟันอุปสรรคร่วมกัน"
+      },
+      {
+        id: 7, num: "VII", name: "ผีกระหัง", arcana: "The Chariot", img: "7กระหังกลางแสงจันทร์.png",
+        keywords: "การเดินทาง • ชัยชนะ • ความมุ่งมั่น • ฝ่าฟันอุปสรรค",
+        meaning: "การทะยานบินข้ามความมืดด้วยแรงกายแรงใจ การเดินทางไกล และการต่อสู้ฝ่าฟันจนคว้าชัยชนะมาครอง",
+        work: "งานลุย งานแข่งขัน ต้องใช้ความพยายามสูง ติดต่องานต่างถิ่นต่างแดนสำเร็จงดงาม",
+        finance: "ได้เงินจากการแข่งขัน เหนื่อยแต่คุ้มค่า ต้องควบคุมวินัยการเงินเข้มงวด",
+        love: "รักที่ต้องใช้ความอดทนฝ่าฟัน รักทางไกล หรือพยายามเอาชนะใจคนที่เข้าถึงยาก"
+      },
+      {
+        id: 8, num: "VIII", name: "เสือสมิง", arcana: "Strength", img: "8เสือสมิง_ พลังแห่งพงไพร.png",
+        keywords: "ความกล้าหาญ • พลังใจ • ควบคุมอารมณ์ • ชนะความกลัว",
+        meaning: "พญาสมิงแห่งพงไพร พลังที่ซ่อนในความสงบ การควบคุมสัญชาตญาณดิบและอารมณ์ด้วยจิตใจที่แข็งแกร่ง",
+        work: "รับมือกับงานยาก แรงกดดันมหาศาล หรือคนที่ดื้อรั้นได้อยู่หมัดด้วยความนุ่มนวลแต่เด็ดขาด",
+        finance: "เอาชนะปัญหาหนี้สินหรือภาวะตึงมือได้ด้วยความอดทน หารายได้เข้ากระเป๋าได้เก่ง",
+        love: "ใช้ความอ่อนโยนสยบความดื้อดึงของคนรัก ความสัมพันธ์มั่นคงพร้อมปกป้องกันและกัน"
+      },
+      {
+        id: 9, num: "IX", name: "ฤๅษีเมืองลับแล", arcana: "The Hermit", img: "9ไพ่ฤาษีแห่งเมืองลับแล.png",
+        keywords: "ค้นหาความจริง • ปัญญา • สันโดษ • ความสงบในจิต",
+        meaning: "ประทีปส่องทางสู่เมืองลับแลเพื่อค้นหาความจริงของชีวิต การปลีกวิเวกเพื่อทบทวนตัวเองและรับภูมิปัญญาชี้นำ",
+        work: "งานวิชาการ วิจัย หรือการวางแผนเชิงลึก ทบทวนกลยุทธ์อย่างรอบคอบ อย่าเพิ่งรีบร้อน",
+        finance: "ประหยัด พอเพียง ไม่ฟุ่มเฟือย การเงินนิ่งสงบ ปลอดภัยจากการเสี่ยงโชค",
+        love: "ช่วงเวลาทบทวนหัวใจตนเอง คนโสดรักสันโดษ คนมีคู่ต้องการพื้นที่ส่วนตัวบ้าง"
+      },
+      {
+        id: 10, num: "X", name: "กุมารทอง", arcana: "Wheel of Fortune", img: "10กุมารทองแห่งวงล้อทองคำ.png",
+        keywords: "กงล้อโชคชะตา • การเปลี่ยนแปลง • โอกาสทอง • วาสนาพลิกฟื้น",
+        meaning: "กุมารทองหมุนกงล้อแห่งวาสนา ชะตาชีวิตกำลังเปลี่ยนผ่านสู่จุดรุ่งโรจน์ โอกาสทองทางการเงินและจังหวะชีวิตเปิด",
+        work: "จุดเปลี่ยนสำคัญในหน้าที่การงาน ได้รับข้อเสนอใหม่ โปรเจกต์พลิกฟื้นก้าวหน้า",
+        finance: "โชคลาภโดดเด่น มีเงินก้อนเข้ามา มีโอกาสได้ลาภลอย หรือค้าขายกำไรดี",
+        love: "พรหมลิขิตชักนำพาคนที่ใช่เข้ามา ปัญหาที่เคยคาราคาซังจะคลี่คลายสู่ทางที่ดี"
+      },
+      {
+        id: 11, num: "XI", name: "นรกและสวรรค์", arcana: "Justice", img: "11ไพ่การพิพากษาแห่งสวรรค์และนรก.png",
+        keywords: "ความยุติธรรม • กฎแห่งกรรม • ตัดสินใจเที่ยงธรรม • ผลการกระทำ",
+        meaning: "ตราชั่งแห่งกรรมดีกรรมชั่ว ความถูกต้องชอบธรรม ความจริงจะปรากฏและคืนความยุติธรรมแก่ผู้มีสัจจะ",
+        work: "เซ็นสัญญา ตรวจสอบเอกสาร คดีความ ทุกอย่างต้องทำด้วยความโปร่งใสและตรงไปตรงมา",
+        finance: "สมดุลรายรับรายจ่าย ได้รับเงินชดเชยหรือผลประโยชน์ตามสิทธิ์ที่ชอบธรรม",
+        love: "ความสัมพันธ์บนพื้นฐานของเหตุผลและความจริงใจ เปิดเผยและไม่ปิดบังกัน"
+      },
+      {
+        id: 12, num: "XII", name: "ผีอำ", arcana: "The Hanged Man", img: "12ไพ่ผีอำ_ วิญญาณห้อยหัว.png",
+        keywords: "การหยุดนิ่ง • เสียสละ • การรอคอย • มองต่างมุม",
+        meaning: "สภาวะถูกตรึงแน่นชั่วคราว การหยุดนิ่งเพื่อทบทวน ยอมสละบางสิ่งเพื่อผลลัพธ์ที่ดีกว่า และการเปลี่ยนมุมมองชีวิต",
+        work: "งานชะลอตัว ต้องรอคอยจังหวะเวลา ใช้เวลานี้แก้ไขข้อผิดพลาด อย่าเพิ่งฝืนดันไปข้างหน้า",
+        finance: "เงินสะดุดชั่วคราว ต้องอดทนรอคอยเงินก้อน หรือตัดใจยอมเสียทรัพย์เพื่อรักษาเรื่องใหญ่",
+        love: "ความสัมพันธ์นิ่งเฉย อึดอัดกลืนไม่เข้าคายไม่ออก การถอยก้าวหนึ่งเพื่อดูสถานการณ์คือทางออก"
+      },
+      {
+        id: 13, num: "XIII", name: "ผีตายโหง", arcana: "Death", img: "13ไพ่ผีตายโหง_เลข๑๓_จัดกึ่งกลางใหม่.png",
+        keywords: "การสิ้นสุด • การเปลี่ยนผ่าน • ปล่อยวาง • เริ่มต้นสิ่งใหม่",
+        meaning: "การสิ้นสุดของวัฏจักรเดิมอย่างสิ้นเชิง ความตายของสิ่งเก่าเพื่อเปิดทางให้สิ่งใหม่ถือกำเนิดขึ้นอย่างงดงาม",
+        work: "ลาออกจากงานเดิม ยุติโครงการที่ไม่ตอบโจทย์ ปรับโครงสร้างเพื่อโอกาสที่เติบโตกว่า",
+        finance: "ตัดหนี้สินและรายจ่ายฟุ่มเฟือย จบปัญหาการเงินเรื้อรังเพื่อเริ่มวางแผนใหม่",
+        love: "จบความสัมพันธ์ที่ทำร้ายจิตใจ ปล่อยวางอดีตเพื่อเปิดรับความรักครั้งใหม่ที่บริสุทธิ์"
+      },
+      {
+        id: 14, num: "XIV", name: "นางตะเคียน", arcana: "Temperance", img: "14นางตะเคียน เทพีแห่งสมดุล.png",
+        keywords: "ความสมดุล • การเยียวยา • อดทน • ประสานรอยร้าว",
+        meaning: "พลังนางไม้ผู้สงบนิ่ง เทพีแห่งความสมดุลและการถ่ายเทธาตุ การเยียวยารักษาจิตใจ และการประสานรอยร้าวให้ลงตัว",
+        work: "การเจรจาไกล่เกลี่ย ปรับตัวเข้ากับสภาพแวดล้อมใหม่ ผสมผสานสองความคิดเห็นให้กลมกลืน",
+        finance: "การเงินเริ่มกลับมาสมดุล หมุนเวียนถ่ายเทได้คล่องตัวขึ้น ไม่ตึงมือเกินไป",
+        love: "การปรับความเข้าใจและให้อภัย ความรักที่อาศัยเวลาในการเยียวยาซึ่งกันและกัน"
+      },
+      {
+        id: 15, num: "XV", name: "ยมบาล", arcana: "The Devil", img: "15ไพ่ทาโรต์ยมบาลแห่งนรก.png",
+        keywords: "พันธนาการ • กิเลส • หนี้สิน • ลุ่มหลง • บ่วงอารมณ์",
+        meaning: "ภาพสะท้อนแห่งกิเลส ตัณหา หนี้สิน และความกลัวที่เกาะกุมใจ จงตระหนักว่าโซ่ตรวนนั้นเราเองสามารถปลดล็อกได้",
+        work: "ระวังข้อผูกมัดไม่เป็นธรรม สัญญาซ่อนเงื่อน หรือการตกอยู่ใต้อิทธิพลมืดในที่ทำงาน",
+        finance: "ภาระหนี้สิน ดอกเบี้ย ระวังการเสียทรัพย์เพราะกิเลส การเสี่ยงโชค หรือถูกหลอกลวง",
+        love: "ความสัมพันธ์ลุ่มหลง หึงหวง หรือรักซ้อนที่ยากจะถอนตัว ต้องใช้สติปัญญาตัดบ่วงพันธนาการ"
+      },
+      {
+        id: 16, num: "XVI", name: "ผีห่า", arcana: "The Tower", img: "16หอคอยถล่มท่ามกลางภูตผี.png",
+        keywords: "เหตุฉับพลัน • หอคอยพังทลาย • ความจริงเปิดเผย • ปรับกระบวนทัศน์",
+        meaning: "เหตุการณ์ไม่คาดฝันเข้ามากระทบกระเทือนอย่างฉับพลัน สิ่งที่สร้างบนรากฐานไม่มั่นคงต้องพังทลายเพื่อสร้างใหม่",
+        work: "ปัญหาเฉพาะหน้ากะทันหัน การเปลี่ยนแปลงนโยบายรวดเร็ว ต้องมีแผนสองสำรองไว้เสมอ",
+        finance: "ระวังอุบัติเหตุทางการเงิน รายจ่ายฉับพลัน ข้าวของเสียหาย อย่าประมาทในการลงทุน",
+        love: "ทะเลาะรุนแรง ความลับแตก หรือเกิดจุดแตกหักที่ต้องเผชิญหน้ากับความจริง"
+      },
+      {
+        id: 17, num: "XVII", name: "ผีโขมด", arcana: "The Star", img: "17ไพ่ผีโขมดแห่งแสงดาว.png",
+        keywords: "ความหวัง • การฟื้นฟู • แสงสว่างปลายอุโมงค์ • แรงบันดาลใจ",
+        meaning: "ดวงไฟเรืองรองแห่งผีโขมด แสงสว่างนำทางหลังพายุใหญ่พัดผ่าน ความหวังฟื้นคืนชีพ การฟื้นฟูเยียวยากายและใจ",
+        work: "โอกาสใหม่เริ่มปรากฏ ได้รับการยอมรับ มีชื่อเสียงและผลงานเป็นที่ประจักษ์",
+        finance: "การเงินฟื้นตัว หนี้สินเริ่มคลี่คลาย มีช่องทางสร้างรายได้ใหม่ที่มั่นคง",
+        love: "ความรักที่สบายใจดั่งเพื่อนคู่คิด คนโสดมีเกณฑ์พบคนที่เข้ามาช่วยเยียวยาหัวใจ"
+      },
+      {
+        id: 18, num: "XVIII", name: "ผีกระสือ", arcana: "The Moon", img: "18ผีกระสือใต้แสงจันทร์.png",
+        keywords: "ความสับสน • ภาพลวงตา • ความวิตกกังวล • เรื่องคลุมเครือ",
+        meaning: "ดวงไฟลอยล่องใต้เงาจันทร์ ภาพลวงตาและความกลัวที่ปรุงแต่งขึ้นมา ระวังการตัดสินใจด้วยความหวาดระแวง",
+        work: "ความไม่ชัดเจนในองค์กร นินทาลับหลัง ข้อมูลยังไม่ครบถ้วน อย่าเพิ่งด่วนตัดสินใจเรื่องใหญ่",
+        finance: "ระวังถูกลวงด้วยผลประโยชน์เกินจริง การลงทุนคลุมเครือ หรือรายจ่ายซ่อนเร้น",
+        love: "ความหวาดระแวง ไม่ไว้ใจกัน รักที่มีความลับ ควรเปิดใจคุยกันด้วยความจริงใจ"
+      },
+      {
+        id: 19, num: "XIX", name: "ผีบ้านผีเรือน", arcana: "The Sun", img: "19ผีบ้านผีเรือน_ พรแห่งบรรพชน.png",
+        keywords: "ความสำเร็จ • ความสุข • ข่าวดี • พรแห่งบรรพชน",
+        meaning: "พรแห่งบรรพชนผู้พิทักษ์ แสงสุริยันอันอบอุ่นสาดส่องเคหสถาน ความสำเร็จอันยิ่งใหญ่ ความสุข และข่าวดีมงคล",
+        work: "ประสบความสำเร็จสูงสุด ได้รับการเลื่อนขั้น มีชื่อเสียงเกียรติยศ กิจการก้าวหน้ารุ่งเรือง",
+        finance: "การเงินมั่งคั่ง โชคลาภเปิดรับ มีความมั่นคงในครอบครัว มีเงินทองใช้จ่ายสบายใจ",
+        love: "รักสุขสมหวัง มีเกณฑ์แต่งงาน มีบุตร หรือได้จัดงานมงคลฉลองร่วมกับคนในบ้าน"
+      },
+      {
+        id: 20, num: "XX", name: "เปรตได้รับส่วนบุญ", arcana: "Judgement", img: "20ไพ่พิพากษาแห่งเปรตในวัดไทย.png",
+        keywords: "การตื่นรู้ • ชดใช้กรรม • ปลดเปลื้องบ่วง • โอกาสครั้งใหม่",
+        meaning: "เสียงกู่ร้องแห่งการตื่นรู้ ผลบุญแผ่ถึงช่วยปลดเปลื้องบ่วงกรรม การให้อภัย และโอกาสครั้งที่สองในการเริ่มต้นชีวิตใหม่",
+        work: "ประกาศผลงานสำคัญ สอบผ่าน ได้รับโอกาสแก้ตัวและแสดงฝีมือให้เป็นที่ประจักษ์",
+        finance: "ได้รับเงินค้างชำระ เงินมรดก หรือปลดเปลื้องหนี้สิน ควรร่วมทำบุญอุทิศกุศลหนุนดวง",
+        love: "คนรักเก่าติดต่อกลับมา หรือถึงเวลาให้อภัยและก้าวข้ามความขัดแย้งเดิมสู่ความเข้าใจลึกซึ้ง"
+      },
+      {
+        id: 21, num: "XXI", name: "พระแม่ธรณี", arcana: "The World", img: "21พระแม่ธรณีแห่งสายน้ำจักรวาล (1.png",
+        keywords: "ความสมบูรณ์ • ความสำเร็จสูงสุด • บรรลุเป้าหมาย • สิ้นสุดวงจร",
+        meaning: "พระแม่ธรณีบีบมวยผมหลั่งสายน้ำชำระล้างมาร ความสมบูรณ์พูนสุขสูงสุด และการบรรลุเป้าหมายแห่งชีวิตอย่างมั่นคงถาวร",
+        work: "โปรเจกต์ใหญ่สำเร็จสมบูรณ์แบบ ได้รับรางวัลหรือความสำเร็จระดับสากล ก้าวสู่อีกขั้นของชีวิต",
+        finance: "ความมั่งคั่งมั่นคง อิสรภาพทางการเงิน มีความสุขกับสิ่งที่สร้างขึ้นมาด้วยน้ำพักน้ำแรง",
+        love: "ความรักบริบูรณ์พร้อม เข้าสู่จุดที่สมบูรณ์แบบ มีความสุขสงบและมั่นคงร่วมกันตลอดไป"
+      },
+
+      // ==================== สำรับคทาเพลิง (WANDS SUIT) ====================
+      {
+        id: 22, num: "๑ คทา", name: "คทาเพลิงแรกกำเนิด", arcana: "Ace of Wands", img: "1คทาเพลิงแรกกำเนิด.png",
+        keywords: "จุดเริ่มต้นใหม่ • แรงบันดาลใจ • ไฟในใจ • โอกาสทอง",
+        meaning: "ประกายเพลิงแรกแห่งการกำเนิด เปี่ยมล้นด้วยพลังสร้างสรรค์และความกระตือรือร้น โอกาสใหม่ที่กำลังปะทุขึ้นในชีวิต",
+        work: "มีไฟริเริ่มงานใหม่ โปรเจกต์สร้างสรรค์ ได้รับโอกาสแสดงศักยภาพอย่างเต็มที่",
+        finance: "ช่องทางสร้างรายได้ใหม่ ได้เงินก้อนแรกจากสิ่งที่ริเริ่มลงมือทำ",
+        love: "คนโสดมีเกณฑ์สปาร์กรักกะทันหัน คนมีคู่ความสัมพันธ์กลับมามีชีวิตชีวาอีกครั้ง"
+      },
+      {
+        id: 23, num: "๒ คทา", name: "สองคฑาแห่งเส้นทาง", arcana: "Two of Wands", img: "2ไพ่ทาโรต์สองคทาแห่งเส้นทาง.png",
+        keywords: "วางแผนอนาคต • ทางเลือก • ขยายวิสัยทัศน์ • ก้าวสู่สิ่งใหม่",
+        meaning: "การยืนมองขอบฟ้ากว้างไกลเพื่อกำหนดทิศทางอนาคต การชั่งใจเลือกเส้นทางเดินชีวิตและขยายมุมมองให้กว้างกว่าเดิม",
+        work: "วางแผนงานระยะยาว ตัดสินใจเลือกรับงานหรือทิศทางธุรกิจ มองหาพันธมิตรใหม่",
+        finance: "การเงินมั่นคงพอที่จะต่อยอด วางแผนการลงทุนหรือขยายรายได้ไปสู่ช่องทางอื่น",
+        love: "วางแผนอนาคตร่วมกัน คนโสดกำลังชั่งใจเลือกมองหาคนที่เข้ากับเป้าหมายชีวิตระยะยาว"
+      },
+      {
+        id: 24, num: "๓ คทา", name: "สามเส้นทางสู่แดนไกล", arcana: "Three of Wands", img: "3สามคทาสู่แดนไกลเหนือทะเลรุ่งอรุณ.png",
+        keywords: "ขยายโอกาส • เดินทางไกล • เห็นผลสำเร็จ • การเติบโต",
+        meaning: "เรือแห่งโอกาสกำลังแล่นเข้ามาสู่สายตา ผลลัพธ์จากสิ่งที่ลงแรงไว้เริ่มผลิดอกออกผล การติดต่อต่างถิ่นต่างแดนราบรื่น",
+        work: "งานติดต่อทางไกล การร่วมงานกับต่างถิ่นประสบความสำเร็จ ข้อเสนอที่เคยยื่นไปได้รับการตอบรับที่ดี",
+        finance: "รายรับงอกเงยจากการค้าขายทางไกล ได้ผลตอบแทนคืนกลับมาจากสิ่งที่เคยวางรากฐานไว้",
+        love: "ความสัมพันธ์พัฒนาไปอีกขั้น รักทางไกลราบรื่น คนโสดพบรักจากการเดินทางหรือคนต่างถิ่น"
+      },
+      {
+        id: 25, num: "๔ คทา", name: "สี่คทาแห่งงานมงคล", arcana: "Four of Wands", img: "4สี่คทาแห่งงานมงคลริมสายน้ำ.png",
+        keywords: "งานมงคล • ความสำเร็จ • ความมั่นคง • ครอบครัวอบอุ่น",
+        meaning: "ปะรำพิธีแห่งความสุขและชัยชนะ การเฉลิมฉลองความสำเร็จ ความสงบสุขในเคหสถาน และการลงหลักปักฐานมั่นคง",
+        work: "บรรลุเป้าหมายสำคัญของทีม ได้รับการฉลองความสำเร็จ สภาพแวดล้อมที่ทำงานอบอุ่นมั่นคง",
+        finance: "การเงินมั่นคง มีเกณฑ์ใช้จ่ายเพื่อซื้อบ้าน ซ่อมแซมที่อยู่อาศัย หรือจัดงานเลี้ยงฉลองมงคล",
+        love: "ความสัมพันธ์สุกงอม มีเกณฑ์หมั้นหมาย แต่งงาน ย้ายมาอยู่ร่วมกัน คนโสดพบคนจริงใจพร้อมสร้างครอบครัว"
+      },
+      {
+        id: 26, num: "๕ คทา", name: "ห้าคฑาแห่งการประลอง", arcana: "Five of Wands", img: "5ไพ่ห้าคทาแห่งการประลอง.png",
+        keywords: "การแข่งขัน • การประลอง • ความคิดเห็นขัดแย้ง • พิสูจน์ตน",
+        meaning: "เวทีประลองอาคมและพละกำลัง การแข่งขันดุเดือด ความเห็นต่างรอบตัว ต้องใช้สติปัญญาพิสูจน์ตนเองให้เป็นที่ประจักษ์",
+        work: "การแข่งขันสูงในสายงาน บรรยากาศมีความเห็นแย้ง ต้องใจเย็นและใช้เหตุผลเอาชนะอุปสรรค",
+        finance: "ต้องดิ้นรนแข่งขันเพื่อหารายได้ ระวังการโต้แย้งเรื่องผลประโยชน์หรือข้อตกลงที่ไม่ลงตัว",
+        love: "มีความไม่เข้าใจกัน กระทบกระทั่งจากทิฐิ คนโสดอาจมีคู่แข่งเข้ามาหมายปองคนเดียวกัน"
+      },
+      {
+        id: 27, num: "๖ คทา", name: "หกคฑาแห่งชัยชนะ", arcana: "Six of Wands", img: "6หกคทาแห่งชัยชนะในนครโบราณ.png",
+        keywords: "ชัยชนะ • การได้รับการยอมรับ • ชื่อเสียง • ขบวนเกียรติยศ",
+        meaning: "ขบวนแห่เกียรติยศและชัยชนะ ฟันฝ่าด่านทดสอบจนก้าวสู่ความสำเร็จ ได้รับการยอมรับในฝีมือและชื่อเสียงแผ่ไพศาล",
+        work: "งานสำเร็จลุล่วงด้วยดี ได้รับการยกย่อง ปูนบำเหน็จ เลื่อนขั้น หรือสอบผ่านการคัดเลือก",
+        finance: "ผลตอบแทนจากชัยชนะ ได้รับโบนัส ผลกำไร หรือการเงินคล่องตัวขึ้นจากผลงานที่โดดเด่น",
+        love: "ความรักราบรื่นและน่าอิจฉา คนที่ชอบเริ่มเปิดใจยอมรับ คนมีคู่ภาคภูมิใจในตัวของกันและกัน"
+      },
+      {
+        id: 28, num: "๗ คทา", name: "เจ็ดไม้เท้า", arcana: "Seven of Wands", img: "7ไพ่เจ็ดไม้เท้า_ ศึกป้อมปราการยามราตรี.png",
+        keywords: "การยืนหยัด • ปกป้องศักดิ์ศรี • สู้ไม่ถอย • เอาชนะแรงกดดัน",
+        meaning: "การยืนหยัดบนเนินสูงเพื่อปกป้องสิ่งที่ตนสร้างขึ้น แม้ถูกรุมล้อมด้วยแรงกดดัน แต่ความมุ่งมั่นจะทำให้ผ่านพ้นได้",
+        work: "รับมือกับงานหนักหรือการถูกจับตามอง แต่หากยืนหยัดด้วยหลักการจะไม่มีใครโค่นคุณได้",
+        finance: "ต้องบริหารจัดการและปกป้องผลประโยชน์ของตนเองอย่างรัดกุม อย่าให้ใครมาเอาเปรียบทางการเงิน",
+        love: "ร่วมมือกันฟันฝ่าอุปสรรคหรือเสียงคัดค้านจากคนรอบข้าง คนโสดยังตั้งกำแพงปกป้องหัวใจตนเอง"
+      },
+      {
+        id: 29, num: "๘ คทา", name: "แปดไม้เท้า", arcana: "Eight of Wands", img: "8แปดไม้เท้าเหนือหุบเขายามอาทิตย์อัสดง.png",
+        keywords: "คืบหน้ารวดเร็ว • ข่าวสารฉับไว • การเดินทาง • โอกาสพุ่งทะยาน",
+        meaning: "ลูกศรอาคมพุ่งทะยานผ่านฟากฟ้า การเคลื่อนที่ฉับไว ข่าวสารสำคัญส่งมาถึงอย่างกะทันหัน อุปสรรคต่างๆ สลายตัวเปิดทาง",
+        work: "งานเดินหน้าอย่างก้าวกระโดด มีการสื่อสารหรือข้อเสนอเข้ามาเร็ว มีเกณฑ์เดินทางติดต่องานด่วน",
+        finance: "เงินหมุนเวียนคล่องตัว รายรับเข้ามาอย่างรวดเร็ว หรือได้รับข่าวดีเรื่องการอนุมัติสินเชื่อ",
+        love: "ความสัมพันธ์พัฒนาอย่างรวดเร็ว คุยกันถูกคอติดต่อกันทั้งวัน คนโสดมีคนเข้ามาจีบแบบไม่ทันตั้งตัว"
+      },
+      {
+        id: 30, num: "๙ คทา", name: "ผู้เฝ้าด่านอาคม", arcana: "Nine of Wands", img: "9ผู้เฝ้าด่านอาคมใต้แสงจันทร์.png",
+        keywords: "การระแวดระวัง • ความอดทน • ด่านสุดท้าย • หลังพิงฝา",
+        meaning: "นักรบผู้กุมคทายืนเฝ้าด่านสุดท้ายอย่างไม่ยอมแพ้ ความระแวดระวังจากบทเรียนในอดีต และความอดทนก่อนก้าวข้ามด่านทดสอบ",
+        work: "อยู่ในช่วงโค้งสุดท้ายของงานที่เหนื่อยล้า ต้องตรวจตราความเรียบร้อยรอบคอบ อดทนอีกนิดจะผ่านพ้น",
+        finance: "การเงินตึงมือหรือต้องรัดเข็มขัดประคองตัว อย่าเพิ่งลงทุนหรือเสี่ยงในสิ่งที่ไม่แน่นอน",
+        love: "มีบาดแผลในอดีตทำให้ระแวง ไม่กล้าเปิดใจเต็มร้อย คนมีคู่ต้องประคับประคองความรู้สึกอย่ารื้อฟื้นเรื่องเก่า"
+      },
+      {
+        id: 31, num: "๑๐ คทา", name: "ภาระสิบคฑา", arcana: "Ten of Wands", img: "10ไพ่สิบคทาแห่งทุ่งนาทองคำ.png",
+        keywords: "ภาระหนักอึ้ง • ความรับผิดชอบ • เหน็ดเหนื่อย • ใกล้ถึงจุดหมาย",
+        meaning: "การแบกรับท่อนฟืนอาคมกองโตมุ่งสู่ปลายทาง ภาระหน้าที่ถาโถมเข้ามา แต่ปลายทางแห่งความสำเร็จรออยู่ข้างหน้า ควรรู้จักปล่อยวางบ้าง",
+        work: "งานล้นมือ แบกรับความรับผิดชอบไว้คนเดียวจนแทบหมดแรง ควรแบ่งหน้าที่ให้เพื่อนร่วมงานช่วย",
+        finance: "แบกรับค่าใช้จ่ายหรือภาระครอบครัวไว้คนเดียว การเงินหนักหน่วงแต่ยังประคองตัวรอดได้",
+        love: "รู้สึกเหนื่อยในความสัมพันธ์ เป็นฝ่ายยอมอยู่ฝ่ายเดียว ควรเปิดใจพูดคุยเพื่อแบ่งเบาความรู้สึก"
+      },
+      {
+        id: 32, num: "มหาดเล็กคทา", name: "ศิษย์น้อยแห่งเพลิง", arcana: "Page of Wands", img: "ศิษย์น้อยแห่งเพลิงในหมู่บ้านยามสนธยา.png",
+        keywords: "การเรียนรู้ • กระตือรือร้น • ข่าวดี • แรงบันดาลใจใหม่",
+        meaning: "ศิษย์สำนักเวทผู้เปี่ยมด้วยความกระหายใคร่รู้ ความกระตือรือร้น การได้รับข่าวสารใหม่ๆ และก้าวแรกของการศึกษาศาสตร์ใหม่",
+        work: "ฝึกฝนทักษะใหม่ ได้รับมอบหมายงานทดลอง หรือได้ข่าวดีเรื่องการสมัครงานและการศึกษาต่อ",
+        finance: "มีรายรับเล็กๆ น้อยๆ เข้ามา หรือพบช่องทางเสริมใหม่ๆ ที่ต้องใช้เวลาเรียนรู้และพัฒนา",
+        love: "ความรักสดใส น่ารัก สนุกสนาน คนโสดมีคนอายุน้อยกว่าหรือคนกระตือรือร้นเข้ามาทักทาย"
+      },
+      {
+        id: 33, num: "อัศวินคทา", name: "นักรบคฑาเพลิง", arcana: "Knight of Wands", img: "อัศวินคทาเพลิงควายศึก.png",
+        keywords: "กล้าหาญ • บุกตะลุย • รวดเร็วร้อนแรง • นักผจญภัย",
+        meaning: "นักรบสายเวทเพลิงควบอาชาพุ่งทะยานไปข้างหน้า ความกล้าหาญ เด็ดเดี่ยว ความทะเยอทะยาน และการลงมือปฏิบัติอย่างรวดเร็วไร้ความลังเล",
+        work: "งานลุย งานเดินทาง ตัดสินใจฉับไว มีพลังขับเคลื่อนโปรเจกต์ให้เสร็จไว แต่อย่าด่วนสรุปจนลืมรอบคอบ",
+        finance: "เงินเข้าเร็วและออกเร็ว กล้าได้กล้าเสียในการลงทุน ระวังการใช้จ่ายเพื่อสนองความต้องการอย่างรวดเร็ว",
+        love: "เสน่ห์ร้อนแรง เข้าหาอย่างเปิดเผยรวดเร็ว ระวังความรักแบบมาไวไปไว หรือความใจร้อนในอารมณ์"
+      },
+      {
+        id: 34, num: "ราชินีคทา", name: "แม่ครูอาคมเพลิง", arcana: "Queen of Wands", img: "ราชินีไม้เท้าแห่งอาคมเพลิง.png",
+        keywords: "เสน่ห์มั่นใจ • ผู้นำหญิง • เมตตามหานิยม • พลังดึงดูด",
+        meaning: "นางพญาแห่งเปลวเพลิงผู้สง่างาม เปี่ยมด้วยเสน่ห์เมตตามหานิยม ความมั่นใจในศักยภาพตนเอง และภาวะผู้นำที่อบอุ่นดึงดูดใจ",
+        work: "โดดเด่นในฐานะผู้นำ การประสานงานกับผู้คน ค้าขายเจริญรุ่งเรืองด้วยเสน่ห์และวาทศิลป์",
+        finance: "การเงินมั่งคั่งจากการพึ่งพาตนเอง มีโชคลาภจากผู้หญิงหรือบุคคลที่มีบุคลิกโดดเด่น",
+        love: "มีเสน่ห์ล้นเหลือ เป็นที่หมายปองของหลายคน คนมีคู่เป็นแรงสนับสนุนและกำลังใจสำคัญให้คู่ครอง"
+      },
+      {
+        id: 35, num: "ราชาคทา", name: "เจ้าสำนักคฑาเพลิง", arcana: "King of Wands", img: "เจ้าสำนักคทาเพลิงแห่งวิหารทอง.png",
+        keywords: "บารมี • วิสัยทัศน์ผู้นำ • ประสบการณ์ยิ่งใหญ่ • ชัยชนะเหนืออุปสรรค",
+        meaning: "มหาอาจารย์เจ้าสำนักผู้กุมคทาเพลิงสุวรรณ บารมีและวิสัยทัศน์กว้างไกล ผู้นำระดับสูงที่นำพาคณะสู่ความสำเร็จด้วยประสบการณ์และความเด็ดขาด",
+        work: "ประสบความสำเร็จสูงสุดในสายงาน อยู่ในตำแหน่งผู้บริหาร เจ้าของกิจการ หรือผู้มีอำนาจตัดสินใจ",
+        finance: "ฐานะการเงินมั่นคงแข็งแกร่ง มีความเชี่ยวชาญในการต่อยอดสินทรัพย์และการลงทุนขนาดใหญ่",
+        love: "ความรักที่พึ่งพาได้ เป็นเสาหลักที่อบอุ่นและมั่นคง ให้เกียรติซึ่งกันและกันอย่างสมบูรณ์แบบ"
+      },
+
+      // ==================== สำรับศัสตรา / ดาบ (SWORDS SUIT) ====================
+      {
+        id: 36, num: "๑ ดาบ", name: "ดาบแห่งสัจธรรม", arcana: "Ace of Swords", img: "1ไพ่เอซแห่งสัจธรรมไทย.png",
+        keywords: "สัจธรรม • ตัดสินใจเด็ดขาด • ปัญญาเฉียบคม • ความจริงปรากฏ",
+        meaning: "คมดาบตัดผ่านม่านหมอกแห่งความลวง สติปัญญาอันเฉียบคมที่ช่วยมองเห็นความจริงแท้ และการตัดสินใจอย่างเด็ดขาดไร้ความลังเล",
+        work: "ได้ข้อสรุปชัดเจน การเจรจาหรือเซ็นสัญญาบรรลุผล ใช้ตรรกะและเหตุผลแก้ปัญหาซับซ้อนได้อย่างเฉียบขาด",
+        finance: "มองเห็นความจริงทางการเงิน ตัดรายจ่ายที่ไม่จำเป็นทิ้งได้อย่างเด็ดเดี่ยว หลุดพ้นจากข้อผูกมัดคลุมเครือ",
+        love: "ความจริงปรากฏ ไม่มีความลับซ่อนเร้น คนโสดมองหาความสัมพันธ์ที่ชัดเจนตรงไปตรงมา"
+      },
+      {
+        id: 37, num: "๒ ดาบ", name: "จันทร์ปิดเนตร", arcana: "Two of Swords", img: "2จันทร์ปิดเนตร — สองดาบแห่งรัตติกาล.png",
+        keywords: "ทางสองแพร่ง • ความลังเล • ปิดกั้นความรู้สึก • ไม่ยอมรับความจริง",
+        meaning: "การผูกตาใต้แสงจันทร์ สภาวะกลืนไม่เข้าคายไม่ออก การปิดกั้นตนเองจากความจริงที่เจ็บปวด และการยืนอยู่บนทางเลือกที่ตัดสินใจยาก",
+        work: "สภาวะติดหล่มเพราะไม่กล้าเลือกข้าง ต้องเผชิญหน้ากับความจริงและตัดสินใจ อย่าผัดวันประกันพรุ่ง",
+        finance: "ตึงมือเพราะความลังเลในการบริหารจัดการ ระวังการหลบเลี่ยงไม่ยอมดูตัวเลขบัญชีจริง",
+        love: "มีกำแพงในใจ ไม่เปิดเผยความรู้สึกที่แท้จริง หรือกำลังชั่งใจระหว่างสองทางเลือก"
+      },
+      {
+        id: 38, num: "๓ ดาบ", name: "ตรีศัสตราตรึงหทัย", arcana: "Three of Swords", img: "3ไพ่สามศัสตราตรึงหทัย.png",
+        keywords: "บาดแผลในใจ • การหักหลัง • ความเสียใจ • ยอมรับความเจ็บปวด",
+        meaning: "ดาบสามเล่มเสียบทะลุกลางดวงใจท่ามกลางพายุฝน ความเจ็บปวดจากการผิดหวัง การทรยศหักหลัง หรือต้องเผชิญกับความจริงที่บาดลึก",
+        work: "ผิดหวังจากโปรเจกต์ โดนยกเลิกข้อตกลง หรือมีเรื่องขัดแย้งที่ทำให้เสียความรู้สึกในที่ทำงาน",
+        finance: "เสียทรัพย์จากความไว้ใจ มีรายจ่ายกะทันหัน หรือได้รับข่าวร้ายเรื่องผลประโยชน์",
+        love: "ความรักแตกร้าว รักสามเส้า หรือถูกคนรักทำร้ายความรู้สึกอย่างรุนแรง ต้องใช้เวลาเยียวยาใจ"
+      },
+      {
+        id: 39, num: "๔ ดาบ", name: "นิทราสงบศัสตรา", arcana: "Four of Swords", img: "4ไพ่สี่ดาบแห่งนิทราสงบ.png",
+        keywords: "การพักรบ • ฟื้นฟูจิตใจ • พักผ่อน • ถอยมาตั้งหลัก",
+        meaning: "การวางศาสตราวุธลงแล้วเข้าสู่นิทรารมณ์ชั่วคราว การถอยออกจากสนามรบเพื่อรักษาบาดแผล ชาร์จพลัง และทบทวนบทเรียน",
+        work: "ควรหยุดพักผ่อน ลางาน หรือหยุดคิดเรื่องงานสักระยะ อย่าเพิ่งรีบร้อนเริ่มสิ่งใหม่ ให้สมองได้ผ่อนคลาย",
+        finance: "นิ่งสงบ ไม่ควรลงทุนหรือขยับขยายใดๆ ในช่วงนี้ ประคองตัวรักษาสภาพคล่องไว้ดีที่สุด",
+        love: "ช่วงเวลาเว้นระยะห่างเพื่อสงบสติอารมณ์ ลดการปะทะ คนโสดควรพักใจยังไม่พร้อมเริ่มรักใหม่"
+      },
+      {
+        id: 40, num: "๕ ดาบ", name: "ชัยเหนือศัตรู", arcana: "Five of Swords", img: "5ไพ่ห้าดาบเหนือสมรภูมิ.png",
+        keywords: "ชัยชนะบนซากปรัก • การขัดแย้ง • เล่ห์เหลี่ยม • ชนะแต่ไม่คุ้ม",
+        meaning: "ชัยชนะที่ได้มาด้วยความเจ็บปวดและการสูญเสียมิตรภาพ การเอาชนะด้วยทิฐิหรือเล่ห์เหลี่ยมที่ปลายทางกลับเหลือเพียงความโดดเดี่ยว",
+        work: "เอาชนะคู่แข่งได้แต่เสียสัมพันธภาพกับเพื่อนร่วมงาน ระวังการเมืองในองค์กรหรือการหักเหลี่ยมโหด",
+        finance: "ขัดแย้งเรื่องผลประโยชน์ มีการโต้เถียงเรื่องเงินทองที่แม้ชนะแต่ก็ไม่คุ้มกับความสัมพันธ์",
+        love: "เอาชนะคะคานกันด้วยคำพูดเชือดเฉือน ชนะแต่เสียความรู้สึก ควรลดอีโก้ลงเพื่อรักษาความรักไว้"
+      },
+      {
+        id: 41, num: "๖ ดาบ", name: "นาวาพ้นห้วงทุกข์", arcana: "Six of Swords", img: "6รุ่งอรุณแห่งนาวาดาบทั้งหก.png",
+        keywords: "ก้าวข้ามวิกฤต • การโยกย้าย • คลื่นลมสงบ • ทิ้งอดีตไว้ข้างหลัง",
+        meaning: "เรือค่อยๆ พายข้ามสายน้ำอันเชี่ยวกรากสู่ผืนน้ำที่ราบเรียบ ปัญหาหนักอกกำลังจะคลี่คลาย ทิ้งอดีตขื่นขมไว้เพื่อก้าวสู่ความสงบ",
+        work: "หลุดพ้นจากช่วงมรสุมในที่ทำงาน งานเริ่มราบรื่น หรือมีการย้ายงาน/ย้ายแผนกไปสู่สิ่งแวดล้อมที่ดีขึ้น",
+        finance: "ภาระหนี้สินเริ่มคลี่คลาย มีทางออกในการปลดหนี้ สภาพคล่องค่อยๆ ดีขึ้นตามลำดับ",
+        love: "บาดแผลเริ่มทุเลา การปรับตัวไปสู่จุดที่สบายใจขึ้น คนโสดพร้อมเดินหน้าทิ้งอดีตไว้ข้างหลัง"
+      },
+      {
+        id: 42, num: "๗ ดาบ", name: "กลลวงชิงศัสตรา", arcana: "Seven of Swords", img: "7ไพ่เจ็ดดาบแห่งเงาจันทร์.png",
+        keywords: "กลลวง • แอบทำลับหลัง • เล่ห์กล • ระแวดระวังถูกหักหลัง",
+        meaning: "การย่องเบาใต้เงาจันทร์เพื่อช่วงชิงอาวุธ การใช้ไหวพริบเอาตัวรอดในทางลับ ระวังการถูกแทงข้างหลังหรือการถูกล้วงความลับ",
+        work: "ระวังคนขโมยไอเดีย ข้อมูลรั่วไหล หรือมีคนแทงข้างหลังในที่ทำงาน ต้องมีแผนสองสำรองไว้เสมอ",
+        finance: "ระวังการถูกโกง การเสียเงินกับกลลวงออนไลน์ หรือเอกสารสัญญาซ่อนเงื่อน",
+        love: "มีความลับที่ปิดบังซ่อนเร้น การคุยซ้อน หรือความไม่ซื่อสัตย์ที่ต้องจับตาดูให้ดี"
+      },
+      {
+        id: 43, num: "๘ ดาบ", name: "อัฏฐาสนพันธนา", arcana: "Eight of Swords", img: "8ไพ่ดาบแปดท่ามกลางสายหมอก.png",
+        keywords: "กักขังตัวเอง • พันธนาการความคิด • ตันแปดด้าน • หวาดระแวง",
+        meaning: "ถูกปิดตาและล้อมรอบด้วยดาบทั้งแปดท่ามกลางหมอกหนา ความจริงแล้วเชือกที่มัดนั้นหลวมหลุดได้ มีเพียงความกลัวในใจที่กักขังตนไว้",
+        work: "รู้สึกตัน มืดแปดด้าน คิดว่าตนเองไม่มีทางเลือก ลองเปลี่ยนมุมมองแล้วจะเห็นว่ามีทางออกเสมอ",
+        finance: "รู้สึกอึดอัดกับภาระค่าใช้จ่าย แต่หากจัดระเบียบความคิดและวางแผนใหม่จะพบทางรอด",
+        love: "ติดอยู่ในความสัมพันธ์ที่อึดอัด ไม่กล้าเดินออกมาเพราะกลัวความเหงาหรือความไม่มั่นใจ"
+      },
+      {
+        id: 44, num: "๙ ดาบ", name: "นวศัสตราหลอนจิตนิทรา", arcana: "Nine of Swords", img: "9ไพ่เก้าดาบแห่งความหม่นหมอง.png",
+        keywords: "ฝันร้าย • วิตกกังวลเกินจริง • นอนไม่หลับ • ทุกข์ในใจ",
+        meaning: "การสะดุ้งตื่นขึ้นมากุมขมับกลางดึก ความกังวล ความคิดวนเวียน และความทุกข์ที่ตนเองปรุงแต่งขึ้นมาจนทำร้ายสุขภาพจิต",
+        work: "เครียดสะสม วิตกกังวลกับสิ่งที่ยังไม่เกิดขึ้น ระวังอาการ Burnout ควรปล่อยวางและพักผ่อน",
+        finance: "กังวลเรื่องภาระหนี้สินจนนอนไม่หลับ ทั้งที่ในความเป็นจริงยังมีหนทางประคับประคองไปได้",
+        love: "คิดมาก หวาดระแวง หรือมโนเรื่องลบไปเองจนทำลายความสุขในชีวิตคู่"
+      },
+      {
+        id: 45, num: "๑๐ ดาบ", name: "ทศศัสตราสิ้นศึก", arcana: "Ten of Swords", img: "10ไพ่ทศศัสตราแห่งสมรภูมิ.png",
+        keywords: "จุดต่ำสุด • ความเจ็บปวดสิ้นสุด • สิ้นเคราะห์ • แสงแรกแห่งรุ่งอรุณ",
+        meaning: "ดาบทั้งสิบปักตรึงจนถึงจุดต่ำสุดของเคราะห์กรรม ทว่าบนขอบฟ้าแสงอาทิตย์สีทองกำลังโผล่พ้นน้ำ ความเจ็บปวดผ่านพ้นไปแล้ว",
+        work: "จุดจบของโปรเจกต์ที่ล้มเหลว หรือการออกจากงานเดิมเพื่อเริ่มชีวิตใหม่ หมดเคราะห์ในเรื่องงาน",
+        finance: "ผ่านจุดวิกฤติต่ำสุดทางการเงินไปแล้ว จากนี้ไปจะมีแต่การฟื้นฟูและสร้างใหม่",
+        love: "ความสัมพันธ์พังทลายจนไม่สามารถยื้อได้ ถึงเวลาตัดขาดเพื่อเปิดรับแสงสว่างบทใหม่"
+      },
+      {
+        id: 46, num: "มหาดเล็กดาบ", name: "มหาดเล็กพินิจวาโย", arcana: "Page of Swords", img: "มหาดเล็กพินิจวาโยกับดาบแห่งสายลม.png",
+        keywords: "ช่างสังเกต • นักสืบข้อมูล • ว่องไว • ข่าวกรอง",
+        meaning: "เด็กหนุ่มผู้ยืนต้านสายลมกุมดาบสอดส่องทุกทิศทาง ความกระตือรือร้นในการค้นหาความจริง การสืบข้อมูล และการตื่นตัวพร้อมรับมือ",
+        work: "การรวบรวมข้อมูล ตรวจสอบเอกสาร หรือเตรียมพร้อมสำหรับงานใหม่ ระวังคำพูดที่ขวานผ่าซาก",
+        finance: "มีข่าวสารเรื่องเงินทองเข้ามา ต้องตรวจสอบข้อเท็จจริงก่อนเชื่อหรือลงมือลงทุน",
+        love: "คอยส่องโซเชียล สืบความเป็นไปของอีกฝ่าย มีการส่งข้อความหยั่งเชิงเพื่อดูท่าที"
+      },
+      {
+        id: 47, num: "อัศวินดาบ", name: "อัศววาตทะลวงศึก", arcana: "Knight of Swords", img: "อัศววาตทะลวงศึกกลางบุปผา.png",
+        keywords: "พุ่งชนเป้าหมาย • เด็ดขาดรวดเร็ว • มุ่งมั่นไม่ถอย • ระวังใจร้อน",
+        meaning: "อัศวินควบอาชาแหวกสายลมพุ่งทะยานเข้าสู่ใจกลางสนามรบ ความเด็ดเดี่ยว กล้าหาญ ลุยแหลกเพื่อบรรลุเป้าหมาย แต่อาจขาดความยับยั้งชั่งใจ",
+        work: "งานลุยแหลก ตัดสินใจรวดเร็ว เดินหน้าอย่างไม่เกรงกลัวอุปสรรค แต่อย่าหักด้ามพร้าด้วยเข่า",
+        finance: "ตัดสินใจเร็วในการลงทุน ระวังการใช้จ่ายแบบใจร้อน อยากได้อะไรต้องได้เดี๋ยวนั้น",
+        love: "เข้าหาอย่างตรงไปตรงมา ชัดเจนแต่อาจขาดความโรแมนติก ระวังคำพูดเชือดเฉือนทำร้ายจิตใจ"
+      },
+      {
+        id: 48, num: "ราชินีดาบ", name: "นารีพินิจอักษร", arcana: "Queen of Swords", img: "ราชินีดาบท่ามกลางสวนกุหลาบ.png",
+        keywords: "สติปัญญาเฉียบคม • มีขอบเขตชัดเจน • ตรงไปตรงมา • ความเป็นผู้นำ",
+        meaning: "นางพญาผู้กุมดาบแห่งสัจจะบนบัลลังก์ สติปัญญาที่อยู่เหนืออารมณ์ การมองโลกตามความเป็นจริง ความเป็นอิสระ และการรักษาระยะห่างเด็ดขาด",
+        work: "บริหารจัดการด้วยความเป็นมืออาชีพ ตัดสินงานด้วยตรรกะและเหตุผล ไม่ใช้อารมณ์ มีอำนาจเด็ดขาด",
+        finance: "จัดการบัญชีได้อย่างแม่นยำ ไม่ยอมให้ใครมาเอาเปรียบทางการเงินแม้แต่บาทเดียว",
+        love: "รักษาขอบเขตความเป็นส่วนตัว ไม่พึ่งพาใคร คนโสดมีมาตรฐานสูง คนมีคู่คุยกันด้วยเหตุผลมากกว่าอารมณ์"
+      },
+      {
+        id: 49, num: "ราชาดาบ", name: "ตุลาการศัสตราธรรม", arcana: "King of Swords", img: "ราชาแห่งดาบใต้ร่มบุปผา.png",
+        keywords: "ตุลาการผู้เที่ยงตรง • อำนาจแห่งปัญญา • ผู้มีอิทธิพล • กฎเกณฑ์",
+        meaning: "องค์ราชาผู้ถือดาบแห่งธรรมะอย่างมั่นคง อำนาจการตัดสินสูงสุด ความยุติธรรม กฎหมาย ข้อบังคับ และการใช้วิจารณญาณไร้ความลำเอียง",
+        work: "ได้รับความช่วยเหลือจากผู้ใหญ่หรือผู้ทรงอิทธิพล การตัดสินคดีความหรือข้อพิพาทจะได้รับความเป็นธรรม",
+        finance: "วางแผนการเงินอย่างมีวินัยขั้นสูงสุด การลงทุนตามหลักการและระบบที่แน่นอนให้ผลดี",
+        love: "ความสัมพันธ์ที่มั่นคงบนพื้นฐานของความเคารพซึ่งกันและกัน แต่อาจดูเข้มงวดหรือเย็นชาไปบ้าง"
+      },
+
+      // ==================== สำรับวารี / ถ้วย (CUPS SUIT) ====================
+      {
+        id: 50, num: "๑ ถ้วย", name: "ขันน้ำทิพย์", arcana: "Ace of Cups", img: "1ไพ่ถ้วยทิพย์แห่งสวนวัดทอง.png",
+        keywords: "น้ำทิพย์ชโลมใจ • รักครั้งใหม่ • พรแห่งความสุข • การเยียวยา",
+        meaning: "หยาดน้ำทิพย์บริสุทธิ์หลั่งรินจากขันทองคำ สัญลักษณ์แห่งการเริ่มต้นทางอารมณ์ ความรักอันบริสุทธิ์ การชะล้างบาดแผลในใจ และความอิ่มเอม",
+        work: "ได้รับความเมตตาเอ็นดูจากเพื่อนร่วมงานและผู้ใหญ่ บรรยากาศการทำงานมีความสุข ได้ทำงานที่รัก",
+        finance: "การเงินหลั่งไหลเข้ามาอย่างราบรื่น ได้รับของขวัญ ของกำนัล หรือเงินเสน่หาจากคนใกล้ชิด",
+        love: "คนโสดมีเกณฑ์พบรักแรกพบ หัวใจพองโต คนมีคู่ความสัมพันธ์หวานชื่น เปี่ยมสุขและให้อภัยกัน"
+      },
+      {
+        id: 51, num: "๒ ถ้วย", name: "คำมั่นสองภพ", arcana: "Two of Cups", img: "2ไพ่สองถ้วยแห่งคำมั่นสัญญา.png",
+        keywords: "คำมั่นสัญญา • คู่แท้ • ความเสมอภาค • การแลกเปลี่ยนใจ",
+        meaning: "การจรดจอกวารีผูกจิตสองดวงเข้าด้วยกัน ความรักที่ตอบรับตรงกัน สัญญาใจที่มั่นคง และความเข้าใจที่หลอมรวมเป็นหนึ่ง",
+        work: "การจับคู่ทำธุรกิจที่ลงตัว ได้คู่หูร่วมงานที่เข้าขา เข้าใจเป้าหมายตรงกัน และทำงานราบรื่น",
+        finance: "มีโชคจากการร่วมทุน มีผลประโยชน์ร่วมกันอย่างเป็นธรรม ไม่มีใครเอาเปรียบใคร",
+        love: "คนโสดเจอเนื้อคู่หรือคนที่คุยแล้วถูกคอทันที คนมีคู่ความรักมั่นคง ให้เกียรติและพร้อมเคียงข้างกัน"
+      },
+      {
+        id: 52, num: "๓ ถ้วย", name: "คืนดีสามสหาย", arcana: "Three of Cups", img: "3คืนดีสามสหายใต้แสงโคม.png",
+        keywords: "มิตรภาพ • การเฉลิมฉลอง • คืนดีประสานรอยร้าว • ความรื่นเริง",
+        meaning: "การชนขันน้ำล้อมวงรื่นเริงใต้แสงโคม การรวมตัวกันของกัลยาณมิตร การปรับความเข้าใจสลายความบาดหมาง และการเฉลิมฉลองร่วมกัน",
+        work: "งานทีมราบรื่น ได้รับความร่วมมือร่วมใจอย่างดี มีงานเลี้ยงสังสรรค์ฉลองความสำเร็จของโปรเจกต์",
+        finance: "มีเกณฑ์ใช้จ่ายเพื่อการสังสรรค์ ปาร์ตี้ หรือเลี้ยงดูมิตรสหาย การเงินหมุนเวียนสนุกสนาน",
+        love: "ความสัมพันธ์ที่พัฒนามาจากความเป็นเพื่อน คนมีคู่มีความสุขร่วมกับกลุ่มเพื่อนและครอบครัว"
+      },
+      {
+        id: 53, num: "๔ ถ้วย", name: "สี่ห้วงใจ", arcana: "Four of Cups", img: "4ไพ่สี่ห้วงใจใต้แสงจันทร์ไทย.png",
+        keywords: "ความเบื่อหน่าย • ปิดกั้นตนเอง • มองข้ามโอกาส • นิ่งเฉย",
+        meaning: "การนั่งกอดอกใต้เงาจันทร์ ปฏิเสธขันน้ำที่ยื่นเข้ามาตรงหน้า สภาวะจิตใจเฉื่อยชา จมอยู่กับความไม่พอใจจนมองข้ามสิ่งดีๆ รอบตัว",
+        work: "เบื่องาน หมดไฟในการทำงาน รู้สึกซ้ำซากจำเจ ระวังมองข้ามข้อเสนอหรือโอกาสดีที่ผู้ใหญ่มอบให้",
+        finance: "รู้สึกไม่พึงพอใจกับรายได้ที่มีอยู่ ทั้งที่ยังไม่มีเรื่องติดขัด ระวังการใช้จ่ายเพื่อแก้เบื่อ",
+        love: "ปิดกั้นตัวเอง คนเข้ามาจีบไม่ถูกใจ คนมีคู่มีระยะห่างทางอารมณ์ รู้สึกเฉยชาต่อคนรัก"
+      },
+      {
+        id: 54, num: "๕ ถ้วย", name: "ห้าหนทาง", arcana: "Five of Cups", img: "5ห้าหนทางแห่งถ้วยแตก.png",
+        keywords: "ความเสียใจ • ถ้วยที่ล้มคว่ำ • อาลัยอาวรณ์ • ยังมีทางข้างหน้า",
+        meaning: "การยืนก้มหน้ามองขันน้ำที่คว่ำหก จมอยู่กับความสูญเสีย จงเงยหน้าขึ้นมองเพราะด้านหลังยังมีขันน้ำอีกสองใบพร้อมสะพานข้ามสายน้ำ",
+        work: "ผิดหวังจากงานที่ไม่เป็นไปตามเป้า เสียใจกับข้อผิดพลาด แต่อย่าท้อแท้ ยังมีทางออกให้แก้ไข",
+        finance: "เสียเงินกับสิ่งที่ไม่ควรเสีย เสียดายการลงทุนในอดีต ตั้งสติแล้วหันมาบริหารเงินส่วนที่เหลืออยู่",
+        love: "ความผิดหวัง อกหัก หรือเสียใจกับการกระทำของคนรัก อย่าจมกับความเศร้า ยังมีคนที่รักคุณรออยู่"
+      },
+      {
+        id: 55, num: "๖ ถ้วย", name: "ความทรงจำเรือนเก่า", arcana: "Six of Cups", img: "6ไพ่หกถ้วยแห่งความทรงจำไทย.png",
+        keywords: "วันวานยังหวานอยู่ • วัยเยาว์ • คนเก่าวนกลับมา • ความอบอุ่น",
+        meaning: "กลิ่นอายความหลังในเรือนไม้โบราณ ความไร้เดียงสา ความคิดถึงวันวานอันบริสุทธิ์ การหวนคืนของเพื่อนเก่า คนรักเก่า หรือความทรงจำอบอุ่น",
+        work: "ได้นำทักษะเก่ากลับมาใช้ ร่วมงานกับเพื่อนเก่า หรือได้รับโอกาสจากผู้ใหญ่ที่เคยรู้จักกันมานาน",
+        finance: "ได้รับมรดก ของเก่ามีค่า หรือได้รับการช่วยเหลือทางการเงินจากครอบครัวและญาติผู้ใหญ่",
+        love: "ถ่านไฟเก่าปะทุ คนรักเก่าติดต่อกลับมา หรือความรักที่ให้ความรู้สึกสบายใจและอบอุ่นเหมือนบ้าน"
+      },
+      {
+        id: 56, num: "๗ ถ้วย", name: "เจ็ดนิมิตในขัน", arcana: "Seven of Cups", img: "7เจ็ดนิมิตในขันแห่งความฝัน.png",
+        keywords: "ภาพลวงตา • จินตนาการเพ้อฝัน • ทางเลือกมากมาย • ความลังเล",
+        meaning: "นิมิตทั้งเจ็ดลอยล่องอยู่เหนือขันน้ำ ความฝัน กิเลส ความปรารถนา และภาพลวงตา ระวังการหลงทางในจินตนาการจนลืมยืนหยัดบนความเป็นจริง",
+        work: "มีไอเดียและโครงการในหัวมากมายแต่ยังไม่ได้ลงมือทำสักอย่าง ควรเลือกทำสิ่งที่จับต้องได้จริงก่อน",
+        finance: "ระวังการซื้อของตามภาพฝัน โฆษณาชวนเชื่อ หรือการลงทุนที่ผลตอบแทนดูดีเกินจริง",
+        love: "คนโสดมีตัวเลือกเยอะ หรือกำลังเพ้อฝันถึงสเปกที่สมบูรณ์แบบเกินไป คนมีคู่ระวังความโลเลทางใจ"
+      },
+      {
+        id: 57, num: "๘ ถ้วย", name: "แปดจากลา", arcana: "Eight of Cups", img: "8ไพ่แปดถ้วยแห่งการจากลา.png",
+        keywords: "หันหลังเดินจาก • ปล่อยวางสิ่งที่คุ้นเคย • แสวงหาความหมายแท้จริง",
+        meaning: "การตัดสินใจหันหลังให้กับขันน้ำทั้งแปดใบเพื่อเดินขึ้นเขาสู่แสงจันทร์ ยอมละทิ้งสิ่งที่คุ้นเคยเพื่อออกไปค้นหาสิ่งที่เติมเต็มจิตวิญญาณ",
+        work: "ลาออกจากงานเดิม ยุติสิ่งที่ทำอยู่เพื่อไปค้นหาเป้าหมายใหม่ในชีวิตที่ตอบโจทย์ความสุขมากกว่า",
+        finance: "ยอมสละผลประโยชน์เดิมเพื่อความสบายใจ หรือวางมือจากภาระผูกพันทางการเงินบางอย่าง",
+        love: "การเดินออกจากความสัมพันธ์ที่ไปต่อไม่ได้ แม้ยังผูกพันแต่รู้ตัวดีว่าไม่อาจมีความสุขได้อีก"
+      },
+      {
+        id: 58, num: "๙ ถ้วย", name: "๙ ขันสมปรารถนา", arcana: "Nine of Cups", img: "9ไพ่เก้าขันสมปรารถนาในวังไทย.png",
+        keywords: "ความสมหวัง • อิ่มเอมเปรมปรีดิ์ • ความพึงพอใจ • ไพ่ขอพร",
+        meaning: "ชายผู้มีรอยยิ้มอิ่มเอมหน้าแถวขันทองคำ ความสมหวังดั่งใจปรารถนา ความสุขทางกายและใจ ได้รับสิ่งที่เฝ้ารอคอย และภาคภูมิใจในชีวิต",
+        work: "งานสำเร็จตามที่คาดหวัง ได้รับคำชมและผลตอบแทนที่น่าพอใจ อยู่ในจุดที่สบายใจกับหน้าที่",
+        finance: "อุดมสมบูรณ์ มั่งคั่ง มีกินมีใช้อย่างสุขสบาย ได้ซื้อของตามใจปรารถนา",
+        love: "มีเสน่ห์ รักอิสระ พอใจในจุดที่เป็นอยู่ คนมีคู่ต่างฝ่ายต่างดูแลกันให้มีความสุขอย่างเต็มที่"
+      },
+      {
+        id: 59, num: "๑๐ ถ้วย", name: "สิบขันแห่งความสุข", arcana: "Ten of Cups", img: "10ไพ่สิบถ้วยแห่งความสุขในเรือนไทย.png",
+        keywords: "ครอบครัวสุขสันต์ • รักแท้สมบูรณ์ • ความสงบสุขในใจ • รุ้งกินน้ำ",
+        meaning: "รุ้งประกายพาดผ่านเหนือเรือนไทยพร้อมขันน้ำทั้งสิบ ความสุขอันสูงสุดของชีวิตครอบครัว ความรักที่บริบูรณ์ ปราศจากความขัดแย้ง",
+        work: "ทำงานอย่างมีความสุข ได้รับความไว้วางใจจากทุกคน องค์กรมีความรักใคร่กลมเกลียว",
+        finance: "การเงินมั่นคงเพื่อครอบครัว มีเงินทองใช้จ่ายร่วมกันในบ้านอย่างผาสุกและอบอุ่น",
+        love: "ความรักสุกงอม เข้าสู่การแต่งงาน สร้างครอบครัวที่อบอุ่น หรือมีข่าวดีเรื่องทายาท"
+      },
+      {
+        id: 60, num: "มหาดเล็กถ้วย", name: "ธิดาน้ำมนต์", arcana: "Page of Cups", img: "ธิดาน้ำมนต์กับปลาทองใต้แสงอาทิตย์ลับฟ้า.png",
+        keywords: "ข่าวสารแห่งรัก • สัญชาตญาณอ่อนโยน • ความรู้สึกใหม่ • จิตใจไร้เดียงสา",
+        meaning: "หญิงสาวผู้ถือขันน้ำมนต์พินิจปลาทองใต้แสงสนธยา สัญชาตญาณอ่อนโยน ข่าวดีเกี่ยวกับความรู้สึกหรือการเริ่มต้นมิตรภาพที่น่ารักสดใส",
+        work: "ได้รับข่าวดีเรื่องงาน ข้อเสนอที่น่าสนใจ หรือมีโอกาสเริ่มงานที่ใช้ศิลปะและความคิดสร้างสรรค์",
+        finance: "มีรายรับเล็กๆ น้อยๆ เข้ามา หรือได้เงินจากงานอดิเรกและความชอบส่วนตัว",
+        love: "มีคนเข้าหาแบบเขินอาย มีข้อความสารภาพรัก คนมีคู่มีความโรแมนติกแบบน่ารักกุ๊กกิ๊ก"
+      },
+      {
+        id: 61, num: "อัศวินถ้วย", name: "ทูตแห่งสายน้ำ", arcana: "Knight of Cups", img: "อัศวินถ้วยแห่งสายน้ำ.png",
+        keywords: "ผู้ส่งสารแห่งรัก • ความโรแมนติก • เสน่ห์ชวนฝัน • เดินตามหัวใจ",
+        meaning: "อัศวินขี่อาชาเยื้องย่างข้ามสายน้ำเพื่อนำขันทองมามอบให้ การยื่นข้อเสนอที่เปี่ยมด้วยความจริงใจ และการเดินตามเสียงเรียกร้องของหัวใจ",
+        work: "ได้รับข้อเสนอที่ดี มีคนมาชวนไปร่วมงานด้วยเงื่อนไขที่น่าพึงพอใจ การเจรจาราบรื่นด้วยเสน่ห์",
+        finance: "การเงินหมุนเวียนได้ดี ได้รับความช่วยเหลือทางการเงินจากคนที่รักและปรารถนาดี",
+        love: "คนโสดมีคนในฝันเข้ามาจีบอย่างสุภาพ อ่อนหวาน คนมีคู่ได้รับเซอร์ไพรส์หรือคำพูดหวานซึ้ง"
+      },
+      {
+        id: 62, num: "ราชินีถ้วย", name: "แม่หญิงผู้เยียวยา", arcana: "Queen of Cups", img: "ราชินีถ้วยแห่งสระบัว.png",
+        keywords: "จิตใจเปี่ยมเมตตา • สัญชาตญาณแม่นยำ • การเยียวยา • ความเข้าอกเข้าใจ",
+        meaning: "นางพญาผู้นั่งเคียงสระบัวกุมขันวารี ความเมตตาอันลึกซึ้ง ความสามารถในการรับรู้และเยียวยาจิตใจผู้คน มีสัมผัสพิเศษและจิตใจนุ่มนวล",
+        work: "ทำงานด้วยความเอาใจใส่ มีความเข้าใจในผู้คน เหมาะกับงานบริการ ดูแล หรือให้คำปรึกษา",
+        finance: "จัดการเงินด้วยความรอบคอบและเสียสละ มีเกณฑ์ใช้จ่ายเพื่อช่วยเหลือคนที่ตนรัก",
+        love: "ความรักลึกซึ้ง เข้าใจและเป็นที่พักพิงทางใจให้คู่ครอง คนโสดมีคนรักจริงใจเข้ามาดูแล"
+      },
+      {
+        id: 63, num: "ราชาถ้วย", name: "เจ้าแห่งวารี", arcana: "King of Cups", img: "ราชาแห่งวารีในสวนบัว.png",
+        keywords: "วุฒิภาวะทางอารมณ์ • สุขุมนุ่มลึก • เสาหลักแห่งความเมตตา • ความสงบ",
+        meaning: "เจ้าสำนักผู้ประทับบนบัลลังก์กลางเกลียวคลื่นอย่างสงบนิ่ง สติปัญญาที่ควบคุมคลื่นอารมณ์ได้อย่างสมบูรณ์ วุฒิภาวะ และความเมตตากว้างใหญ่",
+        work: "มีภาวะผู้นำที่ใช้ความนุ่มนวลและเหตุผลปกครองคน จัดการความขัดแย้งในที่ทำงานได้อย่างสันติ",
+        finance: "การเงินมั่นคง ควบคุมรายรับรายจ่ายได้เป็นอย่างดี ไม่ใช้เงินตามอารมณ์",
+        love: "ความสัมพันธ์มั่นคงและอบอุ่น คู่ครองเป็นคนใจเย็น เข้าใจและรับฟังคุณเสมอ"
+      },
+
+      // ==================== สำรับโภคทรัพย์ / เหรียญ (PENTACLES SUIT) ====================
+      {
+        id: 64, num: "๑ เหรียญ", name: "พดด้วงมหาลาภ", arcana: "Ace of Pentacles", img: "1ไพ่เอซแห่งเหรียญพดด้วงมหาลาภ.png",
+        keywords: "โชคลาภ • โอกาสใหม่ • ความมั่งคั่ง • จุดเริ่มต้นการเงิน",
+        meaning: "พรแห่งความมั่งมี เหรียญพดด้วงทองคำลอยเด่น นิมิตหมายแห่งการเริ่มต้นทางการเงิน โอกาสทอง และทรัพย์สินที่กำลังงอกเงย",
+        work: "ได้รับข้อเสนอเปิดโครงการใหม่ งานที่ให้ผลตอบแทนสูง หรือการเริ่มกิจการที่มีกำไรดี",
+        finance: "ได้เงินก้อน ได้รับโชคลาภกะทันหัน หรือได้รับข่าวดีเรื่องการเงินและสินทรัพย์",
+        love: "ความสัมพันธ์มั่นคง ช่วยเหลือเกื้อกูลเรื่องชีวิตและความเป็นอยู่ คนโสดพบคนฐานะดีเข้ามาดูแล"
+      },
+      {
+        id: 65, num: "๒ เหรียญ", name: "พดด้วงชั่งตวง", arcana: "Two of Pentacles", img: "2ไพ่พดด้วงชั่งตวงแห่งสายน้ำ.png",
+        keywords: "บริหารเงิน • จัดสรรรายรับรายจ่าย • หมุนเงิน • รักษาสมดุล",
+        meaning: "การชั่งตวงเหรียญพดด้วงท่ามกลางกระแสน้ำ สภาวะการหมุนเงิน การปรับสมดุลระหว่างรายรับรายจ่าย และความยืดหยุ่นในชีวิต",
+        work: "ต้องสับเปลี่ยนหน้าที่ จัดการหลายโครงการพร้อมกัน อาศัยความคล่องตัวในการแก้ปัญหา",
+        finance: "การหมุนเงินจัดสรรรายจ่าย แต่ยังประคองตัวรอดได้ดี ต้องวางแผนบัญชีอย่างรัดกุม",
+        love: "จัดสรรเวลาระหว่างงานและความรัก คนมีคู่ต้องประคองอารมณ์ไม่ให้กระทบกระเทือนกัน"
+      },
+      {
+        id: 66, num: "๓ เหรียญ", name: "สร้างวัด สร้างวา", arcana: "Three of Pentacles", img: "3สามช่างร่วมสร้างวัด.png",
+        keywords: "ร่วมแรงร่วมใจ • ฝีมือช่าง • งานทีม • รากฐานมั่นคง",
+        meaning: "เหล่าช่างสิบหมู่ร่วมแรงสร้างอุโบสถวัดทอง การร่วมมือร่วมใจ ทักษะความเชี่ยวชาญเฉพาะทาง การยอมรับในฝีมือ และการวางรากฐานมั่นคง",
+        work: "งานทีมราบรื่น ได้รับคำชมในความชำนาญ การเจรจาธุรกิจกับหุ้นส่วนเป็นไปด้วยดี",
+        finance: "รายได้จากหยาดเหงื่อและฝีมือ มีคนจ้างงานต่อเนื่อง ได้เงินตามความสามารถ",
+        love: "ร่วมมือกันสร้างอนาคต คนโสดมีโอกาสพบรักจากเพื่อนร่วมงานหรือในแวดวงอาชีพเดียวกัน"
+      },
+      {
+        id: 67, num: "๔ เหรียญ", name: "ปู่โสมเฝ้าทรัพย์", arcana: "Four of Pentacles", img: "4ไพ่ปู่โสมเฝ้าทรัพย์แห่งเหรียญสี่ใบ.png",
+        keywords: "เก็บออม • หวงแหนทรัพย์ • มั่นคงปลอดภัย • ระวังตระหนี่",
+        meaning: "ปู่โสมผู้โอบกอดหีบสมบัติและเหรียญพดด้วงไว้แน่น การเก็บรักษาทรัพย์สิน ความปลอดภัย แต่ต้องระวังความยึดติดจนไม่กล้าใช้จ่าย",
+        work: "ยึดติดกับตำแหน่งเดิม ไม่กล้าเสี่ยงเปลี่ยนแปลง เน้นความปลอดภัยในหน้าที่การงาน",
+        finance: "เงินทองไม่รั่วไหล มัธยัสถ์เก็บออมดีเยี่ยม แต่ระวังตระหนี่ถี่เหนียวจนเกินไป",
+        love: "หวงคนรัก หึงหวง หรือมีความรู้สึกเป็นเจ้าข้าวเจ้าของมากเกินไป ควรให้อิสระแก่กันบ้าง"
+      },
+      {
+        id: 68, num: "๕ เหรียญ", name: "ตกทุกข์ได้ยาก", arcana: "Five of Pentacles", img: "5ไพ่ห้าเหรียญกลางสายฝน.png",
+        keywords: "ขัดสนชั่วคราว • หนาวเหน็บ • โดดเดี่ยว • ยังมีที่พึ่ง",
+        meaning: "การเดินตากฝนอันหนาวเหน็บข้างกำแพงวัด สภาวะเงินตึงมือ ความรู้สึกโดดเดี่ยวขาดแคลน จงมองหาแสงสว่างและขอความช่วยเหลือจากผู้คน",
+        work: "งานสะดุด รู้สึกถูกทอดทิ้ง หรือขาดการสนับสนุนจากผู้ใหญ่ ต้องอดทนรอจังหวะฟื้นตัว",
+        finance: "เงินฝืดเคือง รายจ่ายประดังประเด ควรประหยัดและกล้าเอ่ยปากขอความช่วยเหลือ",
+        love: "รู้สึกโดดเดี่ยวในความสัมพันธ์ หรือช่วงเวลาที่คู่ครองต้องร่วมทุกข์ร่วมยากด้วยกัน"
+      },
+      {
+        id: 69, num: "๖ เหรียญ", name: "หยาดน้ำใจ", arcana: "Six of Pentacles", img: "6ไพ่หกแห่งน้ำใจ.png",
+        keywords: "การแบ่งปัน • ได้รับความช่วยเหลือ • เมตตาธรรม • สมดุลให้รับ",
+        meaning: "การเทเหรียญบริจาคช่วยเหลือผู้ยากไร้ด้วยตราชั่งเที่ยงตรง การให้และการรับที่สมดุล เมตตาบารมี และการได้รับความช่วยเหลือยามคับขัน",
+        work: "ได้รับโอกาสดี ผู้ใหญ่หยิบยื่นความช่วยเหลือ หรือได้เป็นผู้ช่วยเหลือดูแลลูกน้อง",
+        finance: "มีคนช่วยเหลือทางการเงิน ปลดเปลื้องหนี้สิน หรือได้ทำบุญบริจาคทานหนุนดวงชะตา",
+        love: "ดูแลเอาใจใส่ซึ่งกันและกันอย่างสมดุล ความรักที่ต่างฝ่ายต่างเป็นผู้ให้และผู้รับที่ดี"
+      },
+      {
+        id: 70, num: "๗ เหรียญ", name: "ช้าเป็นการ นานเป็นคุณ", arcana: "Seven of Pentacles", img: "7ไพ่เจ็ดเหรียญใต้ต้นบุปผา.png",
+        keywords: "อดทนรอคอย • เก็บเกี่ยวผลผลิต • ลงทุนระยะยาว • ประเมินผล",
+        meaning: "ชาวสวนยืนพินิจเหรียญทองที่ผลิดอกออกผลเต็มต้น การอดทนรอคอยการเก็บเกี่ยวผลลัพธ์จากสิ่งที่ลงแรงไว้ ผลตอบแทนคุ้มค่าในระยะยาว",
+        work: "ผลงานที่ทุ่มเทเริ่มผลิดอกออกผล อยู่ในขั้นตอนประเมินผลเพื่อก้าวสู่ขั้นต่อไป",
+        finance: "เงินออมและการลงทุนระยะยาวเริ่มเห็นกำไร ไม่ควรใจร้อนถอนเงินก่อนกำหนดเวลา",
+        love: "ความสัมพันธ์ที่ต้องใช้เวลาบ่มเพาะ คนมีคู่มองเห็นอนาคตร่วมกันอย่างชัดเจนและมั่นคง"
+      },
+      {
+        id: 71, num: "๘ เหรียญ", name: "วิริยะสร้างทรัพย์", arcana: "Eight of Pentacles", img: "8แปดเหรียญแห่งช่างไทย.png",
+        keywords: "ขยันขันแข็ง • ฝึกฝนทักษะ • ช่างฝีมือ • ความเพียรพยายาม",
+        meaning: "ช่างทองผู้ประณีตบรรจงสลักลวดลายเหรียญด้วยสมาธิแน่วแน่ ความขยันหมั่นเพียร การยกระดับฝีมือ และรายได้จากน้ำพักน้ำแรงสุจริต",
+        work: "พัฒนาทักษะความรู้จนชำนาญ ผลงานละเอียดประณีตจนเป็นที่ยอมรับในวงการ",
+        finance: "มีรายได้สม่ำเสมอ ยิ่งขยันยิ่งได้เงิน ทรัพย์สินเพิ่มพูนจากหยาดเหงื่อแรงงาน",
+        love: "ให้ความสำคัญกับงานจนอาจมีเวลาให้คนรักน้อยลง แต่มีความจริงใจและเสมอต้นเสมอปลาย"
+      },
+      {
+        id: 72, num: "๙ เหรียญ", name: "มั่งมีด้วยตนเอง", arcana: "Nine of Pentacles", img: "9ไพ่เก้าเหรียญแห่งความมั่งมี.png",
+        keywords: "มั่งคั่งร่ำรวย • สุขสบาย • พึ่งพาตนเอง • ชีวิตสง่างาม",
+        meaning: "หญิงงามผู้ยืนอย่างสง่าในสวนผลไม้ทองคำพร้อมนกเค้าแมวคู่ใจ ความสำเร็จทางการเงิน ความสุขสบาย และความภาคภูมิใจในการยืนหยัดด้วยลำแข้งตนเอง",
+        work: "ประสบความสำเร็จในอาชีพ มีอิสระในการตัดสินใจ ไม่ต้องขึ้นตรงหรือพึ่งพาใคร",
+        finance: "ฐานะมั่งคั่ง ร่ำรวย มีกินมีใช้อย่างหรูหรา ได้รับผลตอบแทนชีวิตอย่างเต็มที่",
+        love: "สวย โสด รวย รักอิสระ หากมีคู่จะส่งเสริมให้ชีวิตสุขสบายและให้เกียรติกันอย่างดี"
+      },
+      {
+        id: 73, num: "๑๐ เหรียญ", name: "เรือนรัก เรือนทรัพย์", arcana: "Ten of Pentacles", img: "10เรือนรักเรือนทรัพย์_ ครอบครัวใต้ต้นขนุน.png",
+        keywords: "ทรัพย์สินมรดก • ครอบครัวมั่นคง • ร่ำรวยยั่งยืน • บรรพชนหนุนนำ",
+        meaning: "สามชั่วอายุคนพร้อมหน้าใต้ร่มเงาเรือนไทยและต้นขนุนมงคล ความมั่งคั่งที่ส่งต่อจากรุ่นสู่รุ่น ความมั่นคงของวงศ์ตระกูล อสังหาริมทรัพย์ และมรดกตกทอด",
+        work: "ธุรกิจครอบครัวเจริญรุ่งเรือง กิจการมั่นคงแข็งแกร่งเป็นปึกแผ่นถาวร",
+        finance: "มั่งคั่งสูงสุด ได้รับมรดก ที่ดิน บ้าน หรือผลกำไรก้อนใหญ่จากธุรกิจครอบครัว",
+        love: "ความรักมั่นคงยืนยาว ได้รับการยอมรับจากครอบครัวทั้งสองฝ่าย มีความสุขสมบูรณ์พร้อม"
+      },
+      {
+        id: 74, num: "มหาดเล็กเหรียญ", name: "มหาดเล็กพินิจทรัพย์", arcana: "Page of Pentacles", img: "มหาดเล็กพินิจทรัพย์ใต้แสงทอง.png",
+        keywords: "เริ่มต้นเรียนรู้ • โอกาสทางการเงิน • ใฝ่รู้ • ข่าวดีเรื่องทรัพย์",
+        meaning: "มหาดเล็กหนุ่มน้อยผู้ประคองเหรียญพดด้วงพิจารณาอย่างตั้งใจ จิตใจที่ใคร่รู้เรื่องการสร้างเนื้อสร้างตัว และข่าวดีเกี่ยวกับการเงิน",
+        work: "เริ่มต้นงานใหม่หรือการฝึกอบรม ได้รับโอกาสศึกษาต่อหรือรับผิดชอบงานที่ท้าทาย",
+        finance: "มีช่องทางสร้างรายได้เล็กๆ น้อยๆ เข้ามา มีโอกาสลงทุนเริ่มต้นที่ดีและปลอดภัย",
+        love: "ความสัมพันธ์มั่นคงและค่อยเป็นค่อยไป คนโสดมีคนซื่อสัตย์และจริงจังเข้ามาจีบ"
+      },
+      {
+        id: 75, num: "อัศวินเหรียญ", name: "ขุนศึกหนุนดวง", arcana: "Knight of Pentacles", img: "อัศวินเหรียญแห่งทุ่งทอง.png",
+        keywords: "ขยันขันแข็ง • รอบคอบหนักแน่น • มุ่งมั่นสร้างรากฐาน • ไว้วางใจได้",
+        meaning: "ขุนศึกผู้กุมเหรียญทองควบอาชาอย่างสุขุมท่ามกลางทุ่งรวงทอง ความมุ่งมั่น อดทน ซื่อสัตย์ ไม่รีบร้อนแต่ก้าวไปข้างหน้าอย่างหนักแน่น",
+        work: "ทำงานอย่างรอบคอบ มีวินัยสูง ส่งมอบงานตรงเวลาและเชื่อถือได้เต็มร้อย",
+        finance: "การเงินมั่นคง ช้าแต่ชัวร์ ไม่นิยมความเสี่ยง เก็บเงินได้เป็นกอบเป็นกำ",
+        love: "รักจริงหวังแต่ง เป็นที่พึ่งพาได้ แม้ไม่หวานแหววแต่เสมอต้นเสมอปลายและมั่นคง"
+      },
+      {
+        id: 76, num: "ราชินีเหรียญ", name: "คุณท้าวเฝ้าทรัพย์", arcana: "Queen of Pentacles", img: "ราชินีแห่งทรัพย์ใต้ศาลาไทย.png",
+        keywords: "แม่เรือนผู้มั่งคั่ง • อุดมสมบูรณ์ • บริหารเงินเก่ง • ดูแลเอาใจใส่",
+        meaning: "คุณท้าวผู้ประทับบนตั่งทองในศาลาไทยแวดล้อมด้วยธัญญาหาร ความอุดมสมบูรณ์ การบริหารจัดการบ้านเรือนและทรัพย์สินอย่างชาญฉลาดและอบอุ่น",
+        work: "บริหารงานได้ยอดเยี่ยม มีความสามารถในการจัดสรรทรัพยากรและดูแลคนรอบข้าง",
+        finance: "การเงินมั่งคั่งและคล่องตัว มีปัญญาในการต่อเงิน รักษาสมดุลทรัพย์สินได้ดีเยี่ยม",
+        love: "เป็นคู่ชีวิตที่ดี แม่ศรีเรือนที่ช่วยหนุนดวงคู่ครองให้ร่ำรวยและอบอุ่นใจ"
+      },
+      {
+        id: 77, num: "ราชาเหรียญ", name: "พระยาธนบดี", arcana: "King of Pentacles", img: "ราชาพระยาธนบดีบนช้างเผือก.png",
+        keywords: "มหาเศรษฐี • เจ้าสัวผู้ทรงอิทธิพล • ความสำเร็จสูงสุด • เสถียรภาพมั่นคง",
+        meaning: "เจ้าพญาธนบดีผู้ประทับเหนือคอช้างเผือกมงคล เจ้าแห่งโภคทรัพย์ ความสำเร็จสูงสุดในโลกียทรัพย์ อำนาจ บารมี และเสถียรภาพทางการเงินดั่งขุนเขา",
+        work: "เป็นเจ้าของกิจการ ผู้บริหารระดับสูง หรือนักธุรกิจที่ประสบความสำเร็จสูงสุด",
+        finance: "ร่ำรวยมหาศาล มั่นคงทางการเงินระดับยอดพีระมิด การลงทุนได้กำไรงดงาม",
+        love: "ความรักที่มั่นคงและเพียบพร้อม สามารถดูแลคุ้มครองและสร้างความสุขสบายให้คนรักได้ทุกด้าน"
+      }
     ];
 
-    let currentTargetCount = 1;
-    let selectedCards = [];
-    let isFlipped = false;
-    let poolCards = [];
+    let currentMode = 1;
+    let shuffleCount = 0;
+    let deckPool = [];
+    let chosenCards = [];
+    let audioCtx = null;
+    let isUnlockedMode3 = true;
 
-    function initMat() {
-      renderSlots();
-      resetDeckPool();
-      renderStrip();
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
     }
 
-    function setMode(count) {
-      currentTargetCount = count;
-      document.querySelectorAll('.mode-pill').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
-      
-      const hints = {
-        1: "✨ ส่งมือถือให้ลูกดวงตั้งจิตอธิษฐาน แล้วแตะเลือกไพ่ที่สัมผัสจิต (เลือก ๑ ใบ)",
-        3: "✨ ส่งมือถือให้ลูกดวงเลือกไพ่ ๓ ใบ (อดีต • ปัจจุบัน • อนาคต)",
-        5: "✨ ส่งมือถือให้ลูกดวงเลือกไพ่ ๕ ใบ (ชะตาพิสดาร ๕ มิติ)"
+    function playShuffleSound() {
+      const ctx = getAudioContext();
+      const sampleRate = ctx.sampleRate;
+      const bufferSize = sampleRate * 0.08;
+      for (let i = 0; i < 6; i++) {
+        const startTime = ctx.currentTime + i * 0.06;
+        const buffer = ctx.createBuffer(1, bufferSize, sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let j = 0; j < bufferSize; j++) { data[j] = Math.random() * 2 - 1; }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(700 + Math.random() * 500, startTime);
+        filter.Q.value = 1.2;
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.01, startTime);
+        gain.gain.linearRampToValueAtTime(0.2, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.07);
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start(startTime);
+        noise.stop(startTime + 0.07);
+      }
+    }
+
+    function playChimeSound() {
+      const ctx = getAudioContext();
+      const now = ctx.currentTime;
+      const freqs = [1046.50, 1318.51, 1567.98, 2093.00];
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.04);
+        gain.gain.setValueAtTime(0.12, now + idx * 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.04 + 1.2);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now + idx * 0.04);
+        osc.stop(now + idx * 0.04 + 1.2);
+      });
+    }
+
+    function switchMode(mode) {
+      if (mode === 3 && !isUnlockedMode3) {
+        openUnlockModal();
+        return;
+      }
+      currentMode = mode;
+      document.getElementById('btn-mode-1').classList.toggle('active', mode === 1);
+      document.getElementById('btn-mode-3').classList.toggle('active', mode === 3);
+      resetToDeck();
+    }
+
+    function openUnlockModal() {
+      const modal = document.getElementById('unlock-modal');
+      if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('passcode-input').value = '';
+        document.getElementById('passcode-error').innerText = '';
+      }
+    }
+
+    function closeUnlockModal() {
+      const modal = document.getElementById('unlock-modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+   // =========================================================================
+  // ระบบตรวจสอบรหัสผ่าน, ปลดล็อกญาณ และสลับเข้าสู่โหมด ๓ ใบอัตโนมัติ
+  // =========================================================================
+  async function checkPasscode() {
+    const inputEl = document.getElementById('passcode-input');
+    const errorText = document.getElementById('passcode-error');
+    const input = inputEl ? inputEl.value.trim() : '';
+
+    if (!input) {
+      if (errorText) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'กรุณากรอกรหัสปลดล็อก';
+      }
+      return;
+    }
+
+    if (errorText) {
+      errorText.style.color = 'var(--gold-bright)';
+      errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
+    }
+
+    try {
+      const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(input)}`);
+      const result = await response.json();
+
+      if (result.success) {
+        // เล่นเสียงกระดิ่งปลดล็อก (ถ้ามี)
+        if (typeof playChimeSound === 'function') {
+          try { playChimeSound(); } catch (e) {}
+        }
+
+        // ปลดล็อกสถานะโหมด ๓ ใบ
+        isUnlockedMode3 = true;
+
+        // ซ่อนไอคอนกุญแจล็อก
+        const lockIcon = document.getElementById('mode-3-lock');
+        if (lockIcon) lockIcon.style.display = 'none';
+
+        // ปิดหน้าต่าง Popup ถ้ามี
+        if (typeof closeUnlockModal === 'function') {
+          try { closeUnlockModal(); } catch (e) {}
+        }
+
+        // ซ่อนกล่องกรอกรหัสและล้างข้อความ
+        const passcodeBox = document.querySelector('.passcode-box');
+        if (passcodeBox) passcodeBox.style.display = 'none';
+        if (errorText) errorText.innerText = '';
+
+       // แจ้งเตือนความสำเร็จ
+        alert('✦ ปลดล็อกญาณสำเร็จ ✦\nยินดีต้อนรับสู่การพยากรณ์ชะตา ๓ ใบ (อดีต ปัจจุบัน อนาคต) เจ้าค่ะ 🔮✨');
+
+        // ๑. ปลดล็อกตัวแปรแม่กุญแจโหมด ๓ ใบให้เป็นจริง
+        isUnlockedMode3 = true;
+
+        // ๒. ปลดล็อกรูปแม่กุญแจ 🔒 บนปุ่ม
+        if (document.getElementById('mode-3-lock')) {
+  document.getElementById('mode-3-lock').style.display = 'none';
+}
+
+        // ๓. สลับหน้าจอเข้าสู่โหมด ๓ ใบ
+        if (typeof switchMode === 'function') {
+          switchMode(3);
+        }
+
+        // ๔. คลี่ไพ่ให้พร้อมเลือก ๓ ใบ
+        if (typeof spreadDeck === 'function') {
+          spreadDeck();
+        }
+      } else {
+        if (errorText) {
+          errorText.style.color = '#ff6b6b';
+          errorText.innerText = result.message || 'รหัสไม่ถูกต้อง หรือถูกใช้งานไปแล้ว';
+        }
+      }
+    } catch (err) {
+      if (errorText) {
+        errorText.style.color = '#ff6b6b';
+        errorText.innerText = 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง';
+      }
+    }
+  }
+
+  // =========================================================================
+  // ระบบสับไพ่และนับจำนวนครั้ง (ทำงานร่วมกับโหมด ๑ ใบ และ ๓ ใบ)
+  // =========================================================================
+  function shuffleDeck() {
+    if (typeof playShuffleSound === 'function') {
+      try { playShuffleSound(); } catch (e) {}
+    }
+    shuffleCount++;
+
+    const stack = document.getElementById('deck-stack');
+    if (stack) {
+      stack.classList.remove('shuffling');
+      void stack.offsetWidth;
+      stack.classList.add('shuffling');
+    }
+
+    const thaiNums = ["๐", "๑", "๒", "๓", "๔", "๕", "๖", "๗", "๘", "๙"];
+    const countThai = shuffleCount.toString().split('').map(d => thaiNums[parseInt(d)]).join('');
+    
+    const shuffleCountEl = document.getElementById('shuffle-count');
+    if (shuffleCountEl) {
+      shuffleCountEl.innerText = `สับไพ่แล้ว ${countThai} ครั้ง (สับได้ตามจิตศรัทธา)`;
+    }
+
+    const hintBar = document.getElementById('hint-bar');
+    if (hintBar) {
+      hintBar.innerHTML = `✦ อัญเชิญญาณสับไพ่ ๗๘ ใบแล้ว... กดสับต่อ หรือกด <strong>"คลี่ไพ่เพื่อเลือก"</strong> ✦`;
+    }
+  }
+    function spreadDeck() {
+      if (deckPool.length === 0) {
+        deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+      }
+      playShuffleSound();
+      chosenCards = [];
+
+      document.getElementById('deck-section').style.display = 'none';
+      const fan = document.getElementById('fan-section');
+      fan.innerHTML = '';
+      fan.style.display = 'block';
+
+      const track = document.createElement('div');
+      track.className = 'fan-track';
+
+      deckPool.forEach((card, i) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'fan-card';
+        cardEl.id = `fan-card-${i}`;
+        cardEl.style.zIndex = i + 1;
+        cardEl.innerHTML = `<img src="หลังไพ่.png" onerror="this.src='หลังไพ่[Card Back].png'">`;
+
+        cardEl.onclick = () => pickCardFromFan(i, card, cardEl);
+        track.appendChild(cardEl);
+      });
+
+      fan.appendChild(track);
+
+      fan.onwheel = (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          fan.scrollLeft += e.deltaY;
+        }
       };
-      document.getElementById('strip-hint-text').innerText = hints[count] || `✨ แตะเลือกไพ่ให้ครบ ${count} ใบ`;
-      resetMat();
+
+      setTimeout(() => {
+        fan.scrollLeft = (fan.scrollWidth - fan.clientWidth) / 2;
+      }, 50);
+
+      updateHintForPicking();
     }
 
-    function renderSlots() {
-      const area = document.getElementById('slots-area');
-      area.innerHTML = '';
-      
-      const labels3 = ["อดีต (ต้นสาย)", "ปัจจุบัน (ตัวตน)", "อนาคต (ปลายทาง)"];
-      const labels5 = ["จุดยืน", "อุปสรรค", "จิตใต้สำนึก", "แนวทางแก้ไข", "ผลลัพธ์"];
+    function updateHintForPicking() {
+      const remaining = currentMode - chosenCards.length;
+      const thaiDigits = ["๐","๑","๒","๓"];
+      if (remaining > 0) {
+        document.getElementById('hint-bar').innerHTML = `✦ เลื่อนสไลด์ซ้าย-ขวา แตะเลือกไพ่ที่ดลใจ (ต้องการอีก <strong>${thaiDigits[remaining]}</strong> ใบ) ✦`;
+      }
+    }
 
-      for (let i = 0; i < currentTargetCount; i++) {
-        let label = `ใบที่ ${i + 1}`;
-        if (currentTargetCount === 3) label = labels3[i];
-        if (currentTargetCount === 5) label = labels5[i];
+    function pickCardFromFan(index, card, cardEl) {
+      if (chosenCards.length >= currentMode) return;
+      if (cardEl.classList.contains('picked')) return;
 
+      playChimeSound();
+      cardEl.classList.add('picked');
+      chosenCards.push(card);
+
+      if (chosenCards.length < currentMode) {
+        updateHintForPicking();
+      } else {
+        document.getElementById('hint-bar').innerHTML = '✦ สถิตญาณพร้อมแล้ว... <strong>แตะที่ไพ่</strong> เพื่อเปิดชะตา ✦';
+        setTimeout(revealBoardWithChosenCards, 500);
+      }
+    }
+
+    function revealBoardWithChosenCards() {
+      document.getElementById('fan-section').style.display = 'none';
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      board.style.display = 'flex';
+      board.style.justifyContent = 'center';
+      document.getElementById('reset-area').style.display = 'block';
+
+      const labels = currentMode === 1 
+        ? ["ดวงชะตาวันนี้"] 
+        : ["ตำแหน่ง ๑ : อดีต", "ตำแหน่ง ๒ : ปัจจุบัน", "ตำแหน่ง ๓ : อนาคต"];
+
+      for (let i = 0; i < currentMode; i++) {
         const slot = document.createElement('div');
-        slot.className = 'slot-box';
-        slot.id = `slot-${i}`;
-        slot.innerHTML = `<span class="slot-label">${label}</span>`;
-        area.appendChild(slot);
+        slot.className = 'card-slot';
+        slot.innerHTML = `
+          <div class="slot-label">${labels[i]}</div>
+          <div class="card-wrapper" id="card-${i}" onclick="revealCard(${i})">
+            <div class="card-inner">
+              <div class="card-face card-back">
+                <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
+                <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
+              </div>
+              <div class="card-face card-front" id="front-${i}">
+                <img src="${chosenCards[i].img}" alt="${chosenCards[i].name}" onerror="if(!this.dataset.t){this.dataset.t=1; this.src=this.src.replace('(1.png','(1).png');}">
+              </div>
+            </div>
+          </div>
+        `;
+        board.appendChild(slot);
       }
     }
 
-    function resetDeckPool() {
-      poolCards = [...tarotDeckData].sort(() => Math.random() - 0.5);
-    }
+    function revealCard(idx) {
+      const cardWrapper = document.getElementById(`card-${idx}`);
+      if (!cardWrapper.classList.contains('flipped')) {
+        playChimeSound();
+        cardWrapper.classList.add('flipped');
+        renderInterpretationItem(idx);
 
-    function shuffleCurrentDeck() {
-      resetDeckPool();
-      renderStrip();
-      document.getElementById('strip-hint-text').innerText = "🌀 สับสำรับ ๗๘ ใบเรียบร้อยแล้ว เชิญลูกดวงตั้งจิตเลือกไพ่อีกครั้ง";
-    }
-
-    function renderStrip() {
-      const strip = document.getElementById('card-strip');
-      strip.innerHTML = '';
-      
-      for (let i = 0; i < poolCards.length; i++) {
-        const c = document.createElement('div');
-        c.className = 'strip-card';
-        c.innerHTML = '✦';
-        c.onclick = () => pickCard(i, c);
-        strip.appendChild(c);
+        setTimeout(() => {
+          const sheet = document.getElementById('reading-sheet');
+          if (sheet) {
+            sheet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 550);
       }
     }
 
-    function pickCard(index, element) {
-      if (selectedCards.length >= currentTargetCount) {
-        alert('เลือกไพ่ครบจำนวนแล้วเจ้าค่ะ กดปุ่ม "เปิดไพ่ทั้งหมด" ได้เลย');
+    function buildDestinyBanner() {
+      const nickname = document.getElementById('seeker-nickname').value.trim() || 'ผู้มีจิตศรัทธา';
+      const day = document.getElementById('seeker-day').value.trim();
+      const month = document.getElementById('seeker-month').value;
+      const yearBE = document.getElementById('seeker-year').value.trim();
+
+      const bannerArea = document.getElementById('destiny-banner-area');
+      if (!bannerArea) return;
+
+      if (!day || !month || !yearBE || parseInt(day) < 1 || parseInt(day) > 31 || parseInt(yearBE) < 2400) {
+        bannerArea.innerHTML = `
+          <div class="seeker-destiny-banner">
+            <div class="seeker-name">✦ ดวงชะตา: คุณ ${nickname} ✦</div>
+            <div class="seeker-details">สื่อกระแสจิตผ่านไพ่ทาโรต์ภูตผีไทยโบราณ</div>
+            <div class="element-insight">
+              <strong>นิมิตชี้แนะ:</strong> พลังจิตของท่านกำลังเชื่อมต่อกับคลื่นญาณแห่งสำรับโบราณอย่างสงบ จงสดับฟังเสียงเตือนแห่งสัจธรรม
+            </div>
+          </div>
+        `;
         return;
       }
 
-      element.style.visibility = 'hidden';
-      const cardData = poolCards[index] || poolCards[0];
-      selectedCards.push(cardData);
-
-      const currentSlotIndex = selectedCards.length - 1;
-      const targetSlot = document.getElementById(`slot-${currentSlotIndex}`);
+      const yearAD = parseInt(yearBE) - 543;
+      const birthDate = new Date(yearAD, parseInt(month) - 1, parseInt(day));
+      const dayNames = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+      const monthNames = ['', 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
       
-      targetSlot.classList.add('filled');
-      targetSlot.innerHTML = `
-        <div class="tarot-card" id="card-${currentSlotIndex}" onclick="toggleSingleCard(${currentSlotIndex})">
-          <div class="card-inner">
-            <div class="card-face card-back">
-              <div class="card-back-emblem">✦</div>
-            </div>
-            <div class="card-face card-front">
-              <div class="card-fallback-art">
-                <span class="card-fallback-num">${cardData.name}</span>
-                <span class="card-fallback-name">${cardData.thai}</span>
-                <span class="card-fallback-sub">${cardData.tag}</span>
-              </div>
-            </div>
+      const dayOfWeek = dayNames[birthDate.getDay()];
+      const age = 2569 - parseInt(yearBE);
+
+      const elementMap = {
+        'วันอาทิตย์': { el: 'ธาตุไฟสุริยัน', trait: 'จิตใจกล้าหาญ มุ่งมั่น ทะเยอทะยาน มีไฟในการสร้างสรรค์และรักศักดิ์ศรี', guide: 'พลังธาตุไฟจะเร่งให้ชะตาเกิดการเปลี่ยนแปลงฉับพลัน พึงใช้ความเยือกเย็นในการตัดสินใจ' },
+        'วันจันทร์': { el: 'ธาตุดินนวล / น้ำจันทรา', trait: 'มีเสน่ห์ดึงดูด อ่อนโยน เข้าใจจิตใจผู้อื่น สัญชาตญาณและลางสังหรณ์แม่นยำ', guide: 'พลังแห่งจันทราเปิดรับกระแสญาณได้ลึกซึ้ง ความรู้สึกแรกมักเป็นความจริงเสมอ' },
+        'วันอังคาร': { el: 'ธาตุลมเพลิง', trait: 'นักสู้ผู้เด็ดเดี่ยว กล้าได้กล้าเสีย ตรงไปตรงมา ไม่ยอมก้มหัวให้อุปสรรค', guide: 'กำลังแห่งนักรบช่วยให้ฝ่าฟันวิบากกรรมได้ทุกรูปแบบ แต่พึงระวังคำพูดและอารมณ์ร้อน' },
+        'วันพุธ': { el: 'ธาตุน้ำพาณิชย์ / ลมปัญญา', trait: 'เฉลียวฉลาด ไหวพริบปฏิภาณยอดเยี่ยม วาทศิลป์ดึงดูดใจ ปรับตัวเก่ง', guide: 'ปัญญาและการเจรจาคืออาวุธเอกของท่าน การสื่อสารที่ชัดเจนจะเปิดทางสู่ความสำเร็จ' },
+        'วันพฤหัสบดี': { el: 'ธาตุดินครูบาอาจารย์', trait: 'ใฝ่รู้ เปี่ยมคุณธรรม มีผู้ใหญ่คอยอุปถัมภ์ค้ำชู จิตใจสุขุมรอบคอบ', guide: 'บารมีแห่งครูบาอาจารย์คุ้มครองดวงชะตา การทำบุญภาวนาจะยิ่งเสริมโชคลาภให้มั่นคง' },
+        'วันศุกร์': { el: 'ธาตุน้ำสำราญ / มหาลาภ', trait: 'รักความงดงาม อิ่มเอมในความสุข มีโชคลาภเสน่หา เมตตามหานิยมสูง', guide: 'เสน่ห์และความคิดสร้างสรรค์เป็นตัวนำพาความมั่งคั่ง จงเลือกความสบายใจเป็นที่ตั้ง' },
+        'วันเสาร์': { el: 'ธาตุไฟลึกลับ / ดินแกร่ง', trait: 'อดทนสูง หนักแน่น เงียบขรึม มีโลกส่วนตัว ลึกลับและมีสัมผัสพิเศษ', guide: 'ผ่านบททดสอบแห่งชีวิตมาอย่างโชกโชน ไม่มีสิ่งใดทำลายความอดทนอันแกร่งกล้าของท่านได้' }
+      };
+
+      const info = elementMap[dayOfWeek] || elementMap['วันจันทร์'];
+
+      bannerArea.innerHTML = `
+        <div class="seeker-destiny-banner">
+          <div class="seeker-name">✦ บันทึกดวงชะตา: คุณ ${nickname} ✦</div>
+          <div class="seeker-details">ชาตากาล: ${dayOfWeek} ที่ ${day} ${monthNames[parseInt(month)]} พ.ศ. ${yearBE} (ชันษา ${age} ปี)</div>
+          <div class="element-insight">
+            <strong>สถิตกำเนิด:</strong> ${info.el} — ${info.trait}<br>
+            <strong>กระแสญาณผสานหน้าไพ่:</strong> ${info.guide}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderInterpretationItem(idx) {
+      const sheet = document.getElementById('reading-sheet');
+      const content = document.getElementById('reading-content');
+      const card = chosenCards[idx];
+
+      if (document.querySelectorAll('.interpretation-card').length === 0) {
+        buildDestinyBanner();
+      }
+
+      const labels = currentMode === 1 
+        ? ["ญาณหยั่งรู้ประจำวัน"] 
+        : ["ตำแหน่งที่ ๑ : อดีต / วิบากกรรมที่ส่งผล", "ตำแหน่งที่ ๒ : ปัจจุบัน / สภาวะจิตและบททดสอบ", "ตำแหน่งที่ ๓ : อนาคต / วิถีทางคลี่คลาย"];
+
+      if (document.getElementById(`interpretation-${idx}`)) return;
+
+      const item = document.createElement('div');
+      item.id = `interpretation-${idx}`;
+      item.className = 'interpretation-card';
+      item.innerHTML = `
+        <div style="color: var(--crimson-light); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px;">
+          ${labels[idx]}
+        </div>
+        <div class="card-meta-title">
+          <span>✦ ${card.name} (${card.num})</span>
+          <span style="font-size: 1rem; color: var(--text-muted); font-weight: normal;">• ${card.arcana}</span>
+        </div>
+        <div class="card-keywords">${card.keywords}</div>
+        <div class="card-essence">
+          <strong>ความหมายแห่งญาณ:</strong> ${card.meaning}
+        </div>
+        <div class="aspects-grid">
+          <div class="aspect-box">
+            <div class="aspect-title">💼 ด้านการงานและอำนาจ</div>
+            <div class="aspect-desc">${card.work}</div>
+          </div>
+          <div class="aspect-box">
+            <div class="aspect-title">💰 ด้านโชคลาภและการเงิน</div>
+            <div class="aspect-desc">${card.finance}</div>
+          </div>
+          <div class="aspect-box">
+            <div class="aspect-title">❤️ ด้านความรักและสายสัมพันธ์</div>
+            <div class="aspect-desc">${card.love}</div>
           </div>
         </div>
       `;
 
-      if (selectedCards.length === currentTargetCount) {
-        document.getElementById('strip-hint-text').innerText = "🔮 เลือกไพ่ครบแล้ว! แตะที่ตัวไพ่เพื่อเปิดทีละใบ หรือกดปุ่มเปิดทั้งหมด";
+      let inserted = false;
+      const children = content.children;
+      for (let i = 0; i < children.length; i++) {
+        const childId = parseInt(children[i].id.replace('interpretation-', ''));
+        if (idx < childId) {
+          content.insertBefore(item, children[i]);
+          inserted = true;
+          break;
+        }
       }
-    }
-
-    function toggleSingleCard(index) {
-      const cardEl = document.getElementById(`card-${index}`);
-      if (cardEl) cardEl.classList.toggle('flipped');
-    }
-
-    function revealAllCards() {
-      if (selectedCards.length === 0) {
-        alert('กรุณาให้ลูกดวงแตะเลือกไพ่ก่อนเปิดนะเจ้าคะ');
-        return;
+      if (!inserted) {
+        content.appendChild(item);
       }
-      for (let i = 0; i < selectedCards.length; i++) {
-        const cardEl = document.getElementById(`card-${i}`);
-        if (cardEl) cardEl.classList.add('flipped');
+
+      sheet.classList.add('active');
+    }
+
+   function resetToDeck() {
+  shuffleCount = 0;
+  chosenCards = [];
+  document.getElementById('deck-section').style.display = 'flex';
       }
-      isFlipped = true;
+
+      shuffleCount = 0;
+      chosenCards = [];
+      document.getElementById('deck-section').style.display = 'flex';
+      document.getElementById('fan-section').style.display = 'none';
+      document.getElementById('board').style.display = 'none';
+      document.getElementById('reset-area').style.display = 'none';
+      document.getElementById('reading-sheet').classList.remove('active');
+      document.getElementById('destiny-banner-area').innerHTML = '';
+      document.getElementById('reading-content').innerHTML = '';
+      document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
+      document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
+      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function resetMat() {
-      selectedCards = [];
-      isFlipped = false;
-      renderSlots();
-      resetDeckPool();
-      renderStrip();
-    }
-
-    function openCheatSheet() {
-      document.getElementById('cheat-modal').classList.add('active');
-      renderCheatList(tarotDeckData);
-    }
-
-    function closeCheatSheet() {
-      document.getElementById('cheat-modal').classList.remove('active');
-    }
-
-    function renderCheatList(list) {
-      const container = document.getElementById('cheat-list');
-      container.innerHTML = '';
-      list.forEach(c => {
-        const item = document.createElement('div');
-        item.className = 'cheat-card-item';
-        item.innerHTML = `
-          <div class="cheat-header">
-            <span>${c.thai}</span>
-            <span style="font-family: 'Cinzel'; font-size: 0.75rem;">${c.name}</span>
-          </div>
-          <div class="cheat-keywords"><b>แก่นชะตา:</b> ${c.tag}</div>
-          <div class="cheat-cat">💼 <b>งาน/เงิน:</b> ${c.work}</div>
-          <div class="cheat-cat">💖 <b>ความรัก:</b> ${c.love}</div>
-          <div class="cheat-cat" style="color: #ff9999;">⚠️ <b>ข้อเตือนสติ:</b> ${c.warning}</div>
-        `;
-        container.appendChild(item);
-      });
-    }
-
-    function filterCheatList() {
-      const query = document.getElementById('cheat-search').value.toLowerCase();
-      const filtered = tarotDeckData.filter(c => 
-        c.thai.toLowerCase().includes(query) || 
-        c.name.toLowerCase().includes(query) || 
-        c.tag.toLowerCase().includes(query) ||
-        c.work.toLowerCase().includes(query)
-      );
-      renderCheatList(filtered);
-    }
-
-    window.onload = initMat;
+    window.onload = resetToDeck;
   </script>
 </body>
 </html>
