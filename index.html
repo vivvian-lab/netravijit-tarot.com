@@ -2137,14 +2137,17 @@ switchMode(pendingUnlockMode);
     unlockedModes[targetMode] = true;
     isUnlockedMode3 = true; // เผื่อระบบเดิมยังอ้างอิงตัวแปรนี้
 
-    // ๒. ปลดล็อกแม่กุญแจ 🔒 บนปุ่ม
+    // ๒. ปลดล็อกแม่กุญแจ 🔒 บนปุ่ม (ซ่อนแม่กุญแจ)
+  const lockEl = document.getElementById(`mode-${targetMode}-lock`);
+  if (lockEl) {
+    lockEl.style.display = 'none';
+  } else {
     const targetBtn = document.getElementById(`btn-mode-${targetMode}`);
     if (targetBtn) {
       const span = targetBtn.querySelector('span');
-      if (span) span.innerText = span.innerText.replace('🔒', '').trim();
+      if (span) span.style.display = 'none';
     }
-    const lockEl = document.getElementById(`mode-${targetMode}-lock`);
-    if (lockEl) lockEl.style.display = 'none';
+  }
 
     // ปิดหน้าต่างชำระเงิน
     if (typeof closeUnlockModal === 'function') {
@@ -2460,24 +2463,30 @@ function updateHintForPicking() {
       sheet.classList.add('active');
     }
 function resetToDeck() {
-  // ๑. ล้างสถานะปลดล็อกทุกโหมด บังคับให้ต้องกรอกรหัสใหม่ทุกครั้ง (๑ รหัส = ๑ ครั้ง)
-  if (typeof unlockedModes !== 'undefined') {
-    unlockedModes = { 3: false, 5: false, 10: false };
-  }
-  currentMode = 1;
+  // ๑. ล้างสิทธิ์ปลดล็อกทุกโหมดทันที (๑ รหัส = ๑ ครั้ง)
+  unlockedModes = { 3: false, 5: false, 10: false };
   if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
   if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
   if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
 
-  // ๒. คืนแม่กุญแจ 🔒 บนปุ่มโหมด ๓, ๕ และ ๑๐ ใบ
+  // ๒. คืนแม่กุญแจ 🔒 ให้กลับมาแสดงบนปุ่ม ๓, ๕ และ ๑๐ ใบทุกปุ่ม
   ['3', '5', '10'].forEach(m => {
     const lock = document.getElementById(`mode-${m}-lock`);
-    if (lock) lock.style.display = 'inline';
+    if (lock) {
+      lock.style.display = 'inline';
+    }
     const btn = document.getElementById(`btn-mode-${m}`);
-    if (btn) btn.classList.remove('active');
+    if (btn) {
+      btn.classList.remove('active');
+      const span = btn.querySelector('span');
+      if (span) {
+        span.style.display = 'inline';
+        if (!span.innerText.includes('🔒')) span.innerText = ' 🔒';
+      }
+    }
   });
 
-  // ๓. ดีดโหมดกลับมาที่โหมด ๑ ใบ (ดูฟรีประจำวัน) เสมอ
+  // ๓. ดีดโหมดกลับมาที่โหมด ๑ ใบ (ดูฟรีประจำวัน)
   currentMode = 1;
   const btn1 = document.getElementById('btn-mode-1');
   if (btn1) btn1.classList.add('active');
@@ -2485,7 +2494,7 @@ function resetToDeck() {
   const warnBox = document.getElementById('spiritual-warning-box');
   if (warnBox) warnBox.style.display = 'block';
 
-  // ๔. ล้างหน้ากระดานและเตรียมสำรับไพ่ใหม่
+  // ๔. ล้างกระดานและเตรียมสำรับไพ่ใหม่
   shuffleCount = 0;
   chosenCards = [];
   const deckSec = document.getElementById('deck-section');
