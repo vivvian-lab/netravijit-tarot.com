@@ -1771,21 +1771,37 @@ switchMode(pendingUnlockMode);
         if (passcodeBox) passcodeBox.style.display = 'none';
         if (errorText) errorText.innerText = '';
 
-       // แจ้งเตือนความสำเร็จ
-        alert('✦ ปลดล็อกญาณสำเร็จ ✦\nยินดีต้อนรับสู่การพยากรณ์ชะตา ๓ ใบ (อดีต ปัจจุบัน อนาคต) เจ้าค่ะ 🔮✨');
+     // แจ้งเตือนความสำเร็จตามโหมดที่ปลดล็อกจริง
+    const targetMode = pendingUnlockMode || 3;
+    const modeNames = {
+      3: '๓ ใบ (อดีต - ปัจจุบัน - อนาคต)',
+      5: '๕ ใบ (ชะตา ๕ มิติ)',
+      10: '๑๐ ใบ (มหายันต์เซลติกครอส)'
+    };
+    alert(`✦ ปลดล็อกญาณสำเร็จ ✦\nยินดีต้อนรับสู่การพยากรณ์ชะตา ${modeNames[targetMode] || targetMode + ' ใบ'} เจ้าค่ะ 🔮 ✨`);
 
-        // ๑. ปลดล็อกตัวแปรแม่กุญแจโหมด ๓ ใบให้เป็นจริง
-        isUnlockedMode3 = true;
+    // ๑. ปลดล็อกตัวแปรของโหมดที่ลูกดวงเลือก
+    unlockedModes[targetMode] = true;
+    isUnlockedMode3 = true; // เผื่อระบบเดิมยังอ้างอิงตัวแปรนี้
 
-        // ๒. ปลดล็อกรูปแม่กุญแจ 🔒 บนปุ่ม
-        if (document.getElementById('mode-3-lock')) {
-  document.getElementById('mode-3-lock').style.display = 'none';
-}
+    // ๒. ปลดล็อกแม่กุญแจ 🔒 บนปุ่ม
+    const targetBtn = document.getElementById(`btn-mode-${targetMode}`);
+    if (targetBtn) {
+      const span = targetBtn.querySelector('span');
+      if (span) span.innerText = span.innerText.replace('🔒', '').trim();
+    }
+    const lockEl = document.getElementById(`mode-${targetMode}-lock`);
+    if (lockEl) lockEl.style.display = 'none';
 
-        // ๓. สลับหน้าจอเข้าสู่โหมด ๓ ใบ
-        if (typeof switchMode === 'function') {
-          switchMode(3);
-        }
+    // ปิดหน้าต่างชำระเงิน
+    if (typeof closeUnlockModal === 'function') {
+      closeUnlockModal();
+    }
+
+    // ๓. สลับหน้าจอเข้าสู่โหมดที่ปลดล็อกทันที
+    if (typeof switchMode === 'function') {
+      switchMode(targetMode);
+    }
 
         // ๔. คลี่ไพ่ให้พร้อมเลือก ๓ ใบ
         if (typeof spreadDeck === 'function') {
