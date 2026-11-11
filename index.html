@@ -1040,7 +1040,7 @@ function revealAllCards() {
         love: "คนรักเก่าติดต่อกลับมา หรือถึงเวลาให้อภัยและก้าวข้ามความขัดแย้งเดิมสู่ความเข้าใจลึกซึ้ง"
       },
       {
-        id: 21, num: "XXI", name: "พระแม่ธรณี", arcana: "The World", img: "21พระแม่ธรณีแห่งสายน้ำจักรวาล (1.png",
+        id: 21, num: "XXI", name: "พระแม่ธรณี", arcana: "The World", img: "21พระแม่ธรณีแห่งสายน้ำจักรวาล.png",
         keywords: "ความสมบูรณ์ • ความสำเร็จสูงสุด • บรรลุเป้าหมาย • สิ้นสุดวงจร",
         meaning: "พระแม่ธรณีบีบมวยผมหลั่งสายน้ำชำระล้างมาร ความสมบูรณ์พูนสุขสูงสุด และการบรรลุเป้าหมายแห่งชีวิตอย่างมั่นคงถาวร",
         work: "โปรเจกต์ใหญ่สำเร็จสมบูรณ์แบบ ได้รับรางวัลหรือความสำเร็จระดับสากล ก้าวสู่อีกขั้นของชีวิต",
@@ -2168,15 +2168,22 @@ function updateHintForPicking() {
       sheet.classList.add('active');
     }
 
-    function resetToDeck() {
-      if (isUnlockedMode3 && chosenCards.length >= 3) {
-        isUnlockedMode3 = false;
-        currentMode = 1;
-        const lockIcon = document.getElementById('mode-3-lock');
-        if (lockIcon) lockIcon.style.display = 'inline';
-        document.getElementById('btn-mode-1').classList.add('active');
-        document.getElementById('btn-mode-3').classList.remove('active');
-      }
+    // ล็อกคืนทุกโหมด (๓, ๕, ๑๐ ใบ) ให้กลับมาติดแม่กุญแจทุกครั้งที่รีเซ็ตเริ่มใหม่
+  if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
+  if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
+  if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
+  currentMode = 1;
+
+  // คืนรูปแม่กุญแจ 🔒 และปลดสถานะ active กลับมาที่โหมด ๑ ใบ
+  ['3', '5', '10'].forEach(mode => {
+    const lock = document.getElementById(`mode-${mode}-lock`);
+    if (lock) lock.style.display = 'inline';
+    const btn = document.getElementById(`btn-mode-${mode}`);
+    if (btn) btn.classList.remove('active');
+  });
+
+  const btn1 = document.getElementById('btn-mode-1');
+  if (btn1) btn1.classList.add('active');
 
       shuffleCount = 0;
       chosenCards = [];
