@@ -672,11 +672,13 @@
     <button class="mode-btn" id="btn-mode-5" onclick="switchMode(5)"><span>พยากรณ์ ๕ ใบ (ชะตา ๕ มิติ) 🔒</span></button>
     <button class="mode-btn" id="btn-mode-10" onclick="switchMode(10)"><span>พยากรณ์ ๑๐ ใบ (มหายันต์เซลติกครอส) 🔒</span></button>
   </div>
-  <!-- กล่องคำเตือนการเปิดไพ่ ๑ ใบ -->
-  <div id="spiritual-warning-box" class="spiritual-warning-box">
-    <div class="warning-title">✦ พึงระลึกแห่งกระแสญาณ ✦</div>
-    <p class="warning-text">
-      การเปิดไพ่ ๑ ใบ ไม่แนะนำให้เปิดซ้ำเรื่องเดิมหรือเปิดเกิน <strong>๓ ครั้งต่อวัน</strong> 
+  <!-- กล่องคำเตือนการเปิดไพ่ ๑ ใบ (จัดกึ่งกลาง กรอบทองสลัว) -->
+  <div id="spiritual-warning-box" style="max-width: 620px; margin: 16px auto 22px; padding: 12px 18px; background: rgba(26, 8, 20, 0.85); border: 1px solid rgba(212, 175, 55, 0.45); border-radius: 10px; text-align: center; box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);">
+    <div style="color: #ffd966; font-size: 0.92rem; font-weight: bold; letter-spacing: 0.5px; margin-bottom: 5px;">
+      ✦ พึงระลึกแห่งกระแสญาณ ✦
+    </div>
+    <p style="color: #ecdcd9; font-size: 0.82rem; line-height: 1.6; margin: 0;">
+      การเปิดไพ่ ๑ ใบ ไม่แนะนำให้เปิดซ้ำเรื่องเดิมหรือเปิดเกิน <strong style="color: #f7ca5a;">๓ ครั้งต่อวัน</strong> 
       เพราะความลังเลอาจรบกวนกระแสจิต ส่งผลให้เกิดความสับสนและกระทบต่อการตัดสินใจของท่าน 
       จงเปิดรับพลังแรกด้วยใจที่สงบและมีสติ
     </p>
@@ -1560,9 +1562,6 @@ const PACKAGE_DATA = {
     price: '๕๙' // ปรับเปลี่ยนตัวเลขตามที่พี่สาวต้องการ
   }
 };
-
-let unlockedModes = { 1: true, 3: false, 5: false, 10: false };
-let pendingUnlockMode = 3;
 
 // สลับโหมดและตรวจสอบสิทธิ์
 function switchMode(mode) {
