@@ -2167,14 +2167,13 @@ function updateHintForPicking() {
 
       sheet.classList.add('active');
     }
-
-    // ล็อกคืนทุกโหมด (๓, ๕, ๑๐ ใบ) ให้กลับมาติดแม่กุญแจทุกครั้งที่รีเซ็ตเริ่มใหม่
+function resetToDeck() {
+  // ล็อกคืนทุกโหมด (๓, ๕, ๑๐ ใบ) ให้กลับมาติดแม่กุญแจทุกครั้งที่รีเซ็ต
   if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
   if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
   if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
   currentMode = 1;
 
-  // คืนรูปแม่กุญแจ 🔒 และปลดสถานะ active กลับมาที่โหมด ๑ ใบ
   ['3', '5', '10'].forEach(mode => {
     const lock = document.getElementById(`mode-${mode}-lock`);
     if (lock) lock.style.display = 'inline';
@@ -2185,21 +2184,20 @@ function updateHintForPicking() {
   const btn1 = document.getElementById('btn-mode-1');
   if (btn1) btn1.classList.add('active');
 
-      shuffleCount = 0;
-      chosenCards = [];
-      document.getElementById('deck-section').style.display = 'flex';
-      document.getElementById('fan-section').style.display = 'none';
-      document.getElementById('board').style.display = 'none';
-      document.getElementById('reset-area').style.display = 'none';
-      document.getElementById('reading-sheet').classList.remove('active');
-      document.getElementById('destiny-banner-area').innerHTML = '';
-      document.getElementById('reading-content').innerHTML = '';
-      document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
-      document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
-      deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
+  shuffleCount = 0;
+  chosenCards = [];
+  document.getElementById('deck-section').style.display = 'flex';
+  document.getElementById('fan-section').style.display = 'none';
+  document.getElementById('board').style.display = 'none';
+  document.getElementById('reset-area').style.display = 'none';
+  document.getElementById('reading-sheet').classList.remove('active');
+  document.getElementById('destiny-banner-area').innerHTML = '';
+  document.getElementById('reading-content').innerHTML = '';
+  document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
+  document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
+  deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
     window.onload = resetToDeck;
   </script>
 </body>
