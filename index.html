@@ -2448,36 +2448,55 @@ function updateHintForPicking() {
       sheet.classList.add('active');
     }
 function resetToDeck() {
-  // ล็อกคืนเฉพาะเมื่อเปิดไพ่ครบแล้วเท่านั้น (เล่นจบแล้วเริ่มใหม่)
-  if (chosenCards && chosenCards.length >= currentMode && currentMode > 1) {
-    if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
-    if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
-    if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
-    
-    ['3', '5', '10'].forEach(m => {
-      const lock = document.getElementById(`mode-${m}-lock`);
-      if (lock) lock.style.display = 'inline';
-      const btn = document.getElementById(`btn-mode-${m}`);
-      if (btn) btn.classList.remove('active');
-    });
-
-    currentMode = 1;
-    const btn1 = document.getElementById('btn-mode-1');
-    if (btn1) btn1.classList.add('active');
+  // ๑. ล้างสถานะปลดล็อกทุกตัว บังคับให้ต้องกรอกรหัสใหม่ทุกรอบ (๑ รหัส = ๑ ครั้ง)
+  if (typeof unlockedModes !== 'undefined') {
+    unlockedModes = { 3: false, 5: false, 10: false };
   }
+  if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
+  if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
+  if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
 
+  // ๒. คืนแม่กุญแจ 🔒 บนปุ่มโหมดเสียเงินทั้งหมด
+  ['3', '5', '10'].forEach(mode => {
+    const lock = document.getElementById(`mode-${mode}-lock`);
+    if (lock) lock.style.display = 'inline';
+    const btn = document.getElementById(`btn-mode-${mode}`);
+    if (btn) btn.classList.remove('active');
+  });
+
+  // ๓. ดีดโหมดกลับมาที่โหมด ๑ ใบ (ดูฟรีประจำวัน) เสมอ
+  currentMode = 1;
+  const btn1 = document.getElementById('btn-mode-1');
+  if (btn1) btn1.classList.add('active');
+
+  const warnBox = document.getElementById('spiritual-warning-box');
+  if (warnBox) warnBox.style.display = 'block';
+
+  // ๔. ล้างค่ากระดานและเตรียมสำรับไพ่ใหม่
   shuffleCount = 0;
   chosenCards = [];
-  document.getElementById('deck-section').style.display = 'flex';
-  document.getElementById('fan-section').style.display = 'none';
-  document.getElementById('board').style.display = 'none';
-  document.getElementById('reset-area').style.display = 'none';
-  document.getElementById('reading-sheet').classList.remove('active');
-  document.getElementById('destiny-banner-area').innerHTML = '';
-  document.getElementById('reading-content').innerHTML = '';
-  document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
-  document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
-  deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+  const deckSec = document.getElementById('deck-section');
+  if (deckSec) deckSec.style.display = 'flex';
+  const fanSec = document.getElementById('fan-section');
+  if (fanSec) fanSec.style.display = 'none';
+  const boardEl = document.getElementById('board');
+  if (boardEl) boardEl.style.display = 'none';
+  const resetArea = document.getElementById('reset-area');
+  if (resetArea) resetArea.style.display = 'none';
+  const readingSheet = document.getElementById('reading-sheet');
+  if (readingSheet) readingSheet.classList.remove('active');
+  const bannerArea = document.getElementById('destiny-banner-area');
+  if (bannerArea) bannerArea.innerHTML = '';
+  const readingContent = document.getElementById('reading-content');
+  if (readingContent) readingContent.innerHTML = '';
+  const shuffleCountEl = document.getElementById('shuffle-count');
+  if (shuffleCountEl) shuffleCountEl.innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
+  const hintBar = document.getElementById('hint-bar');
+  if (hintBar) hintBar.innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
+
+  if (typeof tarotDeck !== 'undefined') {
+    deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+  }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
     window.onload = resetToDeck;
