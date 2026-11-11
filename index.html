@@ -1982,6 +1982,18 @@ function openCardZoom(idx) {
 
 // แสดงกระดานไพ่พร้อมชื่อตำแหน่งครบทุกโหมด
 function revealBoardWithChosenCards() {
+  // 🔒 ตัดสิทธิ์ทันทีเมื่อเปิดไพ่ขึ้นกระดาน (ป้องกันการสุ่มซ้ำหรือดูฟรี)
+  if (typeof unlockedModes !== 'undefined') {
+    unlockedModes = { 3: false, 5: false, 10: false };
+  }
+  if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
+  if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
+  if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
+
+  ['3', '5', '10'].forEach(m => {
+    const lock = document.getElementById(`mode-${m}-lock`);
+    if (lock) lock.style.display = 'inline';
+  });
   document.getElementById('fan-section').style.display = 'none';
   const board = document.getElementById('board');
   // ๑. สั่งเปิดระบบผังตารางตามโหมด และล้างสไตล์แถวเดียวเดิมทิ้ง
@@ -2448,19 +2460,20 @@ function updateHintForPicking() {
       sheet.classList.add('active');
     }
 function resetToDeck() {
-  // ๑. ล้างสถานะปลดล็อกทุกตัว บังคับให้ต้องกรอกรหัสใหม่ทุกรอบ (๑ รหัส = ๑ ครั้ง)
+  // ๑. ล้างสถานะปลดล็อกทุกโหมด บังคับให้ต้องกรอกรหัสใหม่ทุกครั้ง (๑ รหัส = ๑ ครั้ง)
   if (typeof unlockedModes !== 'undefined') {
     unlockedModes = { 3: false, 5: false, 10: false };
   }
+  currentMode = 1;
   if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
   if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
   if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
 
-  // ๒. คืนแม่กุญแจ 🔒 บนปุ่มโหมดเสียเงินทั้งหมด
-  ['3', '5', '10'].forEach(mode => {
-    const lock = document.getElementById(`mode-${mode}-lock`);
+  // ๒. คืนแม่กุญแจ 🔒 บนปุ่มโหมด ๓, ๕ และ ๑๐ ใบ
+  ['3', '5', '10'].forEach(m => {
+    const lock = document.getElementById(`mode-${m}-lock`);
     if (lock) lock.style.display = 'inline';
-    const btn = document.getElementById(`btn-mode-${mode}`);
+    const btn = document.getElementById(`btn-mode-${m}`);
     if (btn) btn.classList.remove('active');
   });
 
@@ -2472,7 +2485,7 @@ function resetToDeck() {
   const warnBox = document.getElementById('spiritual-warning-box');
   if (warnBox) warnBox.style.display = 'block';
 
-  // ๔. ล้างค่ากระดานและเตรียมสำรับไพ่ใหม่
+  // ๔. ล้างหน้ากระดานและเตรียมสำรับไพ่ใหม่
   shuffleCount = 0;
   chosenCards = [];
   const deckSec = document.getElementById('deck-section');
