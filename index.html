@@ -7,6 +7,150 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel+Decorative:wght@700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+ /* =======================================================
+   ผังพยากรณ์เนตรวิจิตร: ผังไม้กางเขน ๕ ใบ และ เซลติกครอส ๑๐ ใบ
+   ======================================================= */
+
+.card-slot {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+.card-wrapper {
+  position: relative !important;
+  perspective: 1000px !important;
+  margin: 0 auto !important;
+}
+
+.card-inner {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform-style: preserve-3d !important;
+  transition: transform 0.6s ease !important;
+}
+
+.card-face {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.7) !important;
+}
+
+.card-face img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.slot-label {
+  color: #ffd700 !important;
+  font-size: 0.85rem !important;
+  font-weight: bold !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 0 6px rgba(255,215,0,0.4) !important;
+  white-space: nowrap !important;
+}
+
+.card-name-tag {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: linear-gradient(transparent, rgba(10, 6, 8, 0.95) 30%) !important;
+  color: #ffd700 !important;
+  font-size: 0.82rem !important;
+  font-weight: bold !important;
+  padding: 16px 2px 6px 2px !important;
+  text-align: center !important;
+  text-shadow: 0 1px 4px #000 !important;
+  pointer-events: none !important;
+}
+
+/* --- โหมด ๑ ใบ --- */
+#board.spread-mode-1 {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 25px auto !important;
+}
+.spread-mode-1 .card-wrapper {
+  width: 175px !important;
+  height: 295px !important;
+}
+
+/* --- โหมด ๓ ใบ --- */
+#board.spread-mode-3 {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  margin: 25px auto !important;
+}
+.spread-mode-3 .card-wrapper {
+  width: 160px !important;
+  height: 270px !important;
+}
+
+/* --- ผัง ๕ ใบ (ไม้กางเขน ตามภาพ 5 ไพ่.jpg) --- */
+#board.spread-mode-5 {
+  display: grid !important;
+  grid-template-columns: repeat(3, 145px) !important;
+  grid-template-rows: auto auto auto !important;
+  gap: 16px 14px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 25px auto !important;
+}
+.spread-mode-5 .card-wrapper {
+  width: 140px !important;
+  height: 235px !important;
+}
+.spread-mode-5 .slot-pos-4 { grid-column: 2 !important; grid-row: 1 !important; } /* ๔ อุปสรรค (บน) */
+.spread-mode-5 .slot-pos-1 { grid-column: 1 !important; grid-row: 2 !important; } /* ๑ อดีต (กลางซ้าย) */
+.spread-mode-5 .slot-pos-2 { grid-column: 2 !important; grid-row: 2 !important; } /* ๒ ปัจจุบัน (กลาง) */
+.spread-mode-5 .slot-pos-3 { grid-column: 3 !important; grid-row: 2 !important; } /* ๓ อนาคต (กลางขวา) */
+.spread-mode-5 .slot-pos-5 { grid-column: 2 !important; grid-row: 3 !important; } /* ๕ ภาพรวม (ล่าง) */
+
+/* --- ผัง ๑๐ ใบ (เซลติกครอส ตามภาพ เรียง10ไพ่.jpg) --- */
+#board.spread-mode-10 {
+  display: grid !important;
+  grid-template-columns: 125px 125px 125px 25px 125px !important;
+  grid-template-rows: auto auto auto auto !important;
+  gap: 14px 10px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 25px auto !important;
+  overflow-x: auto !important;
+  padding: 10px !important;
+}
+.spread-mode-10 .card-wrapper {
+  width: 120px !important;
+  height: 202px !important;
+}
+/* ไม้กางเขนฝั่งซ้าย */
+.spread-mode-10 .slot-pos-5 { grid-column: 2 !important; grid-row: 1 !important; } /* ๕ จุดมุ่งหมาย (บน) */
+.spread-mode-10 .slot-pos-4 { grid-column: 1 !important; grid-row: 2 !important; } /* ๔ อดีต (ซ้าย) */
+.spread-mode-10 .slot-pos-1 { grid-column: 2 !important; grid-row: 2 !important; } /* ๑ ปัจจุบัน (กลาง) */
+.spread-mode-10 .slot-pos-6 { grid-column: 3 !important; grid-row: 2 !important; } /* ๖ อนาคต (ขวา) */
+.spread-mode-10 .slot-pos-2 { grid-column: 2 !important; grid-row: 3 !important; } /* ๒ อุปสรรค (ล่างกลาง) */
+.spread-mode-10 .slot-pos-3 { grid-column: 2 !important; grid-row: 4 !important; } /* ๓ จิตใต้สำนึก (ล่างสุด) */
+
+/* เสาพยากรณ์ฝั่งขวา */
+.spread-mode-10 .slot-pos-10 { grid-column: 5 !important; grid-row: 1 !important; } /* ๑๐ ภาพรวม (บนสุด) */
+.spread-mode-10 .slot-pos-9  { grid-column: 5 !important; grid-row: 2 !important; } /* ๙ ความรู้สึกในใจ */
+.spread-mode-10 .slot-pos-8  { grid-column: 5 !important; grid-row: 3 !important; } /* ๘ สภาพแวดล้อม */
+.spread-mode-10 .slot-pos-7  { grid-column: 5 !important; grid-row: 4 !important; } /* ๗ ตัวตนภายใน (ล่างสุด) */
   <style>
     :root {
     --bg-deep: #0a0608;
@@ -693,6 +837,150 @@
     width: 320px !important;
   }
 }
+    /* =======================================================
+   ผังพยากรณ์เนตรวิจิตร: ไพ่ขนาดสมส่วน + จัดรูปผัง ๕ และ ๑๐ ใบ
+   ======================================================= */
+
+.card-slot {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+.card-wrapper {
+  position: relative !important;
+  perspective: 1000px !important;
+  margin: 0 auto !important;
+}
+
+.card-inner {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  transform-style: preserve-3d !important;
+  transition: transform 0.6s ease !important;
+}
+
+.card-face {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.7) !important;
+}
+
+.card-face img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.slot-label {
+  color: #ffd700 !important;
+  font-size: 0.85rem !important;
+  font-weight: bold !important;
+  margin-bottom: 8px !important;
+  text-shadow: 0 0 6px rgba(255,215,0,0.4) !important;
+  white-space: nowrap !important;
+}
+
+.card-name-tag {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: linear-gradient(transparent, rgba(10, 6, 8, 0.95) 30%) !important;
+  color: #ffd700 !important;
+  font-size: 0.82rem !important;
+  font-weight: bold !important;
+  padding: 16px 2px 6px 2px !important;
+  text-align: center !important;
+  text-shadow: 0 1px 4px #000 !important;
+  pointer-events: none !important;
+}
+
+/* --- ผัง ๑ ใบ --- */
+#board.spread-mode-1 {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 25px auto !important;
+}
+.spread-mode-1 .card-wrapper {
+  width: 175px !important;
+  height: 295px !important;
+}
+
+/* --- ผัง ๓ ใบ --- */
+#board.spread-mode-3 {
+  display: flex !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  margin: 25px auto !important;
+}
+.spread-mode-3 .card-wrapper {
+  width: 160px !important;
+  height: 270px !important;
+}
+
+/* --- ผัง ๕ ใบ (รูปไม้กางเขน 5 Card Spread) --- */
+#board.spread-mode-5 {
+  display: grid !important;
+  grid-template-columns: repeat(3, 145px) !important;
+  grid-template-rows: auto auto auto !important;
+  gap: 16px 14px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 25px auto !important;
+}
+.spread-mode-5 .card-wrapper {
+  width: 140px !important;
+  height: 235px !important;
+}
+.spread-mode-5 .slot-pos-4 { grid-column: 2 !important; grid-row: 1 !important; } /* ๔ อุปสรรค (บน) */
+.spread-mode-5 .slot-pos-1 { grid-column: 1 !important; grid-row: 2 !important; } /* ๑ อดีต (กลางซ้าย) */
+.spread-mode-5 .slot-pos-2 { grid-column: 2 !important; grid-row: 2 !important; } /* ๒ ปัจจุบัน (กลาง) */
+.spread-mode-5 .slot-pos-3 { grid-column: 3 !important; grid-row: 2 !important; } /* ๓ อนาคต (กลางขวา) */
+.spread-mode-5 .slot-pos-5 { grid-column: 2 !important; grid-row: 3 !important; } /* ๕ ภาพรวม (ล่าง) */
+
+/* --- ผัง ๑๐ ใบ (มหายันต์เซลติกครอส Celtic Cross Spread) --- */
+#board.spread-mode-10 {
+  display: grid !important;
+  grid-template-columns: 125px 125px 125px 20px 125px !important;
+  grid-template-rows: auto auto auto auto !important;
+  gap: 14px 10px !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin: 25px auto !important;
+  overflow-x: auto !important;
+  padding: 10px !important;
+}
+.spread-mode-10 .card-wrapper {
+  width: 120px !important;
+  height: 202px !important;
+}
+/* ไม้กางเขนฝั่งซ้าย */
+.spread-mode-10 .slot-pos-5 { grid-column: 2 !important; grid-row: 1 !important; } /* ๕ จุดมุ่งหมาย (บน) */
+.spread-mode-10 .slot-pos-4 { grid-column: 1 !important; grid-row: 2 !important; } /* ๔ อดีต (ซ้าย) */
+.spread-mode-10 .slot-pos-1 { grid-column: 2 !important; grid-row: 2 !important; } /* ๑ ปัจจุบัน (กลาง) */
+.spread-mode-10 .slot-pos-6 { grid-column: 3 !important; grid-row: 2 !important; } /* ๖ อนาคต (ขวา) */
+.spread-mode-10 .slot-pos-2 { grid-column: 2 !important; grid-row: 3 !important; } /* ๒ อุปสรรค (ล่างกลาง) */
+.spread-mode-10 .slot-pos-3 { grid-column: 2 !important; grid-row: 4 !important; } /* ๓ จิตใต้สำนึก (ล่างสุด) */
+
+/* เสาพยากรณ์ฝั่งขวา */
+.spread-mode-10 .slot-pos-10 { grid-column: 5 !important; grid-row: 1 !important; } /* ๑๐ ภาพรวม (บนสุด) */
+.spread-mode-10 .slot-pos-9  { grid-column: 5 !important; grid-row: 2 !important; } /* ๙ ความรู้สึกในใจ */
+.spread-mode-10 .slot-pos-8  { grid-column: 5 !important; grid-row: 3 !important; } /* ๘ สภาพแวดล้อม */
+.spread-mode-10 .slot-pos-7  { grid-column: 5 !important; grid-row: 4 !important; } /* ๗ ตัวตนภายใน (ล่างสุด) */
   </style>
 </head>
 <body>
@@ -1602,7 +1890,7 @@ const PACKAGE_DATA = {
   }
 };
 
-// สลับโหมดและตรวจสอบสิทธิ์
+// สลับโหมดและตรวจสอบสิทธิ์ (แก้ปัญหาเด้งกลับเป็น ๑ ไพ่)
 function switchMode(mode) {
   if (mode !== 1 && !unlockedModes[mode]) {
     pendingUnlockMode = mode;
@@ -1610,17 +1898,36 @@ function switchMode(mode) {
     return;
   }
 
+  // ๑. ล้างกระดานและเตรียมสำรับไพ่ใหม่ โดยไม่ทับโหมดที่เพิ่งเลือก
+  shuffleCount = 0;
+  chosenCards = [];
+  document.getElementById('deck-section').style.display = 'flex';
+  document.getElementById('fan-section').style.display = 'none';
+  document.getElementById('board').style.display = 'none';
+  document.getElementById('reset-area').style.display = 'none';
+  document.getElementById('reading-sheet').classList.remove('active');
+  document.getElementById('destiny-banner-area').innerHTML = '';
+  document.getElementById('reading-content').innerHTML = '';
+  document.getElementById('shuffle-count').innerText = 'สับไพ่แล้ว ๐ ครั้ง (สับได้ตามจิตศรัทธา)';
+  document.getElementById('hint-bar').innerText = '✦ ตั้งจิตอธิษฐาน แล้วแตะที่กองไพ่หรือปุ่มเพื่อสับไพ่ ✦';
+  if (typeof tarotDeck !== 'undefined') {
+    deckPool = [...tarotDeck].sort(() => 0.5 - Math.random());
+  }
+
+  // ๒. บันทึกโหมดที่เลือก (๓, ๕ หรือ ๑๐ ใบ)
   currentMode = mode;
+
+  // ๓. สลับปุ่ม active ให้ตรงโหมด
   [1, 3, 5, 10].forEach(m => {
     const btn = document.getElementById('btn-mode-' + m);
     if (btn) btn.classList.toggle('active', m === mode);
   });
 
-  // แสดงกล่องคำเตือนเฉพาะโหมด ๑ ใบ (โหมดอื่นจะซ่อนอัตโนมัติ)
+  // ๔. แสดงกล่องคำเตือนเฉพาะโหมด ๑ ใบ
   const warnBox = document.getElementById('spiritual-warning-box');
   if (warnBox) warnBox.style.display = (mode === 1) ? 'block' : 'none';
 
-  resetToDeck();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function openUnlockModal(mode) {
@@ -1715,52 +2022,58 @@ function revealBoardWithChosenCards() {
     document.getElementById('reset-area').style.display = 'block';
 
   let labels = ["ดวงชะตาวันนี้"];
-  const modeNum = Number(currentMode);
+    const modeNum = Number(currentMode);
 
-  if (modeNum === 3) {
-    labels = ["ตำแหน่ง ๑ : อดีต", "ตำแหน่ง ๒ : ปัจจุบัน", "ตำแหน่ง ๓ : อนาคต"];
-  } else if (modeNum === 5) {
-    labels = [
-      "ตำแหน่ง ๑ : รากเหง้าอดีต",
-      "ตำแหน่ง ๒ : สภาวะปัจจุบัน",
-      "ตำแหน่ง ๓ : อุปสรรคขัดขวาง",
-      "ตำแหน่ง ๔ : แนวทางแก้ไข",
-      "ตำแหน่ง ๕ : บทสรุปอนาคต"
-    ];
-  } else if (modeNum === 10) {
-    labels = [
-      "ตำแหน่ง ๑ : สภาวะปัจจุบัน",
-      "ตำแหน่ง ๒ : อุปสรรคขัดขวาง",
-      "ตำแหน่ง ๓ : จิตใต้สำนึก",
-      "ตำแหน่ง ๔ : อดีตที่เพิ่งผ่าน",
-      "ตำแหน่ง ๕ : สิ่งที่คาดหวัง",
-      "ตำแหน่ง ๖ : อนาคตระยะใกล้",
-      "ตำแหน่ง ๗ : ตัวตนและทัศนคติ",
-      "ตำแหน่ง ๘ : อิทธิพลภายนอก",
-      "ตำแหน่ง ๙ : ความหวังและกังวล",
-      "ตำแหน่ง ๑๐ : บทสรุปชะตา"
-    ];
-  }
+    if (modeNum === 3) {
+      labels = ["ตำแหน่ง ๑ : อดีต", "ตำแหน่ง ๒ : ปัจจุบัน", "ตำแหน่ง ๓ : อนาคต"];
+    } else if (modeNum === 5) {
+      labels = [
+        "ตำแหน่ง ๑ : อดีต",
+        "ตำแหน่ง ๒ : ปัจจุบัน",
+        "ตำแหน่ง ๓ : อนาคต",
+        "ตำแหน่ง ๔ : อุปสรรค",
+        "ตำแหน่ง ๕ : ภาพรวม"
+      ];
+    } else if (modeNum === 10) {
+      labels = [
+        "ตำแหน่ง ๑ : ปัจจุบัน",
+        "ตำแหน่ง ๒ : อุปสรรค",
+        "ตำแหน่ง ๓ : จิตใต้สำนึก",
+        "ตำแหน่ง ๔ : อดีต",
+        "ตำแหน่ง ๕ : จุดมุ่งหมาย",
+        "ตำแหน่ง ๖ : อนาคต",
+        "ตำแหน่ง ๗ : ตัวตนภายใน",
+        "ตำแหน่ง ๘ : สภาพแวดล้อม",
+        "ตำแหน่ง ๙ : ความรู้สึกในใจ",
+        "ตำแหน่ง ๑๐ : ภาพรวม"
+      ];
+    }
 
-  for (let i = 0; i < currentMode; i++) {
-    const slot = document.createElement('div');
-    slot.className = 'card-slot';
-    slot.innerHTML = `
-      <div class="slot-label">${labels[i] || `ตำแหน่ง ${i+1}`}</div>
-      <div class="card-wrapper" id="card-${i}" onclick="handleCardClick(${i})">
-        <div class="card-inner">
-          <div class="card-face card-back">
-            <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
-            <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
-          </div>
-          <div class="card-face card-front" id="front-${i}">
-            <img src="${chosenCards[i].img || chosenCards[i].image}" alt="${chosenCards[i].name}">
+    board.className = 'spread-mode-' + currentMode;
+    board.innerHTML = '';
+
+    for (let i = 0; i < currentMode; i++) {
+      const slot = document.createElement('div');
+      slot.className = `card-slot slot-pos-${i + 1}`;
+      const cardName = chosenCards[i].name || chosenCards[i].title || 'ไพ่ญาณ';
+
+      slot.innerHTML = `
+        <div class="slot-label">${labels[i] || `ตำแหน่ง ${i+1}`}</div>
+        <div class="card-wrapper" id="card-${i}" onclick="handleCardClick(${i})">
+          <div class="card-inner">
+            <div class="card-face card-back">
+              <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
+              <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
+            </div>
+            <div class="card-face card-front" id="front-${i}">
+              <img src="${chosenCards[i].img || chosenCards[i].image}" alt="${cardName}">
+              <div class="card-name-tag">${cardName}</div>
+            </div>
           </div>
         </div>
-      </div>
-    `;
-    board.appendChild(slot);
-  }
+      `;
+      board.appendChild(slot);
+    }
 }
 
     function closeUnlockModal() {
@@ -2168,21 +2481,23 @@ function updateHintForPicking() {
       sheet.classList.add('active');
     }
 function resetToDeck() {
-  // ล็อกคืนทุกโหมด (๓, ๕, ๑๐ ใบ) ให้กลับมาติดแม่กุญแจทุกครั้งที่รีเซ็ต
-  if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
-  if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
-  if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
-  currentMode = 1;
+  // ล็อกคืนเฉพาะเมื่อเปิดไพ่ครบแล้วเท่านั้น (เล่นจบแล้วเริ่มใหม่)
+  if (chosenCards && chosenCards.length >= currentMode && currentMode > 1) {
+    if (typeof isUnlockedMode3 !== 'undefined') isUnlockedMode3 = false;
+    if (typeof isUnlockedMode5 !== 'undefined') isUnlockedMode5 = false;
+    if (typeof isUnlockedMode10 !== 'undefined') isUnlockedMode10 = false;
+    
+    ['3', '5', '10'].forEach(m => {
+      const lock = document.getElementById(`mode-${m}-lock`);
+      if (lock) lock.style.display = 'inline';
+      const btn = document.getElementById(`btn-mode-${m}`);
+      if (btn) btn.classList.remove('active');
+    });
 
-  ['3', '5', '10'].forEach(mode => {
-    const lock = document.getElementById(`mode-${mode}-lock`);
-    if (lock) lock.style.display = 'inline';
-    const btn = document.getElementById(`btn-mode-${mode}`);
-    if (btn) btn.classList.remove('active');
-  });
-
-  const btn1 = document.getElementById('btn-mode-1');
-  if (btn1) btn1.classList.add('active');
+    currentMode = 1;
+    const btn1 = document.getElementById('btn-mode-1');
+    if (btn1) btn1.classList.add('active');
+  }
 
   shuffleCount = 0;
   chosenCards = [];
