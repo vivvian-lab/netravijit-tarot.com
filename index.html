@@ -1720,30 +1720,41 @@ function revealBoardWithChosenCards() {
       }
     }
 
-   const inputPass = document.getElementById('passcode-input').value.trim().toUpperCase();
-    
-    // ดักไม่ให้ลูกดวงจ่าย ๑๙ บาท (N3) แต่นำไปเปิดโหมด ๕ ใบ หรือ ๑๐ ใบ
-    if (pendingUnlockMode === 3 && !inputPass.startsWith('N3')) {
-      errorText.innerText = '✦ รหัสนี้ไม่ใช่รหัสสำหรับโหมด ๓ ใบ ✦';
-      return;
-    }
-    if (pendingUnlockMode === 5 && !inputPass.startsWith('N5')) {
-      errorText.innerText = '✦ รหัสนี้ไม่ใช่รหัสสำหรับโหมด ๕ ใบ ✦';
-      return;
-    }
-    if (pendingUnlockMode === 10 && !inputPass.startsWith('N10')) {
-      errorText.innerText = '✦ รหัสนี้ไม่ใช่รหัสสำหรับโหมด ๑๐ ใบ ✦';
-      return;
-    }
+async function verifyPasscode() {
+  const errorText = document.getElementById('passcode-error');
+  const inputPass = document.getElementById('passcode-input').value.trim().toUpperCase();
 
+  // ดักไม่ให้ลูกดวงจ่าย ๑๙ บาท (N3) แต่นำไปเปิดโหมด ๕ ใบ หรือ ๑๐ ใบ
+  if (pendingUnlockMode === 3 && !inputPass.startsWith('N3')) {
     if (errorText) {
-      errorText.style.color = 'var(--gold-bright)';
-      errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
+      errorText.style.color = '#ff6b6b';
+      errorText.innerText = '✦ รหัสนี้ไม่ใช่รหัสสำหรับโหมด ๓ ใบ ✦';
     }
+    return;
+  }
+  if (pendingUnlockMode === 5 && !inputPass.startsWith('N5')) {
+    if (errorText) {
+      errorText.style.color = '#ff6b6b';
+      errorText.innerText = '✦ รหัสนี้ไม่ใช่รหัสสำหรับโหมด ๕ ใบ ✦';
+    }
+    return;
+  }
+  if (pendingUnlockMode === 10 && !inputPass.startsWith('N10')) {
+    if (errorText) {
+      errorText.style.color = '#ff6b6b';
+      errorText.innerText = '✦ รหัสนี้ไม่ใช่รหัสสำหรับโหมด ๑๐ ใบ ✦';
+    }
+    return;
+  }
 
-    try {
-      const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(inputPass)}`);
-      const result = await response.json();
+  if (errorText) {
+    errorText.style.color = 'var(--gold-bright)';
+    errorText.innerText = '✦ กำลังตรวจสอบกระแสญาณ... ✦';
+  }
+
+  try {
+    const response = await fetch(`${SCRIPT_URL}?code=${encodeURIComponent(inputPass)}`);
+    const result = await response.json();
 
       if (result.success) {
         // เล่นเสียงกระดิ่งปลดล็อก (ถ้ามี)
