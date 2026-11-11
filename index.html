@@ -9,6 +9,174 @@
   <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel+Decorative:wght@700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     :root {
+      /* =======================================================
+   จัดระเบียบไพ่: หัวข้ออยู่ด้านบนกึ่งกลาง จอคอม ๒ แถว มือถือ ๒ คอลัมน์
+   ======================================================= */
+
+/* ๑. กล่องใหญ่รวมไพ่: จัดกึ่งกลางจอ และอนุญาตให้ขึ้นบรรทัดใหม่ */
+#cards-display, 
+#spread-display, 
+.cards-container, 
+.slots-container,
+div:has(> [id^="card-"]) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 20px 14px !important;
+  max-width: 1050px !important;
+  margin: 20px auto !important;
+  padding: 10px !important;
+  overflow: visible !important;
+}
+
+/* ๒. ช่องไพ่แต่ละใบ: บังคับเรียงแนวตั้ง (ดึงชื่อตำแหน่งขึ้นไปไว้บนหัวไพ่ตรงกลาง) */
+.card-slot, 
+.slot,
+div:has(> [id^="card-"]) > div {
+  display: flex !important;
+  flex-direction: column !important; /* จัดข้อความให้อยู่ด้านบนไพ่ */
+  align-items: center !important;     /* ดึงหัวข้อและตัวไพ่ออนไลน์ให้อยู่กึ่งกลางเป๊ะ */
+  justify-content: flex-start !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+/* ๓. บนจอคอมพิวเตอร์: จัดแถวละ ๕ ใบ (โหมด ๑๐ ใบจะได้ ๒ แถวพอดี ไม่ล้นขอบ) */
+@media (min-width: 769px) {
+  .card-slot, 
+  .slot,
+  div:has(> [id^="card-"]) > div {
+    flex: 0 0 calc(20% - 14px) !important;
+    max-width: 180px !important;
+  }
+}
+
+/* ๔. บนจอมือถือ: จัดแถวละ ๒ ใบ (เรียงคู่เลื่อนอ่านสบายตา) */
+@media (max-width: 768px) {
+  .card-slot, 
+  .slot,
+  div:has(> [id^="card-"]) > div {
+    flex: 0 0 calc(50% - 10px) !important;
+    max-width: 48% !important;
+  }
+}
+
+/* ๕. สัดส่วนและขนาดตัวไพ่ */
+[id^="card-"] {
+  width: 100% !important;
+  max-width: 165px !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  position: relative !important;
+  margin: 0 auto !important;
+}
+
+[id^="card-"] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6) !important;
+}
+
+/* ๖. ข้อความชื่อตำแหน่ง (ดวงชะตาวันนี้ / ตำแหน่ง ๑ / ตำแหน่ง ๒) */
+.card-slot p, 
+.card-slot span, 
+div:has(> [id^="card-"]) > div > *:not([id^="card-"]) {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin-bottom: 8px !important;
+  font-size: 0.88rem !important;
+  color: #ffd700 !important;
+  white-space: normal !important;
+}
+      /* =======================================================
+   จัดระเบียบไพ่: กึ่งกลางสมดุล หัวข้ออยู่ด้านบน ๑๐ ใบแบ่ง ๒ แถว
+   ======================================================= */
+
+/* ๑. กล่องใหญ่รวมไพ่: จัดกึ่งกลางจอ และอนุญาตให้ขึ้นบรรทัดใหม่ */
+#cards-display, 
+#spread-display, 
+.cards-container, 
+.slots-container,
+div:has(> [id^="card-"]) {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  gap: 20px 14px !important;
+  width: 100% !important;
+  max-width: 1050px !important;
+  margin: 25px auto !important;
+  padding: 10px !important;
+  overflow: visible !important;
+}
+
+/* ๒. กล่องไพ่แต่ละช่อง: บังคับเรียงแนวตั้ง (หัวข้ออยู่บน ไพ่ออนไลน์อยู่ล่าง) */
+.card-slot, 
+.slot,
+div:has(> [id^="card-"]) > div {
+  display: flex !important;
+  flex-direction: column !important; /* จัดหัวข้อให้อยู่ด้านบนไพ่ */
+  align-items: center !important;     /* ดึงทุกอย่างให้อยู่กึ่งกลางเป๊ะ */
+  justify-content: flex-start !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+/* ๓. สัดส่วนไพ่บนจอคอม: แถวละ ๕ ใบ (โหมด ๑๐ ใบจะได้ ๒ แถวพอดี ไม่ล้นจอ) */
+@media (min-width: 769px) {
+  .card-slot, 
+  .slot,
+  div:has(> [id^="card-"]) > div {
+    flex: 0 0 calc(20% - 14px) !important;
+    max-width: 180px !important;
+  }
+}
+
+/* ๔. สัดส่วนไพ่บนจอมือถือ: เรียงคู่แถวละ ๒ ใบ เลื่อนอ่านแนวตั้งสบายตา */
+@media (max-width: 768px) {
+  .card-slot, 
+  .slot,
+  div:has(> [id^="card-"]) > div {
+    flex: 0 0 calc(50% - 10px) !important;
+    max-width: 48% !important;
+  }
+}
+
+/* ๕. ขนาดตัวไพ่: ล็อกความสูงให้พอดีและแสดงภาพคมชัด */
+[id^="card-"] {
+  width: 100% !important;
+  max-width: 165px !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  position: relative !important;
+  margin: 0 auto !important;
+}
+
+[id^="card-"] img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.6) !important;
+}
+
+/* ๖. ตัวหนังสือหัวข้อตำแหน่งไพ่ (ดวงชะตาวันนี้ / ตำแหน่ง ๑ / ตำแหน่ง ๒) */
+.card-slot p, 
+.card-slot span, 
+.card-slot h4,
+div:has(> [id^="card-"]) > div > *:not([id^="card-"]) {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  margin-bottom: 8px !important;
+  font-size: 0.9rem !important;
+  color: #ffd700 !important; /* สีทองอร่าม */
+  white-space: normal !important;
+}
       /* =========================================
    แก้ไขไพ่ยุบตัวแบน: ล็อกความสูงกล่องไพ่ให้แสดงภาพทันที
    ========================================= */
@@ -1737,12 +1905,13 @@ function revealBoardWithChosenCards() {
   const board = document.getElementById('board');
   board.innerHTML = '';
   board.style.display = 'flex';
-  board.style.flexWrap = 'wrap';
-  board.style.justifyContent = 'center';
-  board.style.gap = '14px 10px';
-  board.style.maxWidth = '950px';
-  board.style.margin = '15px auto';
-  document.getElementById('reset-area').style.display = 'block';
+    board.style.flexWrap = 'wrap';              /* บังคับตัดขึ้นบรรทัดใหม่เมื่อเต็มจอ */
+    board.style.justifyContent = 'center';
+    board.style.alignItems = 'flex-start';
+    board.style.gap = '18px 12px';
+    board.style.maxWidth = '1050px';
+    board.style.margin = '20px auto';
+    document.getElementById('reset-area').style.display = 'block';
 
   let labels = ["ดวงชะตาวันนี้"];
   const modeNum = Number(currentMode);
@@ -2019,25 +2188,50 @@ function updateHintForPicking() {
         ? ["ดวงชะตาวันนี้"] 
         : ["ตำแหน่ง ๑ : อดีต", "ตำแหน่ง ๒ : ปัจจุบัน", "ตำแหน่ง ๓ : อนาคต"];
 
-      for (let i = 0; i < currentMode; i++) {
-        const slot = document.createElement('div');
-        slot.className = 'card-slot';
-        slot.innerHTML = `
-          <div class="slot-label">${labels[i]}</div>
-          <div class="card-wrapper" id="card-${i}" onclick="revealCard(${i})">
-            <div class="card-inner">
-              <div class="card-face card-back">
-                <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
-                <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
-              </div>
-              <div class="card-face card-front" id="front-${i}">
-                <img src="${chosenCards[i].img}" alt="${chosenCards[i].name}" onerror="if(!this.dataset.t){this.dataset.t=1; this.src=this.src.replace('(1.png','(1).png');}">
+     for (let i = 0; i < currentMode; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'card-slot';
+      
+      // ๑. บังคับชื่อตำแหน่งอยู่บนหัวไพ่ตรงกลางเป๊ะ และจัดสัดส่วนไม่ให้ล้นจอ
+      slot.style.display = 'flex';
+      slot.style.flexDirection = 'column';
+      slot.style.alignItems = 'center';
+      slot.style.textAlign = 'center';
+      slot.style.boxSizing = 'border-box';
+
+      if (currentMode === 10) {
+        slot.style.flex = '0 0 calc(20% - 12px)'; /* จอคอม: ๕ ใบต่อแถว (๒ แถวพอดี) */
+        slot.style.maxWidth = '180px';
+      } else if (currentMode === 1) {
+        slot.style.margin = '0 auto';            /* โหมด ๑ ใบ: อยู่กึ่งกลางจอเป๊ะ */
+        slot.style.maxWidth = '220px';
+      } else {
+        slot.style.flex = '0 0 calc(33.33% - 14px)';
+        slot.style.maxWidth = '220px';
+      }
+
+      const cardName = chosenCards[i].name || chosenCards[i].title || 'ไพ่ญาณ';
+
+      slot.innerHTML = `
+        <div class="slot-label" style="color: #ffd700; font-size: 0.9rem; font-weight: bold; margin-bottom: 8px; text-shadow: 0 0 8px rgba(255,215,0,0.4);">${labels[i] || `ตำแหน่ง ${i+1}`}</div>
+        <div class="card-wrapper" id="card-${i}" onclick="handleCardClick(${i})" style="width: 100%; max-width: 165px; height: 260px; min-height: 260px; position: relative;">
+          <div class="card-inner" style="width: 100%; height: 100%; position: relative;">
+            <div class="card-face card-back" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+              <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+              <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
+            </div>
+            <div class="card-face card-front" id="front-${i}" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; overflow: hidden; border-radius: 8px;">
+              <img src="${chosenCards[i].img || chosenCards[i].image}" alt="${cardName}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <!-- ป้ายชื่อไพ่ภาษาไทยสีทอง ปรากฏเด่นชัดทันทีเมื่อเปิดไพ่ -->
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,6,8,0.92) 30%); color: #ffd700; font-size: 0.88rem; font-weight: bold; padding: 18px 4px 6px 4px; text-shadow: 0 1px 4px #000; letter-spacing: 0.5px;">
+                ${cardName}
               </div>
             </div>
           </div>
-        `;
-        board.appendChild(slot);
-      }
+        </div>
+      `;
+      board.appendChild(slot);
+    }
     }
 
     function revealCard(idx) {
