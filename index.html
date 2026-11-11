@@ -672,6 +672,15 @@
     <button class="mode-btn" id="btn-mode-5" onclick="switchMode(5)"><span>พยากรณ์ ๕ ใบ (ชะตา ๕ มิติ) 🔒</span></button>
     <button class="mode-btn" id="btn-mode-10" onclick="switchMode(10)"><span>พยากรณ์ ๑๐ ใบ (มหายันต์เซลติกครอส) 🔒</span></button>
   </div>
+  <!-- กล่องคำเตือนการเปิดไพ่ ๑ ใบ -->
+  <div id="spiritual-warning-box" class="spiritual-warning-box">
+    <div class="warning-title">✦ พึงระลึกแห่งกระแสญาณ ✦</div>
+    <p class="warning-text">
+      การเปิดไพ่ ๑ ใบ ไม่แนะนำให้เปิดซ้ำเรื่องเดิมหรือเปิดเกิน <strong>๓ ครั้งต่อวัน</strong> 
+      เพราะความลังเลอาจรบกวนกระแสจิต ส่งผลให้เกิดความสับสนและกระทบต่อการตัดสินใจของท่าน 
+      จงเปิดรับพลังแรกด้วยใจที่สงบและมีสติ
+    </p>
+  </div>
 
   <!-- กล่องผูกดวงชะตา: พิมพ์ตัวเลขได้โดยตรงทันที -->
   <div class="destiny-card">
@@ -753,34 +762,42 @@
     </p>
   </footer>
 
-  <!-- POPUP ปลดล็อกค่ายกครู 19 บาท -->
-  <div class="modal-overlay" id="unlock-modal" onclick="if(event.target === this) closeUnlockModal()">
+  <!-- หน้าต่างปลดล็อกญาณพยากรณ์ (ปรับตามโหมดอัตโนมัติ) -->
+  <div id="unlock-modal" class="modal-overlay" style="display: none;">
     <div class="modal-card">
-      <button class="close-modal-btn" onclick="closeUnlockModal()">×</button>
-      <div class="modal-title">✦ ปลดล็อกญาณพยากรณ์ ๓ ใบ ✦</div>
-      <div style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 6px;">เปิดชะตา อดีต • ปัจจุบัน • อนาคต</div>
+      <span class="modal-close" onclick="closeUnlockModal()">&times;</span>
       
-      <div class="modal-price-badge">ค่ายกครู ๑๙ บาท</div>
+      <div id="modal-title" class="modal-title">✦ ปลดล็อกญาณพยากรณ์ ✦</div>
+      <div id="modal-desc" class="modal-desc" style="color: #c4a9b2; font-size: 0.85rem; margin-bottom: 8px;">เปิดผังชะตาชีวิต</div>
       
-      <div class="qr-container">
-        <img src="wallet-qr.jpg" alt="TrueMoney / PromptPay QR">
+      <div id="modal-price-badge" class="price-badge" style="display: inline-block; background: #6b0f1a; color: #ffd966; border: 1px solid #d4af37; padding: 4px 16px; border-radius: 20px; font-weight: bold; margin-bottom: 12px; font-size: 0.95rem;">
+        ค่าครู -- บาท
       </div>
-      <p style="font-size: 1.05rem; color: var(--gold-bright); font-weight: 600; margin-bottom: 2px;">
-        ชื่อบัญชี: ศุภรัตน์ แซ่จัน
-      </p>
-      <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">
-        สแกนชำระผ่าน TrueMoney Wallet / พร้อมเพย์ทุกธนาคาร (140-***-224)
-      </p>
 
-      <a href="https://page.line.me/494ywdqs" target="_blank" id="line-contact-link" class="line-btn">
+      <!-- ช่องทางโอนเงิน: ธนาคารไทยพาณิชย์ -->
+      <div style="background: rgba(74, 20, 110, 0.25); border: 1px solid #d4af37; border-radius: 10px; padding: 14px; margin: 8px 0 14px; text-align: center;">
+        <div style="color: #a445b2; font-weight: bold; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+          <span>ธนาคารไทยพาณิชย์ (SCB)</span>
+        </div>
+        <div style="color: #ffd966; font-size: 1.35rem; font-weight: bold; letter-spacing: 2px; margin: 8px 0; font-family: monospace;">
+          413-109460-9
+        </div>
+        <div style="color: #f5e6d3; font-size: 0.95rem;">
+          ชื่อบัญชี: <strong>ศุภรัตน์ แซ่จัน</strong>
+        </div>
+      </div>
+
+      <!-- ปุ่มส่งสลิปผ่าน LINE -->
+      <a href="https://line.me/R/ti/p/@494ywdqs" target="_blank" class="line-btn" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: #06c755; color: white; text-decoration: none; padding: 10px; border-radius: 8px; font-weight: bold; margin-bottom: 14px; font-size: 0.9rem;">
         <span>💬 ส่งสลิปรับรหัสทาง LINE (@494ywdqs)</span>
       </a>
 
-      <div class="passcode-box">
-        <input type="text" id="passcode-input" class="passcode-input" placeholder="รหัสปลดล็อก" onkeydown="if(event.key === 'Enter') checkPasscode()">
-        <button class="action-btn" style="padding: 6px 18px; font-size: 1.05rem;" onclick="checkPasscode()">ปลดล็อก</button>
+      <!-- ช่องกรอกรหัสปลดล็อก -->
+      <div style="display: flex; gap: 8px; justify-content: center;">
+        <input type="text" id="passcode-input" placeholder="รหัสปลดล็อก" style="padding: 9px 12px; border-radius: 6px; border: 1px solid #d4af37; background: #12050e; color: #fff; text-align: center; width: 55%; font-size: 0.9rem;">
+        <button onclick="verifyPasscode()" style="padding: 9px 16px; border-radius: 6px; border: none; background: linear-gradient(135deg, #d4af37, #aa820a); color: #1a0814; font-weight: bold; cursor: pointer;">ปลดล็อก</button>
       </div>
-      <p id="passcode-error" style="color: #ff6b6b; font-size: 0.85rem; min-height: 20px;"></p>
+      <div id="passcode-error" style="color: #ff6b6b; font-size: 0.8rem; margin-top: 6px;"></div>
     </div>
   </div>
 
@@ -1525,6 +1542,28 @@ const PACKAGE_NAMES = {
 let unlockedModes = { 1: true, 3: false, 5: false, 10: false };
 let pendingUnlockMode = 3;
 
+// ==================== ข้อมูลแพ็กเกจและราคา ====================
+const PACKAGE_DATA = {
+  3: {
+    title: '✦ ปลดล็อกญาณพยากรณ์ ๓ ใบ ✦',
+    desc: 'เปิดชะตา อดีต • ปัจจุบัน • อนาคต',
+    price: '๑๙' // ปรับเปลี่ยนตัวเลขตามที่พี่สาวต้องการ
+  },
+  5: {
+    title: '✦ ปลดล็อกญาณพยากรณ์ ๕ ใบ ✦',
+    desc: 'เปิดชะตา ๕ มิติ (รากเหง้า • สภาวะ • อุปสรรค • ทางแก้ • บทสรุป)',
+    price: '๓๙' // ปรับเปลี่ยนตัวเลขตามที่พี่สาวต้องการ
+  },
+  10: {
+    title: '✦ ปลดล็อกญาณพยากรณ์ ๑๐ ใบ ✦',
+    desc: 'มหายันต์เซลติกครอส (เจาะลึกชะตาชีวิตครบ ๑๐ ทิศทาง)',
+    price: '๕๙' // ปรับเปลี่ยนตัวเลขตามที่พี่สาวต้องการ
+  }
+};
+
+let unlockedModes = { 1: true, 3: false, 5: false, 10: false };
+let pendingUnlockMode = 3;
+
 // สลับโหมดและตรวจสอบสิทธิ์
 function switchMode(mode) {
   if (mode !== 1 && !unlockedModes[mode]) {
@@ -1532,29 +1571,41 @@ function switchMode(mode) {
     openUnlockModal(mode);
     return;
   }
+
   currentMode = mode;
   [1, 3, 5, 10].forEach(m => {
     const btn = document.getElementById('btn-mode-' + m);
     if (btn) btn.classList.toggle('active', m === mode);
   });
+
+  // แสดงกล่องคำเตือนเฉพาะโหมด ๑ ใบ (โหมดอื่นจะซ่อนอัตโนมัติ)
+  const warnBox = document.getElementById('spiritual-warning-box');
+  if (warnBox) warnBox.style.display = (mode === 1) ? 'block' : 'none';
+
   resetToDeck();
 }
 
 function openUnlockModal(mode) {
   pendingUnlockMode = mode || 3;
   const modal = document.getElementById('unlock-modal');
-  if (modal) {
-    modal.style.display = 'flex';
-    const passInput = document.getElementById('passcode-input');
-    const passError = document.getElementById('passcode-error');
-    if (passInput) passInput.value = '';
-    if (passError) passError.innerText = '';
+  if (!modal) return;
 
-    const titleEl = document.getElementById('modal-package-title');
-    const priceEl = document.getElementById('modal-package-price');
-    if (titleEl) titleEl.innerText = PACKAGE_NAMES[pendingUnlockMode] || `พยากรณ์ ${pendingUnlockMode} ใบ`;
-    if (priceEl) priceEl.innerText = `ค่าครูบูชาญาณ ${PACKAGE_PRICES[pendingUnlockMode] || '--'} บาท`;
-  }
+  const pkg = PACKAGE_DATA[pendingUnlockMode] || PACKAGE_DATA[3];
+  
+  // อัปเดตข้อความและราคาตามโหมดที่กดจริง
+  const titleEl = document.getElementById('modal-title');
+  const descEl = document.getElementById('modal-desc');
+  const priceBadge = document.getElementById('modal-price-badge');
+  const passInput = document.getElementById('passcode-input');
+  const passError = document.getElementById('passcode-error');
+
+  if (titleEl) titleEl.innerText = pkg.title;
+  if (descEl) descEl.innerText = pkg.desc;
+  if (priceBadge) priceBadge.innerText = `ค่าครู ${pkg.price} บาท`;
+  if (passInput) passInput.value = '';
+  if (passError) passError.innerText = '';
+
+  modal.style.display = 'flex';
 }
 
 function closeUnlockModal() {
@@ -1662,15 +1713,6 @@ function revealBoardWithChosenCards() {
     board.appendChild(slot);
   }
 }
-
-    function openUnlockModal() {
-      const modal = document.getElementById('unlock-modal');
-      if (modal) {
-        modal.style.display = 'flex';
-        document.getElementById('passcode-input').value = '';
-        document.getElementById('passcode-error').innerText = '';
-      }
-    }
 
     function closeUnlockModal() {
       const modal = document.getElementById('unlock-modal');
