@@ -668,10 +668,9 @@
 
   <div class="mode-bar">
     <button class="mode-btn active" id="btn-mode-1" onclick="switchMode(1)">พยากรณ์ ๑ ใบ (พลังจิตประจำวัน)</button>
-    <button class="mode-btn" id="btn-mode-3" onclick="switchMode(3)">
-      <span>พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)</span>
-      <span class="lock-icon" id="mode-3-lock">🔒</span>
-    </button>
+    <button class="mode-btn" id="btn-mode-3" onclick="switchMode(3)"><span>พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต) 🔒</span></button>
+    <button class="mode-btn" id="btn-mode-5" onclick="switchMode(5)"><span>พยากรณ์ ๕ ใบ (ชะตา ๕ มิติ) 🔒</span></button>
+    <button class="mode-btn" id="btn-mode-10" onclick="switchMode(10)"><span>พยากรณ์ ๑๐ ใบ (มหายันต์เซลติกครอส) 🔒</span></button>
   </div>
 
   <!-- กล่องผูกดวงชะตา: พิมพ์ตัวเลขได้โดยตรงทันที -->
@@ -1510,16 +1509,159 @@ function revealAllCards() {
       });
     }
 
-    function switchMode(mode) {
-      if (mode === 3 && !isUnlockedMode3) {
-        openUnlockModal();
-        return;
-      }
-      currentMode = mode;
-      document.getElementById('btn-mode-1').classList.toggle('active', mode === 1);
-      document.getElementById('btn-mode-3').classList.toggle('active', mode === 3);
-      resetToDeck();
-    }
+    // ==================== ระบบแพ็กเกจและราคา (ปรับเปลี่ยนตัวเลขที่นี่ได้เลย) ====================
+const PACKAGE_PRICES = {
+  3: 19,   // ราคา ๓ ใบ (บาท)
+  5: 49,   // ราคา ๕ ใบ (บาท)
+  10: 88   // ราคา ๑๐ ใบ (บาท)
+};
+
+const PACKAGE_NAMES = {
+  3: 'พยากรณ์ ๓ ใบ (อดีต - ปัจจุบัน - อนาคต)',
+  5: 'พยากรณ์ ๕ ใบ (ชะตา ๕ มิติ)',
+  10: 'พยากรณ์ ๑๐ ใบ (มหายันต์เซลติกครอส)'
+};
+
+let unlockedModes = { 1: true, 3: false, 5: false, 10: false };
+let pendingUnlockMode = 3;
+
+// สลับโหมดและตรวจสอบสิทธิ์
+function switchMode(mode) {
+  if (mode !== 1 && !unlockedModes[mode]) {
+    pendingUnlockMode = mode;
+    openUnlockModal(mode);
+    return;
+  }
+  currentMode = mode;
+  [1, 3, 5, 10].forEach(m => {
+    const btn = document.getElementById('btn-mode-' + m);
+    if (btn) btn.classList.toggle('active', m === mode);
+  });
+  resetToDeck();
+}
+
+function openUnlockModal(mode) {
+  pendingUnlockMode = mode || 3;
+  const modal = document.getElementById('unlock-modal');
+  if (modal) {
+    modal.style.display = 'flex';
+    const passInput = document.getElementById('passcode-input');
+    const passError = document.getElementById('passcode-error');
+    if (passInput) passInput.value = '';
+    if (passError) passError.innerText = '';
+
+    const titleEl = document.getElementById('modal-package-title');
+    const priceEl = document.getElementById('modal-package-price');
+    if (titleEl) titleEl.innerText = PACKAGE_NAMES[pendingUnlockMode] || `พยากรณ์ ${pendingUnlockMode} ใบ`;
+    if (priceEl) priceEl.innerText = `ค่าครูบูชาญาณ ${PACKAGE_PRICES[pendingUnlockMode] || '--'} บาท`;
+  }
+}
+
+function closeUnlockModal() {
+  const modal = document.getElementById('unlock-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+// อัปเดตตัวนับไพ่ตอนคลี่
+function updateHintForPicking() {
+  const remain = currentMode - chosenCards.length;
+  if (remain > 0) {
+    document.getElementById('hint-bar').innerHTML = `✦ เลื่อนสไลด์ซ้าย-ขวา แตะเลือกไพ่ที่ดลใจ (ต้องการอีก <strong>${remain}</strong> ใบ) ✦`;
+  }
+}
+
+// ระบบแตะไพ่: คว่ำอยู่ให้เปิด / เปิดแล้วให้ซูมภาพใหญ่
+function handleCardClick(idx) {
+  const cardWrap = document.getElementById(`card-${idx}`);
+  if (cardWrap && !cardWrap.classList.contains('flipped')) {
+    revealCard(idx);
+  } else {
+    openCardZoom(idx);
+  }
+}
+
+function openCardZoom(idx) {
+  const card = chosenCards[idx];
+  if (!card) return;
+  let zoomModal = document.getElementById('card-zoom-modal');
+  if (!zoomModal) {
+    zoomModal = document.createElement('div');
+    zoomModal.id = 'card-zoom-modal';
+    zoomModal.style = 'position:fixed;inset:0;background:rgba(5,2,6,0.92);backdrop-filter:blur(8px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;cursor:zoom-out;';
+    zoomModal.onclick = () => zoomModal.style.display = 'none';
+    zoomModal.innerHTML = `
+      <div style="max-width:380px;width:90%;background:#180a14;border:1px solid #d4af37;box-shadow:0 0 35px rgba(212,175,55,0.45);border-radius:12px;padding:16px;text-align:center;" onclick="event.stopPropagation()">
+        <div id="zoom-title" style="color:#ffd966;font-size:1rem;margin-bottom:8px;font-weight:bold;"></div>
+        <img id="zoom-img" style="width:100%;max-height:65vh;object-fit:contain;border-radius:8px;border:1px solid rgba(212,175,55,0.3);" src="" />
+        <p style="font-size:0.75rem;color:#c4a9b2;margin-top:8px;">✦ แตะพื้นที่ว่างเพื่อปิด ✦</p>
+      </div>
+    `;
+    document.body.appendChild(zoomModal);
+  }
+  document.getElementById('zoom-title').innerText = `${card.name || ''} • ${card.thai || card.nameTh || ''}`;
+  document.getElementById('zoom-img').src = card.img || card.image || '';
+  zoomModal.style.display = 'flex';
+}
+
+// แสดงกระดานไพ่พร้อมชื่อตำแหน่งครบทุกโหมด
+function revealBoardWithChosenCards() {
+  document.getElementById('fan-section').style.display = 'none';
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  board.style.display = 'flex';
+  board.style.flexWrap = 'wrap';
+  board.style.justifyContent = 'center';
+  board.style.gap = '14px 10px';
+  board.style.maxWidth = '950px';
+  board.style.margin = '15px auto';
+  document.getElementById('reset-area').style.display = 'block';
+
+  let labels = ["ดวงชะตาวันนี้"];
+  if (currentMode === 3) {
+    labels = ["ตำแหน่ง ๑ : อดีต", "ตำแหน่ง ๒ : ปัจจุบัน", "ตำแหน่ง ๓ : อนาคต"];
+  } else if (currentMode === 5) {
+    labels = [
+      "ตำแหน่ง ๑ : รากเหง้าอดีต",
+      "ตำแหน่ง ๒ : สภาวะปัจจุบัน",
+      "ตำแหน่ง ๓ : อุปสรรคขัดขวาง",
+      "ตำแหน่ง ๔ : แนวทางแก้ไข",
+      "ตำแหน่ง ๕ : บทสรุปอนาคต"
+    ];
+  } else if (currentMode === 10) {
+    labels = [
+      "ตำแหน่ง ๑ : สภาวะปัจจุบัน",
+      "ตำแหน่ง ๒ : อุปสรรคขัดขวาง",
+      "ตำแหน่ง ๓ : จิตใต้สำนึก",
+      "ตำแหน่ง ๔ : อดีตที่เพิ่งผ่าน",
+      "ตำแหน่ง ๕ : สิ่งที่คาดหวัง",
+      "ตำแหน่ง ๖ : อนาคตระยะใกล้",
+      "ตำแหน่ง ๗ : ตัวตนและทัศนคติ",
+      "ตำแหน่ง ๘ : อิทธิพลภายนอก",
+      "ตำแหน่ง ๙ : ความหวังและกังวล",
+      "ตำแหน่ง ๑๐ : บทสรุปชะตา"
+    ];
+  }
+
+  for (let i = 0; i < currentMode; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'card-slot';
+    slot.innerHTML = `
+      <div class="slot-label">${labels[i] || `ตำแหน่ง ${i+1}`}</div>
+      <div class="card-wrapper" id="card-${i}" onclick="handleCardClick(${i})">
+        <div class="card-inner">
+          <div class="card-face card-back">
+            <img src="หลังไพ่.png" alt="หลังไพ่ เนตรวิจิตร" onerror="this.src='หลังไพ่[Card Back].png';">
+            <div class="click-prompt">แตะเพื่อเปิดญาณ</div>
+          </div>
+          <div class="card-face card-front" id="front-${i}">
+            <img src="${chosenCards[i].img || chosenCards[i].image}" alt="${chosenCards[i].name}">
+          </div>
+        </div>
+      </div>
+    `;
+    board.appendChild(slot);
+  }
+}
 
     function openUnlockModal() {
       const modal = document.getElementById('unlock-modal');
@@ -1568,8 +1710,11 @@ function revealAllCards() {
           try { playChimeSound(); } catch (e) {}
         }
 
-        // ปลดล็อกสถานะโหมด ๓ ใบ
-        isUnlockedMode3 = true;
+        unlockedModes[pendingUnlockMode] = true;
+const unlockBtn = document.getElementById(`btn-mode-${pendingUnlockMode}`);
+if (unlockBtn) unlockBtn.innerHTML = `<span>${PACKAGE_NAMES[pendingUnlockMode]}</span>`;
+closeUnlockModal();
+switchMode(pendingUnlockMode);
 
         // ซ่อนไอคอนกุญแจล็อก
         const lockIcon = document.getElementById('mode-3-lock');
