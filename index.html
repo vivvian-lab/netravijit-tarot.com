@@ -7,150 +7,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Cinzel+Decorative:wght@700&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
- /* =======================================================
-   ผังพยากรณ์เนตรวิจิตร: ผังไม้กางเขน ๕ ใบ และ เซลติกครอส ๑๐ ใบ
-   ======================================================= */
-
-.card-slot {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
-}
-
-.card-wrapper {
-  position: relative !important;
-  perspective: 1000px !important;
-  margin: 0 auto !important;
-}
-
-.card-inner {
-  position: relative !important;
-  width: 100% !important;
-  height: 100% !important;
-  transform-style: preserve-3d !important;
-  transition: transform 0.6s ease !important;
-}
-
-.card-face {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  backface-visibility: hidden !important;
-  -webkit-backface-visibility: hidden !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.7) !important;
-}
-
-.card-face img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-}
-
-.slot-label {
-  color: #ffd700 !important;
-  font-size: 0.85rem !important;
-  font-weight: bold !important;
-  margin-bottom: 8px !important;
-  text-shadow: 0 0 6px rgba(255,215,0,0.4) !important;
-  white-space: nowrap !important;
-}
-
-.card-name-tag {
-  position: absolute !important;
-  bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  background: linear-gradient(transparent, rgba(10, 6, 8, 0.95) 30%) !important;
-  color: #ffd700 !important;
-  font-size: 0.82rem !important;
-  font-weight: bold !important;
-  padding: 16px 2px 6px 2px !important;
-  text-align: center !important;
-  text-shadow: 0 1px 4px #000 !important;
-  pointer-events: none !important;
-}
-
-/* --- โหมด ๑ ใบ --- */
-#board.spread-mode-1 {
-  display: flex !important;
-  justify-content: center !important;
-  margin: 25px auto !important;
-}
-.spread-mode-1 .card-wrapper {
-  width: 175px !important;
-  height: 295px !important;
-}
-
-/* --- โหมด ๓ ใบ --- */
-#board.spread-mode-3 {
-  display: flex !important;
-  justify-content: center !important;
-  flex-wrap: wrap !important;
-  gap: 20px !important;
-  margin: 25px auto !important;
-}
-.spread-mode-3 .card-wrapper {
-  width: 160px !important;
-  height: 270px !important;
-}
-
-/* --- ผัง ๕ ใบ (ไม้กางเขน ตามภาพ 5 ไพ่.jpg) --- */
-#board.spread-mode-5 {
-  display: grid !important;
-  grid-template-columns: repeat(3, 145px) !important;
-  grid-template-rows: auto auto auto !important;
-  gap: 16px 14px !important;
-  justify-content: center !important;
-  align-items: center !important;
-  margin: 25px auto !important;
-}
-.spread-mode-5 .card-wrapper {
-  width: 140px !important;
-  height: 235px !important;
-}
-.spread-mode-5 .slot-pos-4 { grid-column: 2 !important; grid-row: 1 !important; } /* ๔ อุปสรรค (บน) */
-.spread-mode-5 .slot-pos-1 { grid-column: 1 !important; grid-row: 2 !important; } /* ๑ อดีต (กลางซ้าย) */
-.spread-mode-5 .slot-pos-2 { grid-column: 2 !important; grid-row: 2 !important; } /* ๒ ปัจจุบัน (กลาง) */
-.spread-mode-5 .slot-pos-3 { grid-column: 3 !important; grid-row: 2 !important; } /* ๓ อนาคต (กลางขวา) */
-.spread-mode-5 .slot-pos-5 { grid-column: 2 !important; grid-row: 3 !important; } /* ๕ ภาพรวม (ล่าง) */
-
-/* --- ผัง ๑๐ ใบ (เซลติกครอส ตามภาพ เรียง10ไพ่.jpg) --- */
-#board.spread-mode-10 {
-  display: grid !important;
-  grid-template-columns: 125px 125px 125px 25px 125px !important;
-  grid-template-rows: auto auto auto auto !important;
-  gap: 14px 10px !important;
-  justify-content: center !important;
-  align-items: center !important;
-  margin: 25px auto !important;
-  overflow-x: auto !important;
-  padding: 10px !important;
-}
-.spread-mode-10 .card-wrapper {
-  width: 120px !important;
-  height: 202px !important;
-}
-/* ไม้กางเขนฝั่งซ้าย */
-.spread-mode-10 .slot-pos-5 { grid-column: 2 !important; grid-row: 1 !important; } /* ๕ จุดมุ่งหมาย (บน) */
-.spread-mode-10 .slot-pos-4 { grid-column: 1 !important; grid-row: 2 !important; } /* ๔ อดีต (ซ้าย) */
-.spread-mode-10 .slot-pos-1 { grid-column: 2 !important; grid-row: 2 !important; } /* ๑ ปัจจุบัน (กลาง) */
-.spread-mode-10 .slot-pos-6 { grid-column: 3 !important; grid-row: 2 !important; } /* ๖ อนาคต (ขวา) */
-.spread-mode-10 .slot-pos-2 { grid-column: 2 !important; grid-row: 3 !important; } /* ๒ อุปสรรค (ล่างกลาง) */
-.spread-mode-10 .slot-pos-3 { grid-column: 2 !important; grid-row: 4 !important; } /* ๓ จิตใต้สำนึก (ล่างสุด) */
-
-/* เสาพยากรณ์ฝั่งขวา */
-.spread-mode-10 .slot-pos-10 { grid-column: 5 !important; grid-row: 1 !important; } /* ๑๐ ภาพรวม (บนสุด) */
-.spread-mode-10 .slot-pos-9  { grid-column: 5 !important; grid-row: 2 !important; } /* ๙ ความรู้สึกในใจ */
-.spread-mode-10 .slot-pos-8  { grid-column: 5 !important; grid-row: 3 !important; } /* ๘ สภาพแวดล้อม */
-.spread-mode-10 .slot-pos-7  { grid-column: 5 !important; grid-row: 4 !important; } /* ๗ ตัวตนภายใน (ล่างสุด) */
   <style>
     :root {
     --bg-deep: #0a0608;
@@ -163,44 +19,150 @@
     --text-muted: #bfa993;
   }
 
-  /* ๑. กล่องรวมไพ่: จัดกึ่งกลางจอ และอนุญาตให้ตัดขึ้นบรรทัดใหม่เมื่อเปิด ๑๐ ใบ */
-  #cards-display, 
-  #spread-display, 
-  .cards-container, 
-  .slots-container,
-  div:has(> [id^="card-"]) {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    align-items: flex-start !important;
-    gap: 18px 12px !important;
-    max-width: 1050px !important;
-    margin: 20px auto !important;
-    overflow: visible !important;
-  }
+  /* =======================================================
+     ผังพยากรณ์เนตรวิจิตร: ผังไม้กางเขน ๕ ใบ และ เซลติกครอส ๑๐ ใบ
+     ======================================================= */
 
-  /* ๒. ช่องไพ่แต่ละใบ: บังคับเรียงแนวตั้ง (ดึงชื่อตำแหน่งขึ้นไปอยู่บนหัวไพ่ตรงกลาง ไม่เบี้ยว) */
   .card-slot {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: flex-start !important;
     text-align: center !important;
-    margin: 0 auto !important;
+    box-sizing: border-box !important;
   }
 
   .card-wrapper {
+    position: relative !important;
+    perspective: 1000px !important;
     margin: 0 auto !important;
   }
 
-  .slot-label {
-    display: block !important;
+  .card-inner {
+    position: relative !important;
     width: 100% !important;
-    text-align: center !important;
-    margin-bottom: 8px !important;
-    color: #ffd700 !important;
-    font-size: 0.9rem !important;
+    height: 100% !important;
+    transform-style: preserve-3d !important;
+    transition: transform 0.6s ease !important;
   }
+
+  .card-face {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.7) !important;
+  }
+
+  .card-face img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+  }
+
+  .slot-label {
+    color: #ffd700 !important;
+    font-size: 0.85rem !important;
+    font-weight: bold !important;
+    margin-bottom: 8px !important;
+    text-shadow: 0 0 6px rgba(255,215,0,0.4) !important;
+    white-space: nowrap !important;
+  }
+
+  .card-name-tag {
+    position: absolute !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: linear-gradient(transparent, rgba(10, 6, 8, 0.95) 30%) !important;
+    color: #ffd700 !important;
+    font-size: 0.82rem !important;
+    font-weight: bold !important;
+    padding: 16px 2px 6px 2px !important;
+    text-align: center !important;
+    text-shadow: 0 1px 4px #000 !important;
+    pointer-events: none !important;
+  }
+
+  /* --- โหมด ๑ ใบ --- */
+  #board.spread-mode-1 {
+    display: flex !important;
+    justify-content: center !important;
+    margin: 25px auto !important;
+  }
+  .spread-mode-1 .card-wrapper {
+    width: 175px !important;
+    height: 295px !important;
+  }
+
+  /* --- โหมด ๓ ใบ --- */
+  #board.spread-mode-3 {
+    display: flex !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    margin: 25px auto !important;
+  }
+  .spread-mode-3 .card-wrapper {
+    width: 160px !important;
+    height: 270px !important;
+  }
+
+  /* --- ผัง ๕ ใบ (ไม้กางเขน ตามภาพ 5 ไพ่.jpg) --- */
+  #board.spread-mode-5 {
+    display: grid !important;
+    grid-template-columns: repeat(3, 145px) !important;
+    grid-template-rows: auto auto auto !important;
+    gap: 16px 14px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 25px auto !important;
+  }
+  .spread-mode-5 .card-wrapper {
+    width: 140px !important;
+    height: 235px !important;
+  }
+  .spread-mode-5 .slot-pos-4 { grid-column: 2 !important; grid-row: 1 !important; } /* ๔ อุปสรรค (บน) */
+  .spread-mode-5 .slot-pos-1 { grid-column: 1 !important; grid-row: 2 !important; } /* ๑ อดีต (กลางซ้าย) */
+  .spread-mode-5 .slot-pos-2 { grid-column: 2 !important; grid-row: 2 !important; } /* ๒ ปัจจุบัน (กลาง) */
+  .spread-mode-5 .slot-pos-3 { grid-column: 3 !important; grid-row: 2 !important; } /* ๓ อนาคต (กลางขวา) */
+  .spread-mode-5 .slot-pos-5 { grid-column: 2 !important; grid-row: 3 !important; } /* ๕ ภาพรวม (ล่าง) */
+
+  /* --- ผัง ๑๐ ใบ (เซลติกครอส ตามภาพ เรียง10ไพ่.jpg) --- */
+  #board.spread-mode-10 {
+    display: grid !important;
+    grid-template-columns: 125px 125px 125px 25px 125px !important;
+    grid-template-rows: auto auto auto auto !important;
+    gap: 14px 10px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 25px auto !important;
+    overflow-x: auto !important;
+    padding: 10px !important;
+  }
+  .spread-mode-10 .card-wrapper {
+    width: 120px !important;
+    height: 202px !important;
+  }
+  /* ไม้กางเขนฝั่งซ้าย */
+  .spread-mode-10 .slot-pos-5 { grid-column: 2 !important; grid-row: 1 !important; } /* ๕ จุดมุ่งหมาย (บน) */
+  .spread-mode-10 .slot-pos-4 { grid-column: 1 !important; grid-row: 2 !important; } /* ๔ อดีต (ซ้าย) */
+  .spread-mode-10 .slot-pos-1 { grid-column: 2 !important; grid-row: 2 !important; } /* ๑ ปัจจุบัน (กลาง) */
+  .spread-mode-10 .slot-pos-6 { grid-column: 3 !important; grid-row: 2 !important; } /* ๖ อนาคต (ขวา) */
+  .spread-mode-10 .slot-pos-2 { grid-column: 2 !important; grid-row: 3 !important; } /* ๒ อุปสรรค (ล่างกลาง) */
+  .spread-mode-10 .slot-pos-3 { grid-column: 2 !important; grid-row: 4 !important; } /* ๓ จิตใต้สำนึก (ล่างสุด) */
+
+  /* เสาพยากรณ์ฝั่งขวา */
+  .spread-mode-10 .slot-pos-10 { grid-column: 5 !important; grid-row: 1 !important; } /* ๑๐ ภาพรวม (บนสุด) */
+  .spread-mode-10 .slot-pos-9  { grid-column: 5 !important; grid-row: 2 !important; } /* ๙ ความรู้สึกในใจ */
+  .spread-mode-10 .slot-pos-8  { grid-column: 5 !important; grid-row: 3 !important; } /* ๘ สภาพแวดล้อม */
+  .spread-mode-10 .slot-pos-7  { grid-column: 5 !important; grid-row: 4 !important; } /* ๗ ตัวตนภายใน (ล่างสุด) */
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
